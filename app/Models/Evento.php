@@ -16,7 +16,7 @@ class Evento extends Model
         'start' => 'required|date',
         'end' => 'required|date',
     ];
-    protected $fillable = ['responsable_id', 'tipo_id', 'start', 'end', 'title', 'descripcion', 'estado'];
+    protected $fillable = ['tipo_id', 'start', 'end', 'title', 'descripcion', 'estado'];
 
     public function tipo()
     {

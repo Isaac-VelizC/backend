@@ -11,7 +11,7 @@ class NumTelefono extends Model
     public $timestamps = false;
     protected $table = "num_telefonos";
     protected $primaryKey = "id";
-    protected $fillable = ['numero_tel', 'id_persona'];
+    protected $fillable = ['numero', 'id_persona'];
     public function persona()
     {
         return $this->belongsTo(Persona::class, 'id_persona');

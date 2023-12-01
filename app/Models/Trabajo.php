@@ -13,7 +13,6 @@ class Trabajo extends Model
     protected $fillable = ['tipo_id',
         'curso_id',
         'user_id',
-        'cat_crit_id',
         'tema_id',
         'titulo',
         'descripcion',
@@ -26,7 +25,7 @@ class Trabajo extends Model
     ];
     public function curso()
     {
-        return $this->belongsTo(CursoDocente::class, 'curso_id');
+        return $this->belongsTo(CursoHabilitado::class, 'curso_id');
     }
     public function Tipo()
     {
@@ -44,4 +43,5 @@ class Trabajo extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
 }

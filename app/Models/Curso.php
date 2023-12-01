@@ -11,18 +11,18 @@ class Curso extends Model
     public $timestamps = false;
     protected $table = "cursos";
     protected $primaryKey = "id";
-    protected $fillable = ['nombre', 'precio', 'periodo_id', 'color', 'estado', 'descripcion'];
+    protected $fillable = ['nombre', 'precio', 'semestre_id', 'color', 'estado', 'descripcion'];
 
     public function aula()
     {
         return $this->belongsTo(Aula::class, 'aula_id');
     }
-    public function periodo()
+    public function semestre()
     {
-        return $this->belongsTo(Periodo::class, 'periodo_id');
+        return $this->belongsTo(Semestre::class, 'periodo_id');
     }
     public function cursoDocentes()
     {
-        return $this->hasMany(CursoDocente::class, 'curso_id');
+        return $this->hasMany(CursoHabilitado::class, 'curso_id');
     }
 }

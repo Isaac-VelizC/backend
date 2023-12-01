@@ -8,20 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Contacto extends Model
 {
     use HasFactory;
-
     public $timestamps = false;
     protected $table = "contactos";
     protected $primaryKey = "id";
-    protected $fillable = ['pers_id', 'direccion', 'estado'];
+    protected $fillable = ['persona_id', 'direccion', 'estado'];
 
     public function estudiantes()
     {
         return $this->hasMany(Estudiante::class);
     }
-
     public function persona()
     {
         return $this->belongsTo(Persona::class, 'pers_id');
     }
-
 }

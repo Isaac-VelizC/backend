@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TipoEvaluacion extends Model
+class ComentarioCurso extends Model
 {
     use HasFactory;
-    public $timestamps = false;
-    protected $table = "tipo_evaluacions";
+    protected $table = "comentario_cursos";
     protected $primaryKey = "id";
-    protected $fillable = ['nombre'];
+    protected $fillable = ['body', 'action', 'autor_id', 'curso_id'];
+
 }

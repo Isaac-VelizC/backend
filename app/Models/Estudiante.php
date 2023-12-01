@@ -10,7 +10,7 @@ class Estudiante extends Model
     use HasFactory;
     protected $table = "estudiantes";
     protected $primaryKey = "id";
-    protected $fillable = ['pers_id', 'contact_id', 'turno_id', 'direccion', 'fecha_nacimiento', 'estado', 'titulo', 'graduado'];
+    protected $fillable = ['persona_id', 'contact_id', 'turno_id', 'direccion', 'fecha_nacimiento', 'estado', 'titulo', 'graduado'];
     public function asistencias()
     {
         return $this->hasMany(Asistencia::class, 'estudiante_id', 'id');
@@ -21,7 +21,7 @@ class Estudiante extends Model
     }
     public function inscripciones()
     {
-        return $this->hasMany(Inscripcion::class, 'estudiante_id');
+        return $this->hasMany(Programacion::class, 'estudiante_id');
     }
     public function persona()
     {

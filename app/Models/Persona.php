@@ -10,7 +10,7 @@ class Persona extends Model
     use HasFactory;
     protected $table = "personas";
     protected $primaryKey = "id";
-    protected $fillable = ['user_id', 'nombre', 'ap_paterno', 'ap_materno', 'ci','genero', 'email', 'photo', 'tipo_pers', 'estado'];
+    protected $fillable = ['user_id', 'nombre', 'ap_paterno', 'ap_materno', 'ci','genero', 'email', 'photo', 'rol', 'estado'];
 
     public function user()
     {
@@ -26,9 +26,9 @@ class Persona extends Model
     {
         return $this->hasOne(NumTelefono::class, 'id_persona');
     }
-    public function miembro()
+    public function personal()
     {
-        return $this->hasOne(Miembro::class, 'pers_id', 'id');
+        return $this->hasOne(Personal::class, 'pers_id', 'id');
     }
     public function estudiante()
     {

@@ -10,7 +10,7 @@ class Docente extends Model
     use HasFactory;
     protected $table = "docentes";
     protected $primaryKey = "id";
-    protected $fillable = ['id_persona', 'contratado_en', 'estado'];
+    protected $fillable = ['id_persona', 'estado'];
 
     public function persona()
     {
@@ -20,5 +20,4 @@ class Docente extends Model
     {
         return $this->hasMany(CursoDocente::class, 'docente_id');
     }
-
 }

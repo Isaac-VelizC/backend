@@ -10,6 +10,6 @@ class Calificacion extends Model
     use HasFactory;
     protected $table = "calificacions";
     protected $primaryKey = "id";
-    protected $fillable = ['estudiante_id', 'materia_id', 'num_trabajos', 'num_evaluaciones', 'calificacion', 'estado'];
+    protected $fillable = ['estudiante_id', 'curso_id', 'num_trabajos', 'num_evaluaciones', 'calificacion'];
 
 }

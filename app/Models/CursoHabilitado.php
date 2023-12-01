@@ -5,22 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CursoDocente extends Model
+class CursoHabilitado extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    protected $table = "curso_docentes";
+    protected $table = "curso_habilitados";
     protected $primaryKey = "id";
     protected $fillable = ['docente_id',
         'curso_id',
         'responsable_id',
         'horario_id',
         'aula_id',
+        'cupo',
         'descripcion',
         'imagen',
         'fecha_ini',
         'fecha_fin',
-        'whatsapp',
         'estado'
     ];
     public function asistencias()
@@ -51,6 +51,7 @@ class CursoDocente extends Model
     }
     public function inscripciones()
     {
-        return $this->hasMany(Inscripcion::class, 'materia_id');
+        return $this->hasMany(Programacion::class, 'materia_id');
     }
+
 }
