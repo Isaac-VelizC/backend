@@ -8,7 +8,6 @@ use App\Models\MetodoPago;
 use App\Models\Semestre;
 use App\Models\TipoEvento;
 use App\Models\TipoTrabajo;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class TiposSeeder extends Seeder

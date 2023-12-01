@@ -6,7 +6,6 @@ use App\Models\Docente;
 use App\Models\Persona;
 use App\Models\Personal;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UsersSeeder extends Seeder
@@ -30,7 +29,7 @@ class UsersSeeder extends Seeder
         Persona::create(['user_id' => '1', 'nombre' => 'Isak', 'ci' => '8513398', 'genero' => 'Hombre']);
         Persona::create(['user_id' => '2', 'nombre' => 'Teagan', 'ci' => '6962512', 'genero' => 'Mujer']);
         Docente::create(['id_persona' => '2']);
-        Personal::create(['pers_id' => '1']);
+        Personal::create(['persona_id' => '1']);
         
     }
 }
