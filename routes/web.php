@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Estudent\EstudianteController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,14 +24,16 @@ Auth::routes();
 Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.home');
     //Estudiantes
-    /*Route::get('/admin-estudiantes', [EstudianteController::class, 'index'])->name('admin.estudinte');
-    Route::get('/admin-inscripcions', [EstudianteController::class, 'formInscripcion'])->name('admin.inscripcion');
-    Route::post('/admin-inscripcions/store', [EstudianteController::class, 'inscripcion'])->name('admin.inscripcion.store');
+    Route::get('/admin-estudiantes', [UsersController::class, 'estudiantesAll'])->name('admin.estudinte');
+    Route::get('/admin-inscripcions', [UsersController::class, 'formInscripcion'])->name('admin.inscripcion');
+    Route::post('/admin-inscripcions/store', [UsersController::class, 'inscripcion'])->name('admin.inscripcion.store');
+
     Route::get('/show/{id}/estudiante', [EstudianteController::class, 'showEstudiante'])->name('admin.E.show');
     Route::put('/create-student-{id}-update', [EstudianteController::class, 'update'])->name('update.estudiantes');
     //Docentes
-    Route::get('/admin-docentes', [ChefsController::class, 'allDocentes'])->name('admin.docentes');
-    Route::post('/create-docentes-store', [ChefsController::class, 'store'])->name('store.docentes');
+    Route::get('/admin-docentes', [UsersController::class, 'allDocentes'])->name('admin.docentes');
+    Route::post('/create-docentes-store', [UsersController::class, 'store'])->name('store.docentes');
+
     Route::put('/create-docentes-{id}-update', [ChefsController::class, 'update'])->name('update.docente');
     Route::delete('/docentes/{id}/baja', [ChefsController::class, 'darBajaDocente'])->name('admin.docentes.baja');
     //Se usa para ambos
@@ -37,17 +41,15 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::get('/show/{id}/docente', [ChefsController::class, 'showDocente'])->name('admin.D.show');
     Route::get('/show/{id}/personal', [AdminController::class, 'showPersonal'])->name('admin.P.show');
     Route::put('/create-personal-{id}-update', [AdminController::class, 'update'])->name('update.personal');
-    Route::delete('admin/docente/{id}/baja', [ChefsController::class, 'darBajaDocente'])->name('admin.D.darBaja');
-    Route::delete('admin/personal/{id}/baja', [AdminController::class, 'darBajaPersonal'])->name('admin.P.darBaja');
-    Route::delete('admin/estudiante/{id}/baja', [EstudianteController::class, 'darBajaEstudiante'])->name('admin.E.darBaja');
-    Route::delete('admin/docente/{id}/alta', [ChefsController::class, 'darAltaDocente'])->name('admin.D.darAlta');
-    Route::delete('admin/personal/{id}/alta', [AdminController::class, 'darAltaPersonal'])->name('admin.P.darAlta');
-    Route::delete('admin/estudiante/{id}/alta', [EstudianteController::class, 'darAltaEstudiante'])->name('admin.E.darAlta');
+
+    Route::delete('admin/personal/{id}/{accion}', [UsersController::class, 'gestionarEstadoPersonal'])->name('admin.P.gestionarEstado');
+    Route::delete('admin/docente/{id}/{accion}', [UsersController::class, 'gestionarEstadoDocente'])->name('admin.D.gestionarEstado');
+    Route::delete('admin/estudiante/{id}/{accion}', [UsersController::class, 'gestionarEstadoEstudiante'])->name('admin.E.gestionarEstado');
     //Personal de la institucion
     Route::post('/personal-new', [AdminController::class, 'store'])->name('admin.personal.store');
     Route::get('/admin-users', [AdminController::class, 'allUsers'])->name('admin.users');
     //Personals
-    Route::get('/admin-personal', [AdminController::class, 'allPersonal'])->name('admin.personal');
+    Route::get('/admin-personal', [UsersController::class, 'allPersonal'])->name('admin.personal');
     //Calendario
     Route::get('/calendar', [CalendarioController::class, 'index'])->name('admin.calendario');
     Route::post('/calendar/store', [CalendarioController::class, 'store'])->name('admin.calendario.store');
@@ -91,7 +93,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::post('/administrar-horario-add', [InformacionController::class, 'storeHorario'])->name('admin.guardar-horario');
     Route::put('/administrar-horario/{id}/edit', [InformacionController::class, 'updateHorario'])->name('admin.actualizar-horario');
     //Evaluacion docente
-    Route::get('/evaluacion/add/docente', EvaluacionDocente::class)->name('evaluacion.docente');*/
+    //Route::get('/evaluacion/add/docente', EvaluacionDocente::class)->name('evaluacion.docente');
 });
 
 Route::middleware(['auth', 'role:Docente'])->group(function () {
@@ -110,7 +112,7 @@ Route::middleware(['auth', 'role:Estudiante'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     //calendario
-    /*Route::get('/calendar/mostrar', [CalendarioController::class, 'mostrar'])->name('admin.calendario.ver');
+    Route::get('/calendar/mostrar', [CalendarioController::class, 'mostrar'])->name('admin.calendario.ver');
     //cocina Ingredientes
     Route::get('/ingretientes-all', [CocinaController::class, 'allIngredientes'])->name('admin.ingredientes');
 
@@ -123,6 +125,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cursos', [DocenteCursoController::class, 'index'])->name('chef.cursos');
     Route::get('/curso/{id}/materia', [DocenteCursoController::class, 'curso'])->name('cursos.curso');
     //Componetes
-    Route::get('/posts-pregunta/{id}', ShowPregunta::class)->name('show.pregunta');
-    Route::get('/posts-tareas/{id}', ShowTarea::class)->name('show.tarea');*/
+    //Route::get('/posts-pregunta/{id}', ShowPregunta::class)->name('show.pregunta');
+    //Route::get('/posts-tareas/{id}', ShowTarea::class)->name('show.tarea');
 });

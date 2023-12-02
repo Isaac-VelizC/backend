@@ -25,7 +25,7 @@ class Estudiante extends Model
     }
     public function persona()
     {
-        return $this->belongsTo(Persona::class, 'pers_id');
+        return $this->belongsTo(Persona::class, 'persona_id');
     }
     public function turnos()
     {

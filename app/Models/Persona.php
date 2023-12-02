@@ -32,10 +32,10 @@ class Persona extends Model
     }
     public function estudiante()
     {
-        return $this->hasOne(Estudiante::class, 'pers_id');
+        return $this->hasOne(Estudiante::class, 'persona_id');
     }
     public function contacto()
     {
-        return $this->hasOne(Contacto::class, 'pers_id');
+        return $this->hasOne(Contacto::class, 'persona_id');
     }
 }

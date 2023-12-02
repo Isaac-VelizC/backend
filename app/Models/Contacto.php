@@ -11,7 +11,7 @@ class Contacto extends Model
     public $timestamps = false;
     protected $table = "contactos";
     protected $primaryKey = "id";
-    protected $fillable = ['persona_id', 'direccion', 'estado'];
+    protected $fillable = ['persona_id ', 'direccion', 'estado'];
 
     public function estudiantes()
     {
@@ -19,6 +19,6 @@ class Contacto extends Model
     }
     public function persona()
     {
-        return $this->belongsTo(Persona::class, 'pers_id');
+        return $this->belongsTo(Persona::class, 'persona_id ');
     }
 }
