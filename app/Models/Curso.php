@@ -19,7 +19,7 @@ class Curso extends Model
     }
     public function semestre()
     {
-        return $this->belongsTo(Semestre::class, 'periodo_id');
+        return $this->belongsTo(Semestre::class, 'semestre_id');
     }
     public function cursoDocentes()
     {

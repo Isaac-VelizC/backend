@@ -58,8 +58,8 @@
                         @if (count($docentes) > 0)
                             @foreach ($docentes as $item)
                             <tr>
-                                <td><p>{{ $item->nombre }} {{$item->ap_paterno}} {{$item->ap_materno}}</p></td>
-                                <td><p><a href="#0">{{ $item->email }}</a></p></td>
+                                <td><p><a href="{{ route('admin.D.show', [$item->id]) }}">{{ $item->nombre }} {{$item->ap_paterno}} {{$item->ap_materno}}</a></p></td>
+                                <td><p>{{ $item->email }}</p></td>
                                 <td><p>{{ $item->ci }}</p></td>
                                 <td><p>{{ $item->genero }}</p></td>
                                 <td>
@@ -71,18 +71,15 @@
                                 </td>
                                 <td>
                                     <div class="flex align-items-center list-user-action">
-                                    <a data-bs-toggle="tooltip" data-bs-placement="top" title="Ver"  href="{{ route('admin.D.show', [$item->id]) }}">
-                                        <i class="bi bi-eye-fill"></i>
-                                    </a>
-                                    @if ($item->estado == true)
-                                        <a data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#deleteConfirm{{ $item->id }}">
-                                            <i class="bi bi-file-arrow-down-fill"></i>
-                                        </a>
-                                    @else
-                                        <a data-bs-placement="top" title="Dar de Alta" data-bs-toggle="modal" data-bs-target="#deleteConfirm{{ $item->id }}">
-                                            <i class="bi bi-file-arrow-up-fill"></i>
-                                        </a>
-                                    @endif
+                                        @if ($item->estado == true)
+                                            <a data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#deleteConfirm{{ $item->id }}">
+                                                <i class="bi bi-file-arrow-down-fill"></i>
+                                            </a>
+                                        @else
+                                            <a data-bs-placement="top" title="Dar de Alta" data-bs-toggle="modal" data-bs-target="#deleteConfirm{{ $item->id }}">
+                                                <i class="bi bi-file-arrow-up-fill"></i>
+                                            </a>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>

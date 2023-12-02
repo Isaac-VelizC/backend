@@ -82,43 +82,10 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-auth" role="button" aria-expanded="false" aria-controls="sidebar-user">
+                    <a class="nav-link {{ Route::is('admin.cursos') ? 'active' : '' }}" href="{{ route('admin.cursos') }}">
                         <i class="bi bi-bookshelf"></i>
-                        <span class="item-name">Materias</span>
-                        <i class="right-icon">
-                            <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </i>
+                        <span class="item-name">Cursos</span>
                     </a>
-                    <ul class="sub-nav collapse" id="sidebar-auth" data-bs-parent="#sidebar-menu">
-                        <li class="nav-item">
-                            <a class="nav-link {{ Route::is('admin.cursos') ? 'active' : '' }}" href="{{ route('admin.cursos') }}">
-                                <i class="icon">
-                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                                        <g>
-                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                        </g>
-                                    </svg>
-                                </i>
-                                <i class="sidenav-mini-icon"> LC </i>
-                                <span class="item-name">Lista</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link {{ Route::is('admin.cursos.activos') ? 'active' : '' }}" href="{{ route('admin.cursos.activos') }}">
-                              <i class="icon">
-                                  <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                                      <g>
-                                      <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                      </g>
-                                  </svg>
-                              </i>
-                              <i class="sidenav-mini-icon"> CA </i>
-                              <span class="item-name">Materias Activos</span>
-                          </a>
-                      </li>
-                    </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-user" role="button" aria-expanded="false" aria-controls="sidebar-user">

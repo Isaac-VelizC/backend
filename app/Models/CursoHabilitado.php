@@ -51,7 +51,7 @@ class CursoHabilitado extends Model
     }
     public function inscripciones()
     {
-        return $this->hasMany(Programacion::class, 'materia_id');
+        return $this->hasMany(Programacion::class, 'curso_id');
     }
 
 }

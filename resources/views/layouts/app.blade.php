@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="{{ asset('assets/css/core/libs.min.css')}}" />
     <link rel="stylesheet" href="{{ asset('assets/css/hope-ui.min.css?v=2.0.0')}}" />
     <link rel="stylesheet" href="{{ asset('assets/css/hope-ui.css')}}" />
+    <link rel='stylesheet' href='{{ asset('assets/vendor/fullcalendar/core/main.css')}}' />
+    <link rel='stylesheet' href='{{ asset('assets/vendor/fullcalendar/daygrid/main.css')}}' />
+    <link rel='stylesheet' href='{{ asset('assets/vendor/fullcalendar/timegrid/main.css')}}' />
+    <link rel='stylesheet' href='{{ asset('assets/vendor/fullcalendar/list/main.css')}}' />
     <script>
         var baseUrl = {!! json_encode(url('/')) !!}
     </script>
@@ -33,9 +37,16 @@
     @endif
     
     @livewireScripts
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script src="{{ asset('assets/js/core/libs.min.js')}}"></script>
     <script src="{{ asset('assets/js/core/external.min.js')}}"></script>
     <script src="{{ asset('assets/js/hope-ui.js')}}" defer></script>
-    
+    <script src='{{ asset('assets/vendor/fullcalendar/core/main.js')}}'></script>
+    <script src='{{ asset('assets/vendor/fullcalendar/core/locales/es.js')}}'></script>
+    <script src='{{ asset('assets/vendor/fullcalendar/daygrid/main.js')}}'></script>
+    <script src='{{ asset('assets/vendor/fullcalendar/timegrid/main.js')}}'></script>
+    <script src='{{ asset('assets/vendor/fullcalendar/list/main.js')}}'></script>
+    <script src='{{ asset('assets/vendor/fullcalendar/interaction/main.js')}}'></script>
+    <script src='{{ asset('assets/js/plugins/calender.js')}}'></script>
 </body>
 </html>

@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CalendarioController;
+use App\Http\Controllers\Admin\CursoController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Estudent\EstudianteController;
+use App\Livewire\Docente\Show;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -23,26 +26,22 @@ Route::get('/', function () {
 Auth::routes();
 Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.home');
-    //Estudiantes
     Route::get('/admin-estudiantes', [UsersController::class, 'estudiantesAll'])->name('admin.estudinte');
     Route::get('/admin-inscripcions', [UsersController::class, 'formInscripcion'])->name('admin.inscripcion');
     Route::post('/admin-inscripcions/store', [UsersController::class, 'inscripcion'])->name('admin.inscripcion.store');
 
-    Route::get('/show/{id}/estudiante', [EstudianteController::class, 'showEstudiante'])->name('admin.E.show');
-    Route::put('/create-student-{id}-update', [EstudianteController::class, 'update'])->name('update.estudiantes');
+    //Route::get('/show/{id}/estudiante', [EstudianteController::class, 'showEstudiante'])->name('admin.E.show');
+    //Route::put('/create-student-{id}-update', [EstudianteController::class, 'update'])->name('update.estudiantes');
     //Docentes
     Route::get('/admin-docentes', [UsersController::class, 'allDocentes'])->name('admin.docentes');
     Route::post('/create-docentes-store', [UsersController::class, 'store'])->name('store.docentes');
-
-    Route::put('/create-docentes-{id}-update', [ChefsController::class, 'update'])->name('update.docente');
-    Route::delete('/docentes/{id}/baja', [ChefsController::class, 'darBajaDocente'])->name('admin.docentes.baja');
     //Se usa para ambos
-    Route::post('/cambio/{id}/rol', [AdminController::class, 'cambiarRol'])->name('cambio.rol');
-    Route::get('/show/{id}/docente', [ChefsController::class, 'showDocente'])->name('admin.D.show');
-    Route::get('/show/{id}/personal', [AdminController::class, 'showPersonal'])->name('admin.P.show');
-    Route::put('/create-personal-{id}-update', [AdminController::class, 'update'])->name('update.personal');
+    //Route::post('/cambio/{id}/rol', [AdminController::class, 'cambiarRol'])->name('cambio.rol');
+    //Route::get('/show/{id}/personal', [AdminController::class, 'showPersonal'])->name('admin.P.show');
+    //Route::put('/create-personal-{id}-update', [AdminController::class, 'update'])->name('update.personal');
 
-    Route::delete('admin/personal/{id}/{accion}', [UsersController::class, 'gestionarEstadoPersonal'])->name('admin.P.gestionarEstado');
+    Route::get('/show/{id}/docente', Show::class)->name('admin.D.show');
+    //Route::delete('admin/personal/{id}/{accion}', [UsersController::class, 'gestionarEstadoPersonal'])->name('admin.P.gestionarEstado');
     Route::delete('admin/docente/{id}/{accion}', [UsersController::class, 'gestionarEstadoDocente'])->name('admin.D.gestionarEstado');
     Route::delete('admin/estudiante/{id}/{accion}', [UsersController::class, 'gestionarEstadoEstudiante'])->name('admin.E.gestionarEstado');
     //Personal de la institucion
@@ -61,21 +60,21 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::get('/admin-cursos', [CursoController::class, 'index'])->name('admin.cursos');
     Route::post('/curso-info', [CursoController::class, 'guardarCurso'])->name('admin.guardar-curso');
     Route::put('/curso-info/{id}/edit', [CursoController::class, 'actualizarCurso'])->name('admin.actualizar-curso');
-    Route::get('/admin-cursos/{id}/edit', [CursoController::class, 'edit'])->name('admin.cursos.edit');
     Route::delete('admin/materia/{id}/baja', [CursoController::class, 'darBajaCurso'])->name('admin.cursos.darBaja');
     Route::delete('admin/materia/{id}/alta', [CursoController::class, 'darAltaCurso'])->name('admin.cursos.darAlta');
     Route::get('admin/materia/{id}/delete', [CursoController::class, 'deleteCurso'])->name('admin.cursos.delete');
-    Route::get('admin/show/{id}', [CursoController::class, 'showCurso'])->name('admin.cursos.show');
-    Route::get('/admin-cursos-new', [CursoController::class, 'create'])->name('admin.cursos.new');
-    Route::get('/admin-pagos-all', [CursoController::class, 'allPagos'])->name('admin.lista.pagos');
     Route::get('/asignando-curso/{id}', [CursoController::class, 'asignarCurso'])->name('admin.asignar.curso');
+    Route::get('/cursos-curso/meshgv', [CursoController::class, 'cursosActivos'])->name('admin.cursos.activos');
+    Route::get('admin/show/{id}', [CursoController::class, 'showCurso'])->name('admin.cursos.show');
     Route::post('/curso-info/asignar', [CursoController::class, 'asignarGuardarCurso'])->name('admin.asignar.guardar.curso');
     Route::put('/curso-info/{id}/edit/asignar', [CursoController::class, 'asignarActualizarCurso'])->name('admin.asignar.actualizar-curso');
-    Route::get('/cursos-curso/meshgv', [CursoController::class, 'cursosActivos'])->name('admin.cursos.activos');
     Route::get('/asignados/cursos/{id}/edit', [CursoController::class, 'editCursoAsignado'])->name('admin.asigando.edit');
-
+    
     Route::post('/asignados/cambiar/{id}', [CursoController::class, 'gestionarEstadoCurso'])->name('admin.cursos.cambiarEstado');
     Route::get('/borrar/cambiar-estado/{id}', [CursoController::class, 'deleteCursoActivo'])->name('admin.borrar.curso.activo');
+
+    Route::get('/admin-pagos-all', [CursoController::class, 'allPagos'])->name('admin.lista.pagos');
+
     //pagos
     Route::post('/pagos/guardars', [CursoController::class, 'guardarPago'])->name('admin.pago.guardar');
     Route::get('/pagos/guadar/imprimir', [CursoController::class, 'guardarImprimirPago'])->name('admin.pago.guardar.imprimir');

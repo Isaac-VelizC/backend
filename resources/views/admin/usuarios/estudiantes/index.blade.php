@@ -44,8 +44,8 @@
                     <tbody>
                       @foreach ($estudiantes as $item)
                         <tr>
-                            <td><p>{{ $item->persona->nombre }} {{$item->persona->ap_paterno}} {{$item->persona->ap_materno}}</p></td>
-                            <td> <p><a href="#0">{{ $item->persona->email }}</a></p></td>
+                            <td><p><a href="{{ route('admin.E.show', $item->persona->id) }}">{{ $item->persona->nombre }} {{$item->persona->ap_paterno}} {{$item->persona->ap_materno}}</a></p></td>
+                            <td><p>{{ $item->persona->email }}</p></td>
                             <td><p>{{ $item->persona->ci }}</p></td>
                             <td><p>{{ $item->fecha_nacimiento }}</p></td>
                             <td>
@@ -57,9 +57,6 @@
                             </td>
                             <td>
                               <div class="flex align-items-center list-user-action">
-                                 <a data-bs-toggle="tooltip" data-bs-placement="top" title="Ver"  href="{{ route('admin.E.show', $item->persona->id) }}">
-                                    <i class="bi bi-eye-fill"></i>
-                                 </a>
                                  @if ($item->estado == true)
                                     <a data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#deleteConfirm{{ $item->id }}">
                                        <i class="bi bi-file-arrow-down-fill"></i>
