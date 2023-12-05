@@ -58,12 +58,12 @@
                             <td>
                               <div class="flex align-items-center list-user-action">
                                  @if ($item->estado == true)
-                                    <a data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#deleteConfirm{{ $item->id }}">
-                                       <i class="bi bi-file-arrow-down-fill"></i>
+                                    <a class="btn btn-sm btn-icon btn-danger" data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#deleteConfirm{{ $item->id }}">
+                                       <i class="bi bi-file-arrow-down-fill"></i> Dar de baja
                                     </a>
                                  @else
-                                    <a data-bs-placement="top" title="Dar de Alta" data-bs-toggle="modal" data-bs-target="#deleteConfirm{{ $item->id }}">
-                                       <i class="bi bi-file-arrow-up-fill"></i>
+                                    <a class="btn btn-sm btn-icon btn-danger" data-bs-placement="top" title="Dar de Alta" data-bs-toggle="modal" data-bs-target="#deleteConfirm{{ $item->id }}">
+                                       <i class="bi bi-file-arrow-up-fill"></i> Dar de alta
                                     </a>
                                  @endif
                               </div>

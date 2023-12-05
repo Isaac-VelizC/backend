@@ -54,25 +54,22 @@
                            </td>
                             <td>
                               <div class="flex align-items-center list-user-action">
-                                 <a data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar"  href="#">
-                                    <i class="bi bi-person-fill-gear"></i>
-                                 </a>
-                                 <a data-bs-toggle="tooltip" data-bs-placement="top" title="Ver"  href="{{ route('admin.'.$item->tipo_pers.'.show', [$item->id]) }}">
+                                 <a  class="btn btn-sm btn-icon btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver"  href="{{ route('admin.'.$item->rol.'.show', [$item->id]) }}">
                                     <i class="bi bi-eye-fill"></i>
                                  </a>
                                  @if ($item->estado == true)
-                                    <a data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#deleteConfirm{{ $item->id }}">
+                                    <a class="btn btn-sm btn-icon btn-danger" data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#deleteConfirm{{ $item->id }}">
                                        <i class="bi bi-file-arrow-down-fill"></i>
                                     </a>
                                  @else
-                                    <a data-bs-placement="top" title="Dar de Alta" data-bs-toggle="modal" data-bs-target="#deleteConfirm{{ $item->id }}">
+                                    <a class="btn btn-sm btn-icon btn-danger" data-bs-placement="top" title="Dar de Alta" data-bs-toggle="modal" data-bs-target="#deleteConfirm{{ $item->id }}">
                                        <i class="bi bi-file-arrow-up-fill"></i>
                                     </a>
                                  @endif
                               </div>
                             </td>
                         </tr>
-                        @include('admin.usuarios.modal_de_baja', ['modalId' => $item->id, 'id' => $item->id, 'tipo' => $item->rol])
+                        @include('admin.usuarios.widgets.modal_dar_baja', ['modalId' => $item->id, 'id' => $item->id, 'tipo' => $item->rol])
                       @endforeach
                     </tbody>
                  </table>

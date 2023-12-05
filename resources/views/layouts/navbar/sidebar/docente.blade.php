@@ -1,6 +1,6 @@
 <aside class="sidebar sidebar-default sidebar-white sidebar-base navs-rounded-all ">
     <div class="sidebar-header d-flex align-items-center justify-content-start">
-        <a href="{{ route('chef.home') }}" class="navbar-brand">
+        <a href="{{ route('docente.home') }}" class="navbar-brand">
             <div class="logo-main">
                 <div class="logo-normal">
                   <img src="{{ asset('imagenes/igla.svg')}}" alt="logo" height="35">
@@ -24,7 +24,7 @@
         <div class="sidebar-list">
             <ul class="navbar-nav iq-main-menu" id="sidebar-menu">
                 <li class="nav-item">
-                    <a class="nav-link {{ Route::is('chef.home') ? 'active' : '' }}" aria-current="page" href="{{ route('chef.home') }}">
+                    <a class="nav-link {{ Route::is('docente.home') ? 'active' : '' }}" aria-current="page" href="{{ route('docente.home') }}">
                         <i class="bi bi-house"></i>
                         <span class="item-name">Inicio</span>
                     </a>

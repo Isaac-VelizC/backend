@@ -1,6 +1,6 @@
 <aside class="sidebar sidebar-default sidebar-white sidebar-base navs-rounded-all ">
     <div class="sidebar-header d-flex align-items-center justify-content-start">
-        <a href="{{ route('chef.home') }}" class="navbar-brand">
+        <a href="{{ route('estudiante.home') }}" class="navbar-brand">
             <div class="logo-main">
                 <div class="logo-normal">
                   <img src="{{ asset('imagenes/igla.svg')}}" alt="logo" height="35">

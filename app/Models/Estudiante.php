@@ -35,4 +35,8 @@ class Estudiante extends Model
     {
         return $this->hasMany(PreguntaEstudiante::class, 'estudiante_id');
     }
+    public function trabajosEstudiantes()
+    {
+        return $this->hasMany(TrabajoEstudiante::class, 'estudiante_id');
+    }
 }

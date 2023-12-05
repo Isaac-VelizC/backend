@@ -12,7 +12,7 @@ use Spatie\Permission\Models\Role;
 class Show extends Component
 {
     public Persona $item;
-    public $rol, $roles, $idDocente, $pass, $passConfirm;
+    public $idDocente, $pass, $passConfirm;
     public $docenteEdit = [
         'nombre' => '',
         'paterno' => '',
@@ -30,7 +30,6 @@ class Show extends Component
             abort(404, 'Contacto no encontrado');
         }
         $this->edit();
-        $this->roles = Role::all();
     }
     public function edit() {
         $this->docenteEdit['nombre'] = $this->item->nombre;
@@ -52,8 +51,8 @@ class Show extends Component
             'passConfirm' => 'required|same:pass',
         ];
         $this->validate($rules);
-        $doc = User::find($this->idDocente);
-        $doc->password = Hash::make($this->passConfirm);
+        $doc = User::find($this->item->user->id);
+        $doc->password = Hash::make($this->pass);
         $doc->save();
         $this->reset(['pass', 'passConfirm']);
         session()->flash('success', 'La contraseña se actualizó con éxito.');

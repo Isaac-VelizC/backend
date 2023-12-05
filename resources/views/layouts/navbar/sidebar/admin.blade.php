@@ -152,7 +152,7 @@
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a class="nav-link" href="">
+                      <a class="nav-link {{ Route::is('evaluacion.docente') ? 'active' : '' }}" href="{{ route('evaluacion.docente') }}">
                           <i class="bi bi-person-exclamation"></i>
                           <span class="item-name">Evaluación Docente</span>
                       </a>
@@ -164,7 +164,7 @@
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a class="nav-link {{ Route::is('admin.ingredientes') ? 'active' : '' }}" href="{{ route('admin.ingredientes') }}">
+                      <a class="nav-link {{ Route::is('admin.recetas') ? 'active' : '' }}" href="{{ route('admin.recetas') }}">
                           <i class="bi bi-journals"></i>
                           <span class="item-name">Recetas</span>
                       </a>

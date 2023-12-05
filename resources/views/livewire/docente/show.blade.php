@@ -96,7 +96,7 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <button type="submit" class="btn btn-success">Guardar</button>
-                                        <a type="button" class="btn btn-danger" href="{{ route('admin.docentes') }}">Salir</a>
+                                        <a type="button" class="btn btn-danger" onclick="window.history.back()">Salir</a>
                                     </div>
                                 </div>
                             </form>

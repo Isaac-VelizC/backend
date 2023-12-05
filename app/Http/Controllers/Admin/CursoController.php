@@ -7,8 +7,11 @@ use App\Models\Aula;
 use App\Models\Curso;
 use App\Models\CursoHabilitado;
 use App\Models\Docente;
+use App\Models\Estudiante;
 use App\Models\Horario;
+use App\Models\Programacion;
 use App\Models\Semestre;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CursoController extends Controller
@@ -181,5 +184,36 @@ class CursoController extends Controller
     public function deleteCursoActivo($id) {
         CursoHabilitado::where('id', $id)->delete();
         return back()->with('success', 'La materia se eliminó con éxito.');
+    }
+    public function show($id) {
+        try {
+            $curso = Curso::find($id);
+            $habilitado = CursoHabilitado::where('curso_id', $id)->get();
+            $events = $habilitado->map(function ($event) {
+                return [
+                    'id' => $event->id,
+                    'docente' => $event->docente->persona->nombre . ' ' . $event->docente->persona->ap_paterno. ' ' . $event->docente->persona->ap_materno,
+                    'turno' => $event->horario->turno,
+                    'curso' => $event->curso->nombre,
+                    'aula' => $event->aula->nombre,
+                    'cupo' => $event->cupo,
+                ];
+            });
+            return response()->json([
+                'curso' => $curso,
+                'events' => $events,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    public function programarCurso($id, $estud) {
+        Programacion::create([
+            'estudiante_id' => $estud,
+            'responsable_id' => auth()->user()->id,
+            'curso_id' => $id,
+            'fecha' => Carbon::now()
+        ]);
+        return back()->with('success', 'Materia programada');
     }
 }

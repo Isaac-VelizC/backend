@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DocumentoCurso extends Model
 {
     use HasFactory;
-    protected $table = "documentos";
+    protected $table = "documento_cursos";
     protected $primaryKey = "id";
     protected $fillable = ['nombre', 'url', 'curso_id', 'user_id'];
     public function curso()

@@ -9,6 +9,13 @@
     <link rel="stylesheet" href="{{ asset('assets/css/core/libs.min.css')}}" />
     <link rel="stylesheet" href="{{ asset('assets/css/hope-ui.min.css?v=2.0.0')}}" />
     <link rel="stylesheet" href="{{ asset('assets/css/hope-ui.css')}}" />
+
+    <link rel="stylesheet" href="{{ asset('assets/css/custom.min.css?v=2.0.0')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/dark.min.css')}}"/>
+    <link rel="stylesheet" href="{{ asset('assets/css/customizer.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/rtl.min.css')}}"/>
+    
+
     <link rel='stylesheet' href='{{ asset('assets/vendor/fullcalendar/core/main.css')}}' />
     <link rel='stylesheet' href='{{ asset('assets/vendor/fullcalendar/daygrid/main.css')}}' />
     <link rel='stylesheet' href='{{ asset('assets/vendor/fullcalendar/timegrid/main.css')}}' />
@@ -40,6 +47,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script src="{{ asset('assets/js/core/libs.min.js')}}"></script>
     <script src="{{ asset('assets/js/core/external.min.js')}}"></script>
+    <script src="{{ asset('assets/js/charts/widgetcharts.js')}}"></script>
+    <script src="{{ asset('assets/js/charts/vectore-chart.js')}}"></script>
+    <script src="{{ asset('assets/js/charts/dashboard.js')}}" ></script>
+    <script src="{{ asset('assets/js/plugins/slider-tabs.js')}}"></script>
     <script src="{{ asset('assets/js/hope-ui.js')}}" defer></script>
     <script src='{{ asset('assets/vendor/fullcalendar/core/main.js')}}'></script>
     <script src='{{ asset('assets/vendor/fullcalendar/core/locales/es.js')}}'></script>
@@ -48,5 +59,12 @@
     <script src='{{ asset('assets/vendor/fullcalendar/list/main.js')}}'></script>
     <script src='{{ asset('assets/vendor/fullcalendar/interaction/main.js')}}'></script>
     <script src='{{ asset('assets/js/plugins/calender.js')}}'></script>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+    tinymce.init({
+        selector: 'textarea#editorCurso',
+        plugins: 'code table lists',
+    });
+    </script>
 </body>
 </html>
