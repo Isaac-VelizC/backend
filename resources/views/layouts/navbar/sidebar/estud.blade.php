@@ -3,10 +3,10 @@
         <a href="{{ route('estudiante.home') }}" class="navbar-brand">
             <div class="logo-main">
                 <div class="logo-normal">
-                  <img src="{{ asset('imagenes/igla.svg')}}" alt="logo" height="35">
+                  <img src="{{ asset('img/igla.svg')}}" alt="logo" height="35">
                 </div>
                 <div class="logo-mini">
-                  <img src="{{ asset('imagenes/igla.svg')}}" alt="logo" height="35">
+                  <img src="{{ asset('img/igla.svg')}}" alt="logo" height="35">
                 </div>
             </div>
             <h4 class="logo-title">IGLA</h4>
@@ -34,19 +34,6 @@
               <i class="bi bi-bookshelf"></i>
               <span class="item-name">Materias</span>
             </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link"  href="../../dashboard/admin.html">
-                <i class="bi bi-journals"></i>
-                <span class="item-name">Recetas</span>
-            </a>
-          </li>
-          <li><hr class="hr-horizontal"></li>
-          <li class="nav-item">
-              <a class="nav-link" href="https://templates.iqonic.design/hope-ui/html/dist/#accordion">
-                    <i class="bi bi-postcard"></i>
-                    <span class="item-name">Publicaciones</span>
-              </a>
           </li>
         </ul>
       </div>

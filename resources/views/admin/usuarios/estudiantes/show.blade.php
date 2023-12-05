@@ -32,7 +32,7 @@
                            @if ($estudiante->photo != 'user.jpg')
                               <img src="{{ asset($estudiante->photo) }}" alt="profile-img" class="rounded-pill avatar-130 img-fluid">
                            @else
-                              <img src="{{ asset('imagenes/user.jpg') }}" alt="profile-img" class="rounded-pill avatar-130 img-fluid">
+                              <img src="{{ asset('img/user.jpg') }}" alt="profile-img" class="rounded-pill avatar-130 img-fluid">
                            @endif
                         </div>
                         <p class="d-inline-block pl-3"> {{ $estudiante->user->getRoleNames()->first() }}</p>

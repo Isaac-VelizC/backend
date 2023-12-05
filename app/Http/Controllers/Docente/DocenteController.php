@@ -12,4 +12,15 @@ class DocenteController extends Controller
         $cursos = CursoHabilitado::where('docente_id', auth()->user()->persona->docente->id)->get();
         return view('docente.home', compact('cursos'));
     }
+    public function planificacion(Request $request, $id) {
+        try {
+            $curso = CursoHabilitado::find($id);
+            $curso->descripcion = $request->planificacion;
+            $curso->update();
+    
+            return back()->with('message', 'Planificacion guardada');
+        } catch (\Exception $e) {
+            return back()->with('message', 'Error al guardar la planificacion');
+        }
+    }
 }

@@ -3,10 +3,10 @@
         <a href="{{ route('admin.home') }}" class="navbar-brand">
             <div class="logo-main">
                 <div class="logo-normal">
-                  <img src="{{ asset('imagenes/igla.svg')}}" alt="logo" height="35">
+                  <img src="{{ asset('img/igla.svg')}}" alt="logo" height="35">
                 </div>
                 <div class="logo-mini">
-                  <img src="{{ asset('imagenes/igla.svg')}}" alt="logo" height="35">
+                  <img src="{{ asset('img/igla.svg')}}" alt="logo" height="35">
                 </div>
             </div>
             <h4 class="logo-title">IGLA</h4>

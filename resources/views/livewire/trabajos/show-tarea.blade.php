@@ -147,7 +147,7 @@
                                             <button type="button" class="btn btn-outline-primary btn-sm" wire:click='editarTareasSubido({{$trabajoSubido->id}})'>Editar</button>
                                             <button type="button" class="btn btn-outline-danger btn-sm" wire:click='borrarTareaSubido({{$trabajoSubido->id}})'>Borra</button>
                                         @else
-                                            <a type="button" class="btn btn-secondary btn-sm" href="{{ route('estudiante.subir.tarea', [$tarea->id, 'edit' => false]) }}">Subir</a>
+                                            <a type="button" class="btn btn-secondary btn-sm" href="{{ route('estudiante.subir.tarea', ['id' => $tarea->id, 'edit' => 0]) }}">Subir</a>
                                         @endif
                                     </div>
                                 @endif

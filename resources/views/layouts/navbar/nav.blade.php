@@ -5,10 +5,10 @@
         <a href="../../dashboard/index.html" class="navbar-brand">
             <div class="logo-main">
                 <div class="logo-normal">
-                  <img src="{{ asset('imagenes/igla.svg')}}" alt="logo" height="35">
+                  <img src="{{ asset('img/igla.svg')}}" alt="logo" height="35">
                 </div>
                 <div class="logo-mini">
-                  <img src="{{ asset('imagenes/igla.svg')}}" alt="logo" height="35">
+                  <img src="{{ asset('img/igla.svg')}}" alt="logo" height="35">
                 </div>
             </div>
             <h4 class="logo-title">INSTITUTO TÉCNICO IGLA</h4>
@@ -92,7 +92,7 @@
             </li>
             <li class="nav-item dropdown">
               <a class="py-0 nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="{{ asset('imagenes/user.jpg')}}" alt="User-Profile" class="theme-color-default-img img-fluid avatar avatar-50 avatar-rounded">
+                <img src="{{ asset('img/user.jpg')}}" alt="User-Profile" class="theme-color-default-img img-fluid avatar avatar-50 avatar-rounded">
                 <div class="caption ms-3 d-none d-md-block ">
                   <h6 class="mb-0 caption-title">{{ Auth::user()->name }}</h6>
                       @foreach(Auth::user()->getRoleNames()->toArray() as $role)

@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-between flex-wrap">
-                        <p class="mb-md-0 mb-2 d-flex align-items-center">{{$materia->descripcion}}</p>
+                        <p></p>
                         <div class="d-flex align-items-center flex-wrap">
                             @if (auth()->user()->hasRole('Docente'))
                                 <div class="dropdown me-3">
@@ -24,6 +24,7 @@
                             @endif
                         </div>
                     </div>
+                    <p>{!! $materia->descripcion !!}</p>
                 </div>
                 @if(session('message'))
                     <div id="myAlert" class="alert alert-left alert-success alert-dismissible fade show mb-3 alert-fade" role="alert">

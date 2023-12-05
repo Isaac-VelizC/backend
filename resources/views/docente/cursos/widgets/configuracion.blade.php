@@ -49,9 +49,15 @@
          <div class="card">
             <div class="card-header">
                <div class="header-title">
-                  <h4 class="card-title">Mas Información de la Materia</h4>
-                  <textarea name="des" id="editorCurso" cols="30" rows="10"></textarea>
+                  <h4 class="card-title">Planificar la materia</h4>
                </div>
+               <form method="POST" action="{{ route('guardar.planificacion', [$curso->id]) }}">
+                  @csrf
+                  <textarea name="planificacion" id="editorCurso" cols="30" rows="10">{!! $curso->descripcion !!}</textarea>
+                  <div class="text-center">
+                     <button type="submit" class="btn btn-secondary">Guardar</button>
+                  </div>
+               </form>
             </div>
           </div>
             @livewire('docente.components.config-docs', ['id' => $curso->id])

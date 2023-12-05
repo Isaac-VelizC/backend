@@ -115,6 +115,7 @@ Route::middleware(['auth', 'role:Docente'])->group(function () {
     Route::get('/pregunta/nueva/post/{id}', NewPregunta::class)->name('nueva.pregunta.docente');
     Route::get('/trabajo/nueva/post/{id}', NewTarea::class)->name('nueva.tarea.docente');
     Route::get('/calificando/tarea/{id}', CalificarTarea::class)->name('calificar.tarea.estudiante');
+    Route::post('/planificacion/curso/{id}', [DocenteController::class, 'planificacion'])->name('guardar.planificacion');
 });
 Route::middleware(['auth', 'role:Estudiante'])->group(function () {
     Route::get('/estud-dashboard', [EstudianteController::class, 'index'])->name('estudiante.home');

@@ -3,10 +3,10 @@
         <a href="{{ route('docente.home') }}" class="navbar-brand">
             <div class="logo-main">
                 <div class="logo-normal">
-                  <img src="{{ asset('imagenes/igla.svg')}}" alt="logo" height="35">
+                  <img src="{{ asset('img/igla.svg')}}" alt="logo" height="35">
                 </div>
                 <div class="logo-mini">
-                  <img src="{{ asset('imagenes/igla.svg')}}" alt="logo" height="35">
+                  <img src="{{ asset('img/igla.svg')}}" alt="logo" height="35">
                 </div>
             </div>
             <h4 class="logo-title">IGLA</h4>
@@ -42,7 +42,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link {{ Route::is('recetas') ? 'active' : '' }}"  href="{{ route('recetas') }}">
+                  <a class="nav-link {{ Route::is('admin.recetas') ? 'active' : '' }}"  href="{{ route('admin.recetas') }}">
                       <i class="bi bi-journals"></i>
                       <span class="item-name">Recetas</span>
                   </a>

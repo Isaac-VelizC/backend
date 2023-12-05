@@ -51,7 +51,7 @@
                                     @livewire('docente.trabajos', ['id' => $curso->id])
                                 </div>
                                 <div class="tab-pane fade" id="pills-calificacion1" role="tabpanel" aria-labelledby="pills-calificacion-tab1">
-                                    calificacion
+                                    @livewire('docente.calificaciones', ['id' => $curso->id])
                                 </div>
                                 @if ($role->name == 'Docente')
                                     <div class="tab-pane fade" id="pills-config1" role="tabpanel" aria-labelledby="pills-config-tab1">

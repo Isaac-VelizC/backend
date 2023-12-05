@@ -22,10 +22,8 @@ class Asistencia extends Component
     }
     public function cargarAsistencia() {
         $asistencias = ModelsAsistencia::where('curso_id', $this->idCurso)
-            ->where('fecha', $this->fechaAsistencia)
-            ->get()
-            ->pluck('asistencia', 'estudiante_id')
-            ->toArray();
+            ->where('fecha', $this->fechaAsistencia)->get()
+            ->pluck('asistencia', 'estudiante_id')->toArray();
         $this->asistencia = count($asistencias) > 0 ? $asistencias : $this->inicializarAsistenciaPorDefecto();
     }
     public function render()
@@ -37,15 +35,17 @@ class Asistencia extends Component
             'fechaAsistencia' => 'required|date',
         ]);
         foreach ($this->asistencia as $estudianteId => $estado) {
-            $asistenciaExistente = Asistencia::where('curso_id', $this->idCurso)
+            $asistenciaExistente = ModelsAsistencia::where('curso_id', $this->idCurso)
                 ->where('fecha', $this->fechaAsistencia)
-                ->where('estudiante_id', $estudianteId)->first();
+                ->where('estudiante_id', $estudianteId)
+                ->first();
+        
             if ($asistenciaExistente) {
                 $asistenciaExistente->update([
                     'asistencia' => $estado,
                 ]);
             } else {
-                Asistencia::create([
+                ModelsAsistencia::create([
                     'estudiante_id' => $estudianteId,
                     'curso_id' => $this->idCurso,
                     'asistencia' => $estado,
