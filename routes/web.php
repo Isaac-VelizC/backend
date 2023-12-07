@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\PagosController;
 use App\Livewire\Admin\EvaluacionDocente;
 use App\Livewire\Docente\Components\NewPregunta;
 use App\Livewire\Docente\Components\NewTarea;
+use App\Livewire\Docente\NewReceta;
 use App\Livewire\Docente\Show;
 use App\Livewire\Estudiante\CalificarTarea;
 use App\Livewire\Estudiante\SubirTarea;
@@ -129,10 +130,9 @@ Route::middleware(['auth'])->group(function () {
     //cocina Ingredientes
     Route::get('/ingretientes-all', [CocinaController::class, 'allIngredientes'])->name('admin.ingredientes');
     Route::get('/recetas-all/dsgsa', [CocinaController::class, 'allrecetas'])->name('admin.recetas');
-
-    //Route::put('/reset/{id}/pass/est', [EstudianteController::class, 'cambiarPass'])->name('cambiar.password.E');
-    //Route::put('/reset/{id}/pass/dc', [ChefsController::class, 'cambiarPass'])->name('cambiar.password.Chef');
-    //Route::put('/reset/{id}/pass/pers', [AdminController::class, 'cambiarPass'])->name('cambiar.password.Admin');
+    Route::post('/select',[CocinaController::class, 'selectIngredientes'])->name('search.ingredientes');
+    Route::post('/admin/buscar-ingredientes', [CocinaController::class, 'buscarIngredientes'])->name('admin.buscar-ingredientes');
+    Route::get('/agregar-receta/nueva', NewReceta::class)->name('recetas.add');
     //Route::get('/profile', [UserController::class, 'profile'])->name('users.profile');
     
     //Cursos

@@ -11,19 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tipo_ingredientes', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre')->unique();
-            $table->timestamps();
-        });
-
         Schema::create('ingredientes', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->unique();
-            $table->integer('cantidad');
-            $table->boolean('estado')->default(false);
-            $table->unsignedBigInteger('tipo_ing_id')->nullable();
-            $table->foreign('tipo_ing_id')->references('id')->on('tipo_ingredientes')->onDelete('cascade');
             $table->timestamps();
         });
     }

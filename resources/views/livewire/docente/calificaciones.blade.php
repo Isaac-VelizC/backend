@@ -19,7 +19,6 @@
                                 @foreach ($estudiantes as $est)
                                     <tr class="">
                                         <td class="">{{ $est->persona->nombre }} {{ $est->persona->ap_paterno }} {{ $est->persona->ap_materno }}</td>
-                                        
                                     </tr>
                                 @endforeach
                             </tbody>

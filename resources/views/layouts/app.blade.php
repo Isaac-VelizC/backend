@@ -9,11 +9,12 @@
     <link rel="stylesheet" href="{{ asset('assets/css/core/libs.min.css')}}" />
     <link rel="stylesheet" href="{{ asset('assets/css/hope-ui.min.css?v=2.0.0')}}" />
     <link rel="stylesheet" href="{{ asset('assets/css/hope-ui.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/select2.min.css')}}"/>
 
-    <link rel="stylesheet" href="{{ asset('assets/css/custom.min.css?v=2.0.0')}}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/dark.min.css')}}"/>
-    <link rel="stylesheet" href="{{ asset('assets/css/customizer.min.css')}}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/rtl.min.css')}}"/>
+    <!--link rel="stylesheet" href="{{ asset('assets/css/custom.min.css?v=2.0.0')}}" /-->
+    <!--link rel="stylesheet" href="{{ asset('assets/css/dark.min.css')}}"/-->
+    <!--link rel="stylesheet" href="{{ asset('assets/css/customizer.min.css')}}" /-->
+    <!--link rel="stylesheet" href="{{ asset('assets/css/rtl.min.css')}}"/-->
     
 
     <link rel='stylesheet' href='{{ asset('assets/vendor/fullcalendar/core/main.css')}}' />
@@ -59,12 +60,15 @@
     <script src='{{ asset('assets/vendor/fullcalendar/list/main.js')}}'></script>
     <script src='{{ asset('assets/vendor/fullcalendar/interaction/main.js')}}'></script>
     <script src='{{ asset('assets/js/plugins/calender.js')}}'></script>
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="{{ asset('assets/js/jquery-3.6.0.min.js')}}"></script>
+    <script src="{{ asset('assets/js/select2.min.js')}}"></script>
+    @yield('scripts')
     <script>
-    tinymce.init({
-        selector: 'textarea#editorCurso',
-        plugins: 'code table lists',
-    });
+        tinymce.init({
+            selector: 'textarea#editorCurso',
+            plugins: 'code table lists',
+        });
     </script>
+    
 </body>
 </html>

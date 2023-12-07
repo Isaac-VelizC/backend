@@ -1,9 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
 <div class="iq-navbar-header" style="height: 80px;"></div>
-
 <div class="conatiner-fluid content-inner mt-n5 py-0">
     <div class="row">
         <div class="col-md-12">
@@ -12,7 +10,7 @@
                     <div class="d-flex align-items-center justify-content-between flex-wrap">
                         <p class="mb-md-0 mb-2 d-flex align-items-center">RECETAS</p>
                         <div class="d-flex align-items-center flex-wrap">
-                            <a class="btn btn-sm btn-icon btn-ligth" href="">
+                            <a class="btn btn-sm btn-icon btn-ligth" href="{{ route('recetas.add') }}">
                                 <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
                                     <path d="M8.742 2.397c.82-.861 1.977-1.397 3.258-1.397 1.282 0 2.439.536 3.258 1.397.699-.257 1.454-.397 2.242-.397 3.587
                                      0 6.5 2.912 6.5 6.5 0 2.299-1.196 4.321-3 5.476v9.024h-18v-9.024c-1.803-1.155-3-3.177-3-5.476 0-3.588 2.913-6.5 6.5-6.5.788 
@@ -33,7 +31,7 @@
                 <div class="col-lg-8">
                     <div class="card">
                         <div class="card-body">
-                            <form>
+                            <form method="POST" action="">
                                 <div class="mb-3">
                                     <p>Tipo de receta</p>
                                     <div class="form-check">
@@ -46,10 +44,8 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="disabledSelect" class="form-label">Ingredientes</label>
-                                    <select id="disabledSelect" class="form-select">
-                                        <option>Disabled select</option>
-                                    </select>
+                                    <label class="form-label">Ingredientes</label>
+                                    <select id="tags" class="form-select" name="tags[]" multiple="multiple"></select>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Procesar</button>
                             </form>
@@ -60,4 +56,37 @@
         </div>
     </div>
 </div>
+@endsection
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        $("#tags").select2({
+            placeholder:'Buscar Ingrediente',
+            allowClear:true,
+            theme: "classic",
+            ajax:{
+                url:"{{ route('search.ingredientes') }}",
+                type: "post",
+                $delay:250,
+                dataType:'json',
+                data: function(params) {
+                    return{
+                        name:params.term,
+                        "_token":"{{ csrf_token() }}",
+                    };
+                },
+                processResults:function(data){
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                id: item.id,
+                                text:item.nombre
+                            }
+                        })
+                    };
+                },
+            },
+        });
+    });
+</script>
 @endsection
