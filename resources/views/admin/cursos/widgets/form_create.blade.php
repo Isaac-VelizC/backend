@@ -46,7 +46,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label" for="exampleInputcolor">Color del Curso</label>
-                                        <input type="color" class="form-control" id="exampleInputcolor" value="#000" name="color">
+                                        <input type="color" class="form-control" id="exampleInputcolor" value="#rrggbb" name="color">
                                     </div>
                                   </div>
                               </div>

@@ -10,6 +10,8 @@ use App\Http\Controllers\Docente\DocenteController;
 use App\Http\Controllers\Estudent\EstudianteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\PagosController;
+use App\Http\Controllers\InfoController;
+use App\Livewire\Admin\AdminInfo;
 use App\Livewire\Admin\EvaluacionDocente;
 use App\Livewire\Docente\Components\NewPregunta;
 use App\Livewire\Docente\Components\NewTarea;
@@ -97,17 +99,17 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     //Cocina
     //Acerda de IGLA
     Route::get('/informacion', [HomeController::class, 'acercaDe'])->name('admin.ajustes');
-    Route::post('/guardar-info', [InformacionController::class, 'guardarInformacion'])->name('admin.guardar-registro');
-    Route::put('/actualizar-info/{id}', [InformacionController::class, 'actualizarInformacion'])->name('admin.actualizar-registro');
+    //Route::post('/guardar-info', [InfoController::class, 'guardarInformacion'])->name('admin.guardar-registro');
+    //Route::put('/actualizar-info/{id}', [InfoController::class, 'actualizarInformacion'])->name('admin.actualizar-registro');
     //Administracion de informacion
-    Route::get('/administrar-info', [InformacionController::class, 'adminstrarInfo'])->name('admin.administracion');
-    Route::post('/administrar-aula-add', [InformacionController::class, 'storeAula'])->name('admin.guardar-aula');
-    Route::put('/administrar-aula/{id}/edit', [InformacionController::class, 'updateAula'])->name('admin.actualizar-aula');
-    Route::post('/administrar-modalidad-add', [InformacionController::class, 'storeModalidad'])->name('admin.guardar-modalidad');
-    Route::put('/administrar-modalidad/{id}/edit', [InformacionController::class, 'updateModalidad'])->name('admin.actualizar-modalidad');
-    Route::post('/administrar-horario-add', [InformacionController::class, 'storeHorario'])->name('admin.guardar-horario');
-    Route::put('/administrar-horario/{id}/edit', [InformacionController::class, 'updateHorario'])->name('admin.actualizar-horario');
-    //Evaluacion docente
+    Route::get('/administrar-info', AdminInfo::class)->name('admin.administracion');
+    /*Route::post('/administrar-aula-add', [InfoController::class, 'storeAula'])->name('admin.guardar-aula');
+    Route::put('/administrar-aula/{id}/edit', [InfoController::class, 'updateAula'])->name('admin.actualizar-aula');
+    Route::post('/administrar-modalidad-add', [InfoController::class, 'storeModalidad'])->name('admin.guardar-modalidad');
+    Route::put('/administrar-modalidad/{id}/edit', [InfoController::class, 'updateModalidad'])->name('admin.actualizar-modalidad');
+    Route::post('/administrar-horario-add', [InfoController::class, 'storeHorario'])->name('admin.guardar-horario');
+    Route::put('/administrar-horario/{id}/edit', [InfoController::class, 'updateHorario'])->name('admin.actualizar-horario');
+    *///Evaluacion docente
     Route::get('/evaluacion/add/docente', EvaluacionDocente::class)->name('evaluacion.docente');
 });
 

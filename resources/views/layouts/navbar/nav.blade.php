@@ -46,7 +46,7 @@
                     <div class="p-0 card-body">
                         <a href="#" class="iq-sub-card">
                           <div class="d-flex align-items-center">
-                              <img class="p-1 avatar-40 rounded-pill bg-soft-primary" src="../../assets/images/shapes/01.png" alt="">
+                              <img class="p-1 avatar-40 rounded-pill bg-soft-primary" src="" alt="">
                               <div class="ms-3 w-100">
                                 <h6 class="mb-0 ">Emma Watson Bni</h6>
                                 <div class="d-flex justify-content-between align-items-center">
@@ -78,7 +78,7 @@
                         <a href="#" class="iq-sub-card">
                           <div class="d-flex align-items-center">
                               <div class="">
-                                <img class="p-1 avatar-40 rounded-pill bg-soft-primary" src="../../assets/images/shapes/01.png" alt="">
+                                <img class="p-1 avatar-40 rounded-pill bg-soft-primary" src="" alt="">
                               </div>
                               <div class="ms-3">
                                 <h6 class="mb-0 ">Bni Emma Watson</h6>

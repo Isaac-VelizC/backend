@@ -1,21 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="iq-navbar-header" style="height: 215px;">
-  <div class="container-fluid iq-container">
-      <div class="row">
-          <div class="col-md-12">
-              <div class="flex-wrap d-flex justify-content-between align-items-center">
+
+<div class="position-relative iq-banner">
+   <div class="iq-navbar-header" style="height: 215px;">
+      <div class="container-fluid iq-container">
+         <div class="row">
+            <div class="col-md-12">
+               <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
                   <div>
-                     <h1 style="color: black">Trabajadores!</h1>
+                     <h1>Trabajadores!</h1>
                   </div>
                   <div>
-                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Nuevo Personal</button>
+                     <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Nuevo Personal</button>
                   </div>
-              </div>
-          </div>
+               </div>
+            </div>
+         </div>
       </div>
-  </div>
+      <div class="iq-header-img">
+         <img src="{{ asset('img/fondo2.jpg') }}" alt="header" class="theme-color-default-img img-fluid w-100 h-100 animated-scaleX">
+      </div>
+   </div>
 </div>
 
 @include('admin.usuarios.widgets.form_modal_create', ['formType' => $formType])

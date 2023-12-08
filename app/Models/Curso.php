@@ -21,8 +21,4 @@ class Curso extends Model
     {
         return $this->belongsTo(Semestre::class, 'semestre_id');
     }
-    public function cursoDocentes()
-    {
-        return $this->hasMany(CursoHabilitado::class, 'curso_id');
-    }
 }

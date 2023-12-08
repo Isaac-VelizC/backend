@@ -17,10 +17,10 @@ class TiposSeeder extends Seeder
      */
     public function run(): void
     {
-        Horario::create(['turno' => 'Mañana', 'inicio' => '08:00:00', 'fin' => '12:00:00']);
-        Horario::create(['turno' => 'Tarde', 'inicio' => '14:00:00', 'fin' => '18:00:00']);
-        Horario::create(['turno' => 'Noche', 'inicio' => '19:00:00', 'fin' => '22:30:00']);
-        Horario::create(['turno' => 'Sabado', 'inicio' => '08:00:00', 'fin' => '12:00:00']);
+        Horario::create(['turno' => 'Mañana', 'inicio' => '08:00', 'fin' => '12:00']);
+        Horario::create(['turno' => 'Tarde', 'inicio' => '14:00', 'fin' => '18:00']);
+        Horario::create(['turno' => 'Noche', 'inicio' => '19:00', 'fin' => '22:30']);
+        Horario::create(['turno' => 'Sabado', 'inicio' => '08:00', 'fin' => '12:00']);
 
         Aula::create(['nombre' => 'Aula de Cocina 101', 'codigo' => 'GA101', 'capacidad' => 25]);
         Aula::create(['nombre' => 'Aula de Pastelería 201', 'codigo' => 'GP201', 'capacidad' => 20]);

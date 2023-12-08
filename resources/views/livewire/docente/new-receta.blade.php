@@ -56,15 +56,16 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <ul class="list-inline m-0 p-0">
-                                                    @foreach ($ingredientesSeleccionados as $ingredienteSeleccionado)
+                                                    @foreach ($ingredientesSeleccionados as $item)
                                                         <li class="d-flex mb-4 align-items-center">
                                                             <img src="{{ asset('img/frutas-verduras.png')}}" alt="story-img" class="rounded-pill avatar-40">
-                                                            <div class="ms-3 flex-grow-1">
-                                                                <h6>{{ $ingredienteSeleccionado->nombre }}</h6>
-                                                                <p class="mb-0">Web Designer</p>
+                                                            <div class="ms-3 flex-grow-1" style="cursor: pointer;" readonly data-bs-toggle="modal" data-bs-target="#ingedienteModal{{$item->id}}">
+                                                                <h6>{{ $item->nombre }}</h6>
+                                                                <p class="mb-0">1 mililitro</p>
                                                             </div>
+                                                            @include('admin.recetas.widgets.modal_ingrediente', ['idModal' => $item->id])
                                                             <div class="dropdown">
-                                                                <i class="bi bi-trash" wire:click="eliminarIngrediente({{ $ingredienteSeleccionado->id }})"></i>
+                                                                <i class="bi bi-trash btn" wire:click="eliminarIngrediente({{ $item->id }})"></i>
                                                             </div>
                                                         </li>
                                                     @endforeach
