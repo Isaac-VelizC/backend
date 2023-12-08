@@ -2,68 +2,58 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="cursoModalLabel"></h5>
+                <h5 class="modal-title">{{ $curso ? $curso->nombre : '' }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="cursoModalBody">
-            </div>
-        </div>
-    </div>
-</div>
-
-    <script>
-        function loadCursoData(cursoId, estudId) {
-            var estudiante = estudId;
-            axios.get(baseUrl + `/cursos/${cursoId}`)
-                .then(response => {
-                    const curso = response.data.curso;
-                    const habilitados = response.data.events;
-                    document.getElementById('cursoModalLabel').innerText = curso.nombre;
-                    let eventsHtml = '<div class="row">';
-                    habilitados.forEach(event => {
-                        eventsHtml += `
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between">
-                                            <div>
-                                                <b>Docente: ${event.docente}</b>
-                                                <p>Turno: ${event.turno}</p>
-                                                <p>Aula: ${event.aula}</p>
-                                            </div>
-                                            <div>
-                                                <p class="h4"><a href="#" class="programar-link" data-id="${event.id}"><span class="badge bg-primary">Programar</span></a></p>
-                                                <div><span>Cupos: 0 / ${event.cupo}</span></div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>{{ $curso ? $curso->descripcion : '' }}</p>
+                    @if (count($CursoHabilitado) > 0)
+                        @foreach($CursoHabilitado as $event)
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between text-black">
+                                                <div>
+                                                    <p><b>Docente:</b> {{$event->docente->persona->nombre}} {{$event->docente->persona->ap_paterno}} {{$event->docente->persona->ap_materno}}</p>
+                                                    <p><b>Aula:</b> {{ $event->aula->nombre }}</p>
+                                                    <p><b>Turno:</b> {{ $event->horario->turno }}</p>
+                                                </div>
+                                                <div>
+                                                    <p class="h4">
+                                                        @if($event->inscripciones()->count() < $event->cupo)
+                                                            @if($haProgramadoCurso = $estudiante->inscripciones->contains('curso_id', $event->id))
+                                                                <a class="programar-link btn" wire:click='desprogramarCurso({{ $event->id }})' data-bs-dismiss='modal'>
+                                                                    <span class="badge bg-danger">Desprogramar</span>
+                                                                </a>
+                                                            @else
+                                                                <a class="programar-link btn" wire:click='programarCurso({{ $event->id }})' data-bs-dismiss='modal'>
+                                                                    <span class="badge bg-primary">Programar</span>
+                                                                </a>
+                                                            @endif
+                                                        @else
+                                                            <a class="programar-link btn" disabled>
+                                                                <span class="badge bg-secondary">Cupo lleno</span>
+                                                            </a>
+                                                        @endif
+                                                    </p>
+                                                    <span>Cupos: {{$event->inscripciones()->count()}} / {{ $event->cupo }}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        `;
-                    });
-                    eventsHtml += '</div>';
-                    document.getElementById('cursoModalBody').innerHTML = `
-                        <div class="row">
-                            <p>${curso.descripcion}</p>
+                        @endforeach
+                    @else
+                        <div class="text-center">
+                            <p>No hay Cursos Habilitados</p>
                         </div>
-                        <hr>
-                        ${eventsHtml}
-                    `;
-
-                    // Agregar el evento de clic a los enlaces generados
-                    document.querySelectorAll('.programar-link').forEach(link => {
-                        link.addEventListener('click', function (event) {
-                            event.preventDefault();
-                            const eventId = this.getAttribute('data-id');
-                            const programadoUrl = `${baseUrl}/curso/programdo/yoy/${eventId}/`+estudiante;
-                            console.log(programadoUrl);
-                            // Realiza la redirección o cualquier otra acción que desees
-                            window.location.href = programadoUrl;
-                        });
-                    });
-                })
-                .catch(error => {
-                    console.error('Error al cargar los datos del curso', error);
-                });
-        }
-    </script>
+                    @endif
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>

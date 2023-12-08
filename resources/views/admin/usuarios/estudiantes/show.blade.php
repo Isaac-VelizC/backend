@@ -64,35 +64,7 @@
                                 @livewire('admin.estudiante-contacto', ['estudiante' => $estudiante->estudiante->id])
                             </div>
                             <div class="tab-pane fade" id="pills-contact1" role="tabpanel" aria-labelledby="pills-contact-tab1">
-                                <div class="card-body">
-                                    <div class="new-user-info">
-                                            <div class="row">
-                                                @if ($materias->count() > 0)
-                                                    @foreach ($materias as $item)
-                                                        <div class="col-lg-4 col-md-12">
-                                                            <a type="button" data-bs-toggle="modal" data-bs-target="#cursoModal" onclick="loadCursoData({{ $item->curso->id}}, {{$est->id}})">
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <div class="d-grid grid-flow-col align-items-center justify-content-between mb-2">
-                                                                            <div class="d-flex align-items-center">
-                                                                                <p class="mb-0 h6" style="color: black;">{{ $item->curso->nombre }}</p>
-                                                                            </div>
-                                                                            <div class="dropdown">
-                                                                                <p class="h6"><span class="badge bg-light text-dark">0</span></p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                        </div>
-                                                    @endforeach
-                                                @else
-                                                    <p class="text-center">No hay materias</p>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @include('admin.usuarios.estudiantes.components.cursos_programar')
+                                @livewire('estudiante.materia-semestre', ['id' => $est->id])
                             </div>
                         </div>
                     </div>

@@ -64,3 +64,13 @@
         </div>
    </div>
 </div>
+@section('scripts')
+   <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/ckeditor.js"></script>
+   <script>
+      ClassicEditor
+            .create( document.querySelector( '#editorCurso' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+   </script>
+@endsection

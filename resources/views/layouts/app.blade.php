@@ -45,6 +45,7 @@
     @endif
     
     @livewireScripts
+    @yield('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script src="{{ asset('assets/js/core/libs.min.js')}}"></script>
     <script src="{{ asset('assets/js/core/external.min.js')}}"></script>
@@ -60,15 +61,7 @@
     <script src='{{ asset('assets/vendor/fullcalendar/list/main.js')}}'></script>
     <script src='{{ asset('assets/vendor/fullcalendar/interaction/main.js')}}'></script>
     <script src='{{ asset('assets/js/plugins/calender.js')}}'></script>
-    <script src="{{ asset('assets/js/jquery-3.6.0.min.js')}}"></script>
     <script src="{{ asset('assets/js/select2.min.js')}}"></script>
-    @yield('scripts')
-    <script>
-        tinymce.init({
-            selector: 'textarea#editorCurso',
-            plugins: 'code table lists',
-        });
-    </script>
     
 </body>
 </html>
