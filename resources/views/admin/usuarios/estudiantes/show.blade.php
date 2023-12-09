@@ -55,6 +55,9 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#pills-contact1" type="button" role="tab" aria-controls="contact" aria-selected="false">Materias</button>
                             </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pagos-tab" data-bs-toggle="tab" data-bs-target="#pills-pagos1" type="button" role="tab" aria-controls="pagos" aria-selected="false">Pagos</button>
+                            </li>
                         </ul>
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-home1" role="tabpanel" aria-labelledby="pills-home-tab1">
@@ -65,6 +68,9 @@
                             </div>
                             <div class="tab-pane fade" id="pills-contact1" role="tabpanel" aria-labelledby="pills-contact-tab1">
                                 @livewire('estudiante.materia-semestre', ['id' => $est->id])
+                            </div>
+                            <div class="tab-pane fade" id="pills-pagos1" role="tabpanel" aria-labelledby="pills-pagos-tab1">
+                                @livewire('estudiante.pagos-programacion', ['id' => $est->id])
                             </div>
                         </div>
                     </div>

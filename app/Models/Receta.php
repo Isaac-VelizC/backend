@@ -10,26 +10,19 @@ class Receta extends Model
     use HasFactory;
     protected $table = "recetas";
     protected $primaryKey = "id";
-    protected $fillable = ['nombre', 'descripcion', 'porcion'];
+    protected $fillable = ['titulo', 'imagen', 'descripcion', 'porcion', 'tiempo', 'ocasion', 'consejos'];
 }
 class IngredienteReceta extends Model
 {
     use HasFactory;
     protected $table = "ingrediente_recetas";
     protected $primaryKey = "id";
-    protected $fillable = ['nombre', 'cantidad', 'unida_media', 'receta_id'];
+    protected $fillable = ['ingrediente_id', 'cantidad', 'unida_media', 'receta_id'];
 }
 class PasosReceta extends Model
 {
     use HasFactory;
     protected $table = "pasos_recetas";
     protected $primaryKey = "id";
-    protected $fillable = ['titulo', 'paso', 'receta_id'];    
-}
-class FotosReceta extends Model
-{
-    use HasFactory;
-    protected $table = "fotos_recetas";
-    protected $primaryKey = "id";
-    protected $fillable = ['imagen', 'receta_id'];
+    protected $fillable = ['paso', 'receta_id'];    
 }

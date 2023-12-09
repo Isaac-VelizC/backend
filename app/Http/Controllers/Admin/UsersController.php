@@ -204,6 +204,21 @@ class UsersController extends Controller
 
         return back()->with('success', 'La informacion se actualizo con éxito.');
     }
+    public function selectEstudiante(Request $request)
+{
+    $query = $request->input('name');
+
+    $estudiantes = Estudiante::where(function ($queryBuilder) use ($query) {
+        $queryBuilder->whereHas('persona', function ($q) use ($query) {
+            $q->where('nombre', 'like', "%$query%")
+              ->orWhere('ap_paterno', 'like', "%$query%")
+              ->orWhere('ap_materno', 'like', "%$query%")
+              ->orWhere('ci', 'like', "%$query%");
+        });
+    })->with('persona')->get();
+
+    return response()->json($estudiantes);
+}
 
     
 }

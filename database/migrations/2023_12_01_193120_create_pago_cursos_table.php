@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trabajo_estudiantes', function (Blueprint $table) {
+        Schema::create('pago_cursos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('trabajo_id')->nullable();
-            $table->foreign('trabajo_id')->references('id')->on('trabajos')->onDelete('cascade');
-            $table->unsignedBigInteger('estudiante_id')->nullable();
+            $table->unsignedBigInteger('estudiante_id');
             $table->foreign('estudiante_id')->references('id')->on('estudiantes')->onDelete('cascade');
-            $table->text('descripcion')->nullable();
-            $table->decimal('nota')->default(0);
-            $table->string('estado')->default('Borrador');
+            $table->unsignedBigInteger('curso_id')->nullable();
+            $table->foreign('curso_id')->references('id')->on('users')->onDelete('restrict');
+            $table->unsignedBigInteger('pago_id');
+            $table->foreign('pago_id')->references('id')->on('pagos')->onDelete('restrict');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trabajo_estudiantes');
+        Schema::dropIfExists('pago_cursos');
     }
 };

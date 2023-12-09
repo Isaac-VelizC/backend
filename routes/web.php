@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\PagosController;
 use App\Http\Controllers\InfoController;
 use App\Livewire\Admin\AdminInfo;
 use App\Livewire\Admin\EvaluacionDocente;
+use App\Livewire\Admin\FormPagos;
 use App\Livewire\Docente\Components\NewPregunta;
 use App\Livewire\Docente\Components\NewTarea;
 use App\Livewire\Docente\NewReceta;
@@ -49,6 +50,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::post('/admin-inscripcions/store', [UsersController::class, 'inscripcion'])->name('admin.inscripcion.store');
     Route::get('/show/{id}/estudiante', [UsersController::class, 'showEstudiante'])->name('admin.E.show');
     Route::put('/create-student-{id}-update', [UsersController::class, 'update'])->name('update.estudiantes');
+    Route::post('/selectEstudi',[UsersController::class, 'selectEstudiante'])->name('search.estudiantes');
     //Docentes
     Route::get('/admin-docentes', [UsersController::class, 'allDocentes'])->name('admin.docentes');
     Route::post('/create-docentes-store', [UsersController::class, 'store'])->name('store.docentes');
@@ -92,7 +94,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
 
     ///pagos
     Route::get('/admin-pagos-all', [PagosController::class, 'allPagos'])->name('admin.lista.pagos');
-    Route::post('/pagos/guardars', [PagosController::class, 'guardarPago'])->name('admin.pago.guardar');
+    Route::get('/pagos/formulario/hjfse', FormPagos::class)->name('admin.create.pago');
     Route::get('/pagos/guadar/imprimir', [PagosController::class, 'guardarImprimirPago'])->name('admin.pago.guardar.imprimir');
     //Cocina
     //Acerda de IGLA
@@ -101,13 +103,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     //Route::put('/actualizar-info/{id}', [InfoController::class, 'actualizarInformacion'])->name('admin.actualizar-registro');
     //Administracion de informacion
     Route::get('/administrar-info', AdminInfo::class)->name('admin.administracion');
-    /*Route::post('/administrar-aula-add', [InfoController::class, 'storeAula'])->name('admin.guardar-aula');
-    Route::put('/administrar-aula/{id}/edit', [InfoController::class, 'updateAula'])->name('admin.actualizar-aula');
-    Route::post('/administrar-modalidad-add', [InfoController::class, 'storeModalidad'])->name('admin.guardar-modalidad');
-    Route::put('/administrar-modalidad/{id}/edit', [InfoController::class, 'updateModalidad'])->name('admin.actualizar-modalidad');
-    Route::post('/administrar-horario-add', [InfoController::class, 'storeHorario'])->name('admin.guardar-horario');
-    Route::put('/administrar-horario/{id}/edit', [InfoController::class, 'updateHorario'])->name('admin.actualizar-horario');
-    *///Evaluacion docente
+    //Evaluacion docente
     Route::get('/evaluacion/add/docente', EvaluacionDocente::class)->name('evaluacion.docente');
 });
 

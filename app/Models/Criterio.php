@@ -13,3 +13,12 @@ class Criterio extends Model
     protected $fillable = ['nombre', 'porcentaje', 'total', 'curso_id'];
 
 }
+
+class CategoriaCriterio extends Model
+{
+    use HasFactory;
+    protected $table = "categorias_criterio";
+    protected $primaryKey = "id";
+    protected $fillable = ['nombre', 'porcentaje', 'total', 'criterio_id'];
+
+}

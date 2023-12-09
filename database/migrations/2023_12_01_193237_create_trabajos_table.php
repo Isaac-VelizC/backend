@@ -19,21 +19,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('preguntas', function (Blueprint $table) {
-            $table->id();
-            $table->text('pregunta');
-            $table->unsignedBigInteger('curso_id');
-            $table->foreign('curso_id')->references('id')->on('curso_habilitados')->onDelete('restrict');
-            $table->boolean('con_nota')->default(false);
-            $table->bigInteger('nota')->nullable();
-            $table->dateTime('inicio')->nullable();
-            $table->dateTime('limite')->nullable();
-            $table->unsignedBigInteger('tema_id')->nullable();
-            $table->foreign('tema_id')->references('id')->on('temas')->onDelete('cascade');
-            $table->string('estado')->default('Borrador');
-            $table->timestamps();
-        });
-
         Schema::create('tipo_trabajos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
@@ -49,6 +34,13 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('tema_id')->nullable();
             $table->foreign('tema_id')->references('id')->on('temas')->onDelete('cascade');
+            $table->unsignedBigInteger('criterio_id')->nullable();
+            $table->foreign('criterio_id')->references('id')->on('criterios')->onDelete('cascade');
+            $table->unsignedBigInteger('ingrediente_id')->nullable();
+            $table->foreign('ingrediente_id')->references('id')->on('ingredientes')->onDelete('cascade');
+            $table->unsignedBigInteger('receta_id')->nullable();
+            $table->foreign('receta_id')->references('id')->on('recetas')->onDelete('cascade');
+            $table->boolean('evaluacion')->default(false);
             $table->string('titulo', 100);
             $table->text('descripcion')->nullable();
             $table->dateTime('inico')->default(now());

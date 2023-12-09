@@ -10,13 +10,10 @@
     <link rel="stylesheet" href="{{ asset('assets/css/hope-ui.min.css?v=2.0.0')}}" />
     <link rel="stylesheet" href="{{ asset('assets/css/hope-ui.css')}}" />
     <link rel="stylesheet" href="{{ asset('assets/css/select2.min.css')}}"/>
-
     <!--link rel="stylesheet" href="{{ asset('assets/css/custom.min.css?v=2.0.0')}}" /-->
     <!--link rel="stylesheet" href="{{ asset('assets/css/dark.min.css')}}"/-->
     <!--link rel="stylesheet" href="{{ asset('assets/css/customizer.min.css')}}" /-->
     <!--link rel="stylesheet" href="{{ asset('assets/css/rtl.min.css')}}"/-->
-    
-
     <link rel='stylesheet' href='{{ asset('assets/vendor/fullcalendar/core/main.css')}}' />
     <link rel='stylesheet' href='{{ asset('assets/vendor/fullcalendar/daygrid/main.css')}}' />
     <link rel='stylesheet' href='{{ asset('assets/vendor/fullcalendar/timegrid/main.css')}}' />
@@ -62,6 +59,5 @@
     <script src='{{ asset('assets/vendor/fullcalendar/interaction/main.js')}}'></script>
     <script src='{{ asset('assets/js/plugins/calender.js')}}'></script>
     <script src="{{ asset('assets/js/select2.min.js')}}"></script>
-    
 </body>
 </html>

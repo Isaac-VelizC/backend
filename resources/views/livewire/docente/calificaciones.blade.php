@@ -11,21 +11,22 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th class="text-center">ESTUDIANTE</th>
-                                    <th class="text-center">PPRESENTE</th>
+                                    <th></th>
+                                    @foreach ($trabajos as $tra)
+                                        <th class="text-center">{{ $tra->titulo }}</th>
+                                    @endforeach
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($estudiantes as $est)
                                     <tr class="">
                                         <td class="">{{ $est->persona->nombre }} {{ $est->persona->ap_paterno }} {{ $est->persona->ap_materno }}</td>
+                                        <td>tarea1</td>
+                                        <td>tarea2</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                        <div class="text-center">
-                            <a wire:click='guardarAsistencia()' type="button" class="btn btn-primary">Guardar</a>
-                        </div>
                     </div>
                 </div>
             </div>

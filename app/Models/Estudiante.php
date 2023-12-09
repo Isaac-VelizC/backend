@@ -39,4 +39,8 @@ class Estudiante extends Model
     {
         return $this->hasMany(TrabajoEstudiante::class, 'estudiante_id');
     }
+    public function pagos()
+    {
+        return $this->hasMany(Pagos::class, 'estudiante_id');
+    }
 }

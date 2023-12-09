@@ -11,6 +11,6 @@ class Ingrediente extends Model
     public $timestamps = false;
     protected $table = "ingredientes";
     protected $primaryKey = "id";
-    protected $fillable = ['nombre'];
+    protected $fillable = ['nombre', 'tipo_id'];
 
 }

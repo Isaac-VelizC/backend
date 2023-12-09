@@ -11,6 +11,16 @@ class MetodoPago extends Model
     public $timestamps = false;
     protected $table = "metodo_pagos";
     protected $primaryKey = "id";
+    protected $fillable = ['nombre', 'monto'];
+
+}
+
+class FormaPago extends Model
+{
+    use HasFactory;
+    public $timestamps = false;
+    protected $table = "formas_pagos";
+    protected $primaryKey = "id";
     protected $fillable = ['nombre'];
 
 }

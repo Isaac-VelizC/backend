@@ -3,10 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\Aula;
+use App\Models\Curso;
+use App\Models\FormaPago;
 use App\Models\Horario;
 use App\Models\MetodoPago;
 use App\Models\Semestre;
 use App\Models\TipoEvento;
+use App\Models\TipoIngrediente;
 use App\Models\TipoTrabajo;
 use Illuminate\Database\Seeder;
 
@@ -28,16 +31,75 @@ class TiposSeeder extends Seeder
         Aula::create(['nombre' => 'Sala de Degustación 401', 'codigo' => 'GD401', 'capacidad' => 15]);
         Aula::create(['nombre' => 'Aula de Panadería 501', 'codigo' => 'GP501', 'capacidad' => 25]);
         
-        Semestre::create(['nombre' => 'Primer Semestre', 'descripcion' => 'Modalidad Regular', 'costo' => 500]);
-        Semestre::create(['nombre' => 'Segundo Semestre', 'descripcion' => 'Modalidad Intensiva', 'costo' => 600]);
-        Semestre::create(['nombre' => 'Tercer Semestre', 'descripcion' => 'Modalidad Nocturna', 'costo' => 550]);
-        Semestre::create(['nombre' => 'Cuarto Semestre', 'descripcion' => 'Modalidad Fin de Semana', 'costo' => 700]);
+        Semestre::create(['nombre' => 'Primer Periodo', 'descripcion' => 'Modalidad Regular', 'costo' => 450]);
+        Semestre::create(['nombre' => 'Segundo Periodo', 'descripcion' => 'Modalidad Intensiva', 'costo' => 450]);
+        Semestre::create(['nombre' => 'Tercer Periodo', 'descripcion' => 'Modalidad Nocturna', 'costo' => 450]);
+        Semestre::create(['nombre' => 'Cuarto Periodo', 'descripcion' => 'Modalidad Fin de Semana', 'costo' => 450]);
 
         TipoTrabajo::create(['nombre' => 'Teorica']);
         TipoTrabajo::create(['nombre' => 'Practica']);
+        // Lista de materias de gastronomía
+        $materias = [
+            'Introducción a la Gastronomía',
+            'Técnicas Culinarias',
+            'Pastelería Básica',
+            'Cocina Internacional',
+            'Gastronomía Molecular',
+            'Gestión de Restaurantes',
+            'Enología y Maridaje',
+            'Cocina Asiática',
+            'Nutrición en la Gastronomía',
+            'Cocina Italiana',
+            'Cocina Vegetariana',
+            'Panadería Artesanal',
+            'Cocina de Autor',
+            'Prácticas Profesionales',
+            'Diseño de Menús',
+            'Cocina Creativa',
+            'Seguridad e Higiene Alimentaria',
+            'Gastronomía Española',
+            'Marketing Gastronómico',
+        ];
+        // Itera para crear registros de cursos con materias reales
+        foreach ($materias as $materia) {
+            Curso::create([
+                'nombre' => $materia,
+                'precio' => rand(200, 800), // Puedes ajustar este rango según tus necesidades
+                'semestre_id' => rand(1, 4), // Suponiendo que hay 8 semestres en la carrera
+                'color' => mt_rand(0, 100) / 100,
+            ]);
+        }
+
+        $tiposIngredientes = [
+            'Frutas',
+            'Verduras',
+            'Carnes',
+            'Pescados y Mariscos',
+            'Lácteos',
+            'Cereales',
+            'Legumbres',
+            'Especias',
+            'Aceites y Grasas',
+            'Frutos Secos',
+            'Condimentos',
+            'Azúcares y Endulzantes',
+            'Bebidas',
+            'Otros',
+        ];
         
-        MetodoPago::create(['nombre' => 'Cuotas']);
-        MetodoPago::create(['nombre' => 'Todo']);
+        // Itera para crear registros de tipos de ingredientes con nombres reales
+        foreach ($tiposIngredientes as $tipoIngrediente) {
+            TipoIngrediente::create([
+                'nombre' => $tipoIngrediente,
+            ]);
+        }
+        
+        MetodoPago::create(['nombre' => 'Cuotas', 'monto' => 450]);
+        MetodoPago::create(['nombre' => 'Total', 'monto' => 5000]);
+        
+        FormaPago::create(['nombre' => 'Transferencia Bancaria']);
+        FormaPago::create(['nombre' => 'Pago en Efectivo']);
+        FormaPago::create(['nombre' => 'Pagos a Través de Aplicaciones Móviles']);
 
         TipoEvento::create(['nombre' => 'Clases Regulares']);
         TipoEvento::create(['nombre' => 'Fechas Límite para Inscripciones y Pago']);
