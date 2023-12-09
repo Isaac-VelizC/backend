@@ -64,7 +64,11 @@
                     <tbody>
                       @foreach ($personals as $item)
                         <tr>
-                            <td><p>{{ $item->persona->nombre }}</p></td>
+                           <td>
+                              <a href="{{ route('admin.P.show', [$item->id]) }}">
+                                 <p>{{ $item->persona->nombre }} {{ $item->persona->ap_paterno }} {{ $item->persona->ap_materno }}</p>
+                              </a>
+                           </td>
                             <td>
                               <p>{{ $item->persona->ci }}</p>
                             </td>
@@ -72,7 +76,7 @@
                               <p><a href="#">{{ $item->persona->user->email }}</a></p>
                             </td>
                             <td>
-                              <p>UIdeck digital</p>
+                              <p>{{ $item->persona->numTelefono->numero }}</p>
                             </td>
                             <td><p>{{ $item->persona->user->getRoleNames()->first() }}</p></td>
                            <td>
@@ -84,18 +88,15 @@
                            </td>
                             <td>
                               <div class="flex align-items-center list-user-action">
-                                 <a data-bs-toggle="tooltip" data-bs-placement="top" title="Ver"  href="{{ route('admin.P.show', [$item->id]) }}">
-                                    <i class="bi bi-eye-fill"></i>
-                                 </a>
                                  @if ($item->estado == true)
-                                    <a data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#deleteConfirm{{ $item->id }}">
-                                       <i class="bi bi-file-arrow-down-fill"></i>
+                                    <a class="btn btn-sm btn-icon btn-danger" data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#deleteConfirm{{ $item->id }}">
+                                       <i class="bi bi-file-arrow-down-fill"></i> Dar de baja
                                     </a>
                                  @else
-                                    <a data-bs-placement="top" title="Dar de Alta" data-bs-toggle="modal" data-bs-target="#deleteConfirm{{ $item->id }}">
-                                       <i class="bi bi-file-arrow-up-fill"></i>
+                                    <a class="btn btn-sm btn-icon btn-danger" data-bs-placement="top" title="Dar de Alta" data-bs-toggle="modal" data-bs-target="#deleteConfirm{{ $item->id }}">
+                                       <i class="bi bi-file-arrow-up-fill"></i> Dar de alta
                                     </a>
-                                 @endif
+                                  @endif
                               </div>
                             </td>
                         </tr>

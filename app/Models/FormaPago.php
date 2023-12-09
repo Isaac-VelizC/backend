@@ -5,13 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MetodoPago extends Model
+class FormaPago extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    protected $table = "metodo_pagos";
+    protected $table = "formas_pagos";
     protected $primaryKey = "id";
-    protected $fillable = ['nombre', 'monto'];
-
+    protected $fillable = ['nombre'];
 }
-

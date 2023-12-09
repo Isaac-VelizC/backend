@@ -27,14 +27,14 @@
                     <div class="card-body">
                         <div class="bd-example">
                             <ul class="nav nav-pills" data-toggle="slider-tab" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="trabajo-tab" data-bs-toggle="tab" data-bs-target="#pills-trabajo1" type="button" role="tab" aria-controls="trabajo" aria-selected="true">Trabajos</button>
+                                </li>
                                 @if ($role->name == 'Docente')
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link active" id="asistencia-tab" data-bs-toggle="tab" data-bs-target="#pills-asistencia1" type="button" role="tab" aria-controls="asistencia" aria-selected="true">Asistencia</button>
+                                        <button class="nav-link" id="asistencia-tab" data-bs-toggle="tab" data-bs-target="#pills-asistencia1" type="button" role="tab" aria-controls="asistencia" aria-selected="false">Asistencia</button>
                                     </li>
                                 @endif
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link {{ $role->name != "Docente" ? "active" : "" }}" id="trabajo-tab" data-bs-toggle="tab" data-bs-target="#pills-trabajo1" type="button" role="tab" aria-controls="trabajo" aria-selected="false">Trabajos</button>
-                                </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="calificacion-tab" data-bs-toggle="tab" data-bs-target="#pills-calificacion1" type="button" role="tab" aria-controls="calificacion" aria-selected="false">Calificaciones</button>
                                 </li>
@@ -45,14 +45,14 @@
                                 @endif
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-trabajo1" role="tabpanel" aria-labelledby="pills-trabajo-tab1">
+                                    @livewire('docente.trabajos', ['id' => $curso->id])
+                                </div>
                                 @if ($role->name == 'Docente')
-                                    <div class="tab-pane fade show active" id="pills-asistencia1" role="tabpanel" aria-labelledby="pills-asistencia-tab1">
+                                    <div class="tab-pane fade" id="pills-asistencia1" role="tabpanel" aria-labelledby="pills-asistencia-tab1">
                                         @livewire('docente.asistencia', ['id' => $curso->id])
                                     </div>
                                 @endif
-                                <div class="tab-pane fade {{ $role->name != 'Docente' ? 'show active' : '' }}" id="pills-trabajo1" role="tabpanel" aria-labelledby="pills-trabajo-tab1">
-                                    @livewire('docente.trabajos', ['id' => $curso->id])
-                                </div>
                                 <div class="tab-pane fade" id="pills-calificacion1" role="tabpanel" aria-labelledby="pills-calificacion-tab1">
                                     @livewire('docente.calificaciones', ['id' => $curso->id])
                                 </div>

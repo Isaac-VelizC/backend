@@ -27,16 +27,14 @@
                                  </a>
                               </th>
                               <td class="text-center child-cell">
-                                    @if ($item['haEnviadoTarea'])
-                                       Enviada
-                                    @else
-                                       No Enviada
-                                    @endif
-                              </td>
-                              <td class="text-center child-cell">
-                                 <input type="text" wire:model.lazy="nota" placeholder="0" class="input-personalizado" wire:change="calificarTarea({{$item['estudiante']->id}})">
-                                 @if($guardando)
-                                    <span class="text-muted">Guardando...</span>
+                                 @if ($item['haEnviadoTarea'])
+                                     @if(isset($trabajoSubido[$item['estudiante']->id]))
+                                         <input type="text" wire:model.lazy="trabajoSubido.{{ $item['estudiante']->id }}" placeholder="0" class="input-personalizado" wire:change="calificarTarea({{ $item['estudiante']->id }})">
+                                     @else
+                                         No disponible
+                                     @endif
+                                 @else
+                                     No Enviada
                                  @endif
                              </td>
                            </tr>
@@ -58,9 +56,21 @@
          <div class="card-body p-0">
             <div class="table-responsive pricing pt-2">
                @if ($trabajosSubidosCali)
-                   @foreach ($trabajosSubidosCali as $item)
-                       <p><a href="#">{{$item->nombre}}</a></p>
-                   @endforeach
+                   @foreach ($trabajosSubidosCali as $file)
+                     <ol class="list-group">
+                        <a href="{{ asset($file->url) }}" target="_blank">
+                           <li class="list-group-item d-flex justify-content-between align-items-start">
+                              <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
+                                 <path d="M22 24h-18v-22h12l6 6v16zm-7-21h-10v20h16v-14h-6v-6zm-1-2h-11v21h-1v-22h12v1zm2 7h4.586l-4.586-4.586v4.586z"/>
+                              </svg>
+                              <div class="me-auto">
+                                 <div class="fw-bold">{{ $file->nombre }}</div>
+                                 {{ $file->fecha }}
+                              </div>
+                           </li>
+                        </a>
+                     </ol>
+                  @endforeach
                @else
                   <div class="text-center">
                      <p>No envio la tarea</p>

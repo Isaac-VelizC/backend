@@ -14,14 +14,11 @@ use App\Http\Controllers\InfoController;
 use App\Livewire\Admin\AdminInfo;
 use App\Livewire\Admin\EvaluacionDocente;
 use App\Livewire\Admin\FormPagos;
-use App\Livewire\Docente\Components\NewPregunta;
 use App\Livewire\Docente\Components\NewTarea;
 use App\Livewire\Docente\NewReceta;
 use App\Livewire\Docente\Show;
 use App\Livewire\Estudiante\CalificarTarea;
 use App\Livewire\Estudiante\SubirTarea;
-use App\Livewire\Personal\ShowPersonal;
-use App\Livewire\Trabajos\ShowPregunta;
 use App\Livewire\Trabajos\ShowTarea;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -109,7 +106,6 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
 
 Route::middleware(['auth', 'role:Docente'])->group(function () {
     Route::get('/chef-dashboard', [DocenteController::class, 'index'])->name('docente.home');
-    Route::get('/pregunta/nueva/post/{id}', NewPregunta::class)->name('nueva.pregunta.docente');
     Route::get('/trabajo/nueva/post/{id}', NewTarea::class)->name('nueva.tarea.docente');
     Route::get('/calificando/tarea/{id}', CalificarTarea::class)->name('calificar.tarea.estudiante');
     Route::post('/planificacion/curso/{id}', [DocenteController::class, 'planificacion'])->name('guardar.planificacion');
@@ -135,6 +131,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cursos', [DocenteCursoController::class, 'index'])->name('chef.cursos');
     Route::get('/curso/{id}/materia', [DocenteCursoController::class, 'curso'])->name('cursos.curso');
     //Componetes
-    Route::get('/posts-pregunta/{id}', ShowPregunta::class)->name('show.pregunta');
     Route::get('/posts-tareas/{id}', ShowTarea::class)->name('show.tarea');
 });

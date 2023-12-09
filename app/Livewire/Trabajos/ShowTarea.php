@@ -7,22 +7,21 @@ use App\Models\DocumentoDocente;
 use App\Models\DocumentoEstudiante;
 use App\Models\Trabajo;
 use App\Models\TrabajoEstudiante;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class ShowTarea extends Component
 {
-    public $tareaId, $num = 1, $fechaActual, $estudiantesConTareas, $trabajosSubidosCali, $nota;
+    public $tareaId, $num = 1, $fechaActual, $estudiantesConTareas, $trabajosSubidosCali;
     public Trabajo $tarea;
-    public $entregas, $estudiantes, $filesTarea;
-    public $filesSubidos, $trabajoSubido;
-    public $guardando = false;
+    public $entregas, $calificadas, $estudiantes, $filesTarea;
+    public $filesSubidos, $trabajoSubido = [];
     public function mount($id) {
         $this->tareaId = $id;
-        $this->fechaActual = Carbon::now();
+        $this->fechaActual = now();
         $this->tarea = Trabajo::find($id);
-        $this->entregas = TrabajoEstudiante::where('trabajo_id', $id)->get();
+        $this->entregas = TrabajoEstudiante::where('trabajo_id', $id)->count();
+        $this->calificadas = TrabajoEstudiante::where('trabajo_id', $id)->where('nota', '<>', 0.00)->count();
         $this->filesTarea = DocumentoDocente::where('tarea_id', $id)->get();
         $curso = CursoHabilitado::with('inscripciones.estudiante')->find($this->tarea->curso->id);
         $this->estudiantes = $curso->inscripciones->pluck('estudiante');
@@ -37,7 +36,6 @@ class ShowTarea extends Component
         return view('livewire.trabajos.show-tarea')->extends('layouts.app')
         ->section('content');
     }
-
     public function verTareaEstudiante() {
         $trabajo = TrabajoEstudiante::where([
             'estudiante_id' => auth()->user()->persona->estudiante->id, 
@@ -65,54 +63,51 @@ class ShowTarea extends Component
         $tarea->delete();
         $this->trabajoSubido = null;
     }
-
     public function editarTareasSubido($id) {
         $trabajo = TrabajoEstudiante::find($id);
         return redirect()->route('estudiante.subir.tarea', ['id' => $trabajo->trabajo_id, 'edit' => true]);
     }
-    public function obtenerEstudiantesConTareas()
-    {
+    public function obtenerEstudiantesConTareas() {
         return $this->estudiantes->map(function ($estud) {
-            $haEnviadoTarea = TrabajoEstudiante::where([
+            $trabajo = TrabajoEstudiante::where([
                 'estudiante_id' => $estud->id,
                 'trabajo_id' => $this->tareaId
-            ])->exists();
-
+            ])->first();
+    
+            $haEnviadoTarea = $trabajo !== null;
+            if ($haEnviadoTarea) {
+                $this->trabajoSubido[$estud->id] = $trabajo->nota;
+            }
+    
             return [
                 'estudiante' => $estud,
                 'haEnviadoTarea' => $haEnviadoTarea,
             ];
         });
     }
-
     public function VerTarea($id) {
         $subidoPararRevisar = TrabajoEstudiante::where([
             'estudiante_id' => $id, 
             'trabajo_id' => $this->tareaId
         ])->first();
-        $this->trabajosSubidosCali = DocumentoEstudiante::where('entrega_id', $subidoPararRevisar->id)->get();
-    }
-
-    public function calificarTarea($id)
-    {
-        $this->guardando = true;
-
-        // Busca la tarea del estudiante
-        $notaGuardar = TrabajoEstudiante::where([
-            'estudiante_id' => $id,
-            'trabajo_id' => $this->tareaId,
-        ])->first();
-
-        // Verifica si se encontró la tarea antes de intentar actualizar
-        if ($notaGuardar) {
-            // Actualiza la nota en la base de datos
-            $notaGuardar->update(['nota' => $this->nota]);
+        if ($subidoPararRevisar) {
+            $this->trabajosSubidosCali = DocumentoEstudiante::where('entrega_id', $subidoPararRevisar->id)->get();
+        } else {
+            session()->flash('success', 'No subio ningun trabajo' );
+            $this->trabajosSubidosCali = '';
         }
-
-        // Reinicia la variable $nota y el estado de guardando
-        $this->nota = 0;
-        $this->guardando = false;
     }
+    public function calificarTarea($id) {
+        $notaEstudiante = $this->trabajoSubido[$id];
+        if ($notaEstudiante) {
+            $notaGuardar = TrabajoEstudiante::where([
+                'estudiante_id' => $id,
+                'trabajo_id' => $this->tareaId,
+            ])->first();
 
-
+            if ($notaGuardar) {
+                $notaGuardar->update(['nota' => $notaEstudiante, 'estado' => 'Calificado']);
+            }
+        }
+    }
 }

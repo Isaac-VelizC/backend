@@ -36,7 +36,7 @@
                         </div>
                     @endforeach
                     @else
-                        <p class="text-center">No hay materias en el semetre, selecciona otro</p>
+                        <p class="text-center">No hay materias en el periodo, selecciona otro</p>
                     @endif
                 </div>
             </div>

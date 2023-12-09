@@ -16,9 +16,8 @@
                                         </svg> Agregar Nuevo
                                     </span>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton04">
-                                        <a class="dropdown-item" href="{{ route('nueva.tarea.docente', $materia->id) }}">Tarea</a>
-                                        <a class="dropdown-item" href="{{ route('nueva.pregunta.docente', $materia->id) }}">Pregunta</a>
-                                        <a class="dropdown-item cursoMano" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-controls="collapseThree" wire:click='abrirFormTema' onclick="cambiarTextoDropdown('Tema')">Tema</a>
+                                        <a class="dropdown-item btn" href="{{ route('nueva.tarea.docente', $materia->id) }}">Tarea</a>
+                                        <a class="dropdown-item btn" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-controls="collapseThree" wire:click='abrirFormTema' onclick="cambiarTextoDropdown('Tema')">Tema</a>
                                     </div>
                                 </div>
                             @endif
@@ -36,12 +35,12 @@
                     <div class="accordion-item">
                         <div id="collapseThree" class="accordion-collapse collapse {{ $AD3 ? 'show' : '' }}" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <form wire:submit.prevent="formTema">
+                                <form class="needs-validation" novalidate wire:submit.prevent="formTema" >
                                     @csrf
                                     <div class="mb-3">
                                         <label class="form-label">Titulo del Tema</label>
-                                        <input type="text" class="form-control" wire:model='tema'>
-                                        @error('tema') <span class="form-text error">{{ $message }}</span> @enderror
+                                        <input type="text" class="form-control" wire:model='tema' required>
+                                        @error('tema') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
                                     <button type="button" class="btn btn-danger" data-bs-toggle="collapse" data-bs-target="#collapseThree" wire:click='resetearForm()'>Cancelar</button>
                                     <button type="submit" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#collapseThree">Guardar</button>
@@ -72,25 +71,16 @@
             @foreach ($tareas[null] ?? [] as $tarea)
                 @include('docente.cursos.widgets.tareas')
             @endforeach
-            @foreach ($preguntas[null] ?? [] as $pregunta)
-                @include('docente.cursos.widgets.preguntas')
-            @endforeach
         </div>
         @foreach ($temasCurso as $item)
             <div class="d-flex align-items-center justify-content-between flex-wrap">        
                 @if (auth()->user()->hasRole('Docente'))
-                    <h4 class="mb-3">
-                        <div class="col-lg-12">
-                            <textarea 
-                                id="dynamicInput"
-                                class="inputEdit" 
-                                wire:model="temasEditados.{{ $item->id }}"
-                                wire:blur="actualizarTema({{ $item->id }})"
-                                @if($temaEditando !== $item->id) disabled @endif
-                                style="resize: horizontal;">
-                            </textarea>
-                        </div>
-                    </h4>
+                    <textarea id="dynamicInput"
+                        class="inputEdit" 
+                        wire:model="temasEditados.{{ $item->id }}"
+                        wire:blur="actualizarTema({{ $item->id }})"
+                        @if($temaEditando !== $item->id) disabled @endif>
+                    </textarea>
                     <div class="d-flex align-items-center flex-wrap">
                         <i wire:click='editarTema({{$item->id}})' class="bi bi-pencil"></i> 
                         <i wire:click='borrarTema({{$item->id}})' class="bi bi-trash cursoMano"></i>
@@ -101,10 +91,6 @@
             </div>
             @foreach ($tareas[$item->id] ?? [] as $tarea)
                 @include('docente.cursos.widgets.tareas')
-            @endforeach
-
-            @foreach ($preguntas[$item->id] ?? [] as $pregunta)
-                @include('docente.cursos.widgets.preguntas')
             @endforeach
         @endforeach
     </div>

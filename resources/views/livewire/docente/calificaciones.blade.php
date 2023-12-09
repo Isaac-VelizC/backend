@@ -22,7 +22,6 @@
                                     <tr class="">
                                         <td class="">{{ $est->persona->nombre }} {{ $est->persona->ap_paterno }} {{ $est->persona->ap_materno }}</td>
                                         <td>tarea1</td>
-                                        <td>tarea2</td>
                                     </tr>
                                 @endforeach
                             </tbody>

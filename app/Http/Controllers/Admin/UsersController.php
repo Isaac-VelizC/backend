@@ -36,19 +36,22 @@ class UsersController extends Controller
         return view('admin.usuarios.estudiantes.create', compact('horarios'));
     }
     public function inscripcion(Request $request) {
+        if ($request->telefono == $request->telefonoC) {
+            return back()->with('error', 'El numero de telefono ' . $request->telefono .' del estudiante es el mismo del contacto.');
+        }
         $rules = [
             'nombre' => 'required|string',
             'ci' => 'required|string|unique:personas,ci|unique:personas,email|unique:personas',
             'genero' => 'required|in:Mujer,Hombre',
             'email' => 'required|email',
-            'telefono' => 'nullable|string',
+            'telefono' => 'nullable|string|unique:num_telefonos,numero',
             'direccion' => 'required|string',
             'fNac' => 'required|date',
             'nombreC' => 'required|string',
             'ciC' => 'required|string|unique:personas,ci',
             'generoC' => 'required|in:Mujer,Hombre',
             'emailC' => 'nullable|email',
-            'telefonoC' => 'required|string',
+            'telefonoC' => 'required|string|unique:num_telefonos,numero',
             'horario' => 'required|numeric',
         ];
         $request->validate($rules);
@@ -139,8 +142,7 @@ class UsersController extends Controller
         } else {
             return back()->with('error', 'No se encontró la persona');
         }
-    }
-    
+    }    
     public function gestionarEstadoDocente($id, $accion) {
         $persona = Persona::find($id);
         if ($persona) {
@@ -172,7 +174,6 @@ class UsersController extends Controller
         $materias = CursoHabilitado::all();
         return view('admin.usuarios.estudiantes.show', compact('estudiante', 'est', 'horarios', 'materias'));
     }
-
     public function update(Request $request, $id) {
         $estud = Estudiante::find($id);
         $rules = [
@@ -204,21 +205,18 @@ class UsersController extends Controller
 
         return back()->with('success', 'La informacion se actualizo con éxito.');
     }
-    public function selectEstudiante(Request $request)
-{
-    $query = $request->input('name');
+    public function selectEstudiante(Request $request) {
+        $query = $request->input('name');
 
-    $estudiantes = Estudiante::where(function ($queryBuilder) use ($query) {
-        $queryBuilder->whereHas('persona', function ($q) use ($query) {
-            $q->where('nombre', 'like', "%$query%")
-              ->orWhere('ap_paterno', 'like', "%$query%")
-              ->orWhere('ap_materno', 'like', "%$query%")
-              ->orWhere('ci', 'like', "%$query%");
-        });
-    })->with('persona')->get();
+        $estudiantes = Estudiante::where(function ($queryBuilder) use ($query) {
+            $queryBuilder->whereHas('persona', function ($q) use ($query) {
+                $q->where('nombre', 'like', "%$query%")
+                ->orWhere('ap_paterno', 'like', "%$query%")
+                ->orWhere('ap_materno', 'like', "%$query%")
+                ->orWhere('ci', 'like', "%$query%");
+            });
+        })->with('persona')->get();
 
-    return response()->json($estudiantes);
-}
-
-    
+        return response()->json($estudiantes);
+    }    
 }

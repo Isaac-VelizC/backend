@@ -4,18 +4,16 @@ namespace App\Livewire\Docente;
 
 use App\Models\CursoHabilitado;
 use App\Models\DocumentoDocente;
-use App\Models\Pregunta;
 use App\Models\Tema;
 use App\Models\TipoTrabajo;
 use App\Models\Trabajo;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
 class Trabajos extends Component
 {
-    public $tema, $idCurso, $idTarea, $idFiles, $temasCurso, $tipoTrabajo, $tareas, $preguntas;
-    public $AD1 = false, $AD2 = false, $AD3 = false, $temaEditando = null;
+    public $tema, $idCurso, $idTarea, $idFiles, $temasCurso, $tipoTrabajo, $tareas;
+    public $AD3 = false, $temaEditando = null;
     public CursoHabilitado $materia;
     public $temaEditado = '';
     public $files = [], $filesTarea, $temasEditados = [];
@@ -26,9 +24,7 @@ class Trabajos extends Component
         $this->tipoTrabajo = TipoTrabajo::all();
         $this->temasEditados = $this->temasCurso->pluck('tema', 'id')->toArray();
         $allTareas = Trabajo::where('curso_id', $id)->get();
-        $allPreguntas = Pregunta::where('curso_id', $id)->get();
         $this->tareas = collect($allTareas)->groupBy('tema_id');
-        $this->preguntas = collect($allPreguntas)->groupBy('tema_id');
     }
     public function abrirFormTema() {
         $this->resetearForm();
@@ -44,8 +40,6 @@ class Trabajos extends Component
     }
     
     public function resetearForm() {
-        $this->AD1 = false;
-        $this->AD2 = false;
         $this->AD3 = false;
         $this->mount($this->idCurso);
         $this->idTarea = null;
@@ -54,11 +48,6 @@ class Trabajos extends Component
         $this->filesTarea = collect([]);
     }
     
-    public function eliminarPregunta($id) {
-        Pregunta::find($id)->delete();
-        session()->flash('message', 'Se elimino la pregunta con éxito');
-        $this->mount($this->idCurso);
-    }
     public function editarTema($itemId) {
         $this->temaEditando = $itemId;
         $this->temaEditado = Tema::find($itemId)->tema;
