@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('criterios', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->decimal('porcentaje', 3, 2);
-            $table->decimal('total', 3, 2);
+            $table->integer('porcentaje');
+            $table->integer('total');
             $table->unsignedBigInteger('curso_id')->nullable();
             $table->foreign('curso_id')->references('id')->on('curso_habilitados')->onDelete('restrict');
             $table->timestamps();
@@ -24,8 +24,8 @@ return new class extends Migration
         Schema::create('categorias_criterio', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->decimal('porcentaje', 3, 2);
-            $table->decimal('total', 3, 2);
+            $table->integer('porcentaje');
+            $table->integer('total');
             $table->unsignedBigInteger('criterio_id');
             $table->foreign('criterio_id')->references('id')->on('criterios')->onDelete('cascade');
             $table->timestamps();

@@ -15,6 +15,7 @@ use App\Livewire\Admin\AdminInfo;
 use App\Livewire\Admin\EvaluacionDocente;
 use App\Livewire\Admin\FormPagos;
 use App\Livewire\Docente\Components\NewTarea;
+use App\Livewire\Docente\CriteriosTrabajos;
 use App\Livewire\Docente\NewReceta;
 use App\Livewire\Docente\Show;
 use App\Livewire\Estudiante\CalificarTarea;
@@ -109,6 +110,7 @@ Route::middleware(['auth', 'role:Docente'])->group(function () {
     Route::get('/trabajo/nueva/post/{id}', NewTarea::class)->name('nueva.tarea.docente');
     Route::get('/calificando/tarea/{id}', CalificarTarea::class)->name('calificar.tarea.estudiante');
     Route::post('/planificacion/curso/{id}', [DocenteController::class, 'planificacion'])->name('guardar.planificacion');
+    Route::get('/criterios/tareas/{id}/eval', CriteriosTrabajos::class)->name('docente.tareas.criterios');
 });
 Route::middleware(['auth', 'role:Estudiante'])->group(function () {
     Route::get('/estud-dashboard', [EstudianteController::class, 'index'])->name('estudiante.home');
@@ -126,7 +128,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/buscar-ingredientes', [CocinaController::class, 'buscarIngredientes'])->name('admin.buscar-ingredientes');
     Route::get('/agregar-receta/nueva', NewReceta::class)->name('recetas.add');
     //Route::get('/profile', [UserController::class, 'profile'])->name('users.profile');
-    
     //Cursos
     Route::get('/cursos', [DocenteCursoController::class, 'index'])->name('chef.cursos');
     Route::get('/curso/{id}/materia', [DocenteCursoController::class, 'curso'])->name('cursos.curso');
