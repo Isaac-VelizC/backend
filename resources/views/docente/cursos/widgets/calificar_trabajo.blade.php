@@ -55,8 +55,9 @@
          </div>
          <div class="card-body p-0">
             <div class="table-responsive pricing pt-2">
+               <p>{{ $tareaDelEstudiante }}</p>
                @if ($trabajosSubidosCali)
-                   @foreach ($trabajosSubidosCali as $file)
+                  @foreach ($trabajosSubidosCali as $file)             
                      <ol class="list-group">
                         <a href="{{ asset($file->url) }}" target="_blank">
                            <li class="list-group-item d-flex justify-content-between align-items-start">

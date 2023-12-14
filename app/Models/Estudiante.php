@@ -31,10 +31,6 @@ class Estudiante extends Model
     {
         return $this->belongsTo(Horario::class, 'turno_id');
     }
-    public function preguntasEstudiantes()
-    {
-        return $this->hasMany(PreguntaEstudiante::class, 'estudiante_id');
-    }
     public function trabajosEstudiantes()
     {
         return $this->hasMany(TrabajoEstudiante::class, 'estudiante_id');

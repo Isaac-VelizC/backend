@@ -20,6 +20,7 @@ use App\Livewire\Docente\NewReceta;
 use App\Livewire\Docente\Show;
 use App\Livewire\Estudiante\CalificarTarea;
 use App\Livewire\Estudiante\SubirTarea;
+use App\Livewire\ProfilePage;
 use App\Livewire\Trabajos\ShowTarea;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -127,7 +128,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/select',[CocinaController::class, 'selectIngredientes'])->name('search.ingredientes');
     Route::post('/admin/buscar-ingredientes', [CocinaController::class, 'buscarIngredientes'])->name('admin.buscar-ingredientes');
     Route::get('/agregar-receta/nueva', NewReceta::class)->name('recetas.add');
-    //Route::get('/profile', [UserController::class, 'profile'])->name('users.profile');
+    Route::get('/profile', ProfilePage::class)->name('users.profile');
     //Cursos
     Route::get('/cursos', [DocenteCursoController::class, 'index'])->name('chef.cursos');
     Route::get('/curso/{id}/materia', [DocenteCursoController::class, 'curso'])->name('cursos.curso');

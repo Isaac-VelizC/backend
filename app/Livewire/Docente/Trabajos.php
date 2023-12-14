@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Docente;
 
+use App\Models\ComentarioCurso;
 use App\Models\CursoHabilitado;
 use App\Models\DocumentoDocente;
 use App\Models\Tema;
@@ -12,10 +13,10 @@ use Livewire\Component;
 
 class Trabajos extends Component
 {
-    public $tema, $idCurso, $idTarea, $idFiles, $temasCurso, $tipoTrabajo, $tareas;
+    public $tema, $idCurso, $idTarea, $idFiles, $temasCurso, $tipoTrabajo, $tareas, $comentario = '';
     public $AD3 = false, $temaEditando = null;
     public CursoHabilitado $materia;
-    public $temaEditado = '';
+    public $temaEditado = '', $comentariosCurso;
     public $files = [], $filesTarea, $temasEditados = [];
     public function mount($id) {
         $this->idCurso = $id;
@@ -23,8 +24,9 @@ class Trabajos extends Component
         $this->temasCurso = Tema::where('curso_id', $id)->get();
         $this->tipoTrabajo = TipoTrabajo::all();
         $this->temasEditados = $this->temasCurso->pluck('tema', 'id')->toArray();
-        $allTareas = Trabajo::where('curso_id', $id)->get();
+        $allTareas = Trabajo::where('curso_id', $id)->where('estado', '!=', 'Borrador')->get();
         $this->tareas = collect($allTareas)->groupBy('tema_id');
+        $this->loadComentarios();
     }
     public function abrirFormTema() {
         $this->resetearForm();
@@ -38,7 +40,6 @@ class Trabajos extends Component
         $this->AD3 = false;
         $this->mount($this->idCurso);
     }
-    
     public function resetearForm() {
         $this->AD3 = false;
         $this->mount($this->idCurso);
@@ -47,7 +48,6 @@ class Trabajos extends Component
         $this->files = [];
         $this->filesTarea = collect([]);
     }
-    
     public function editarTema($itemId) {
         $this->temaEditando = $itemId;
         $this->temaEditado = Tema::find($itemId)->tema;
@@ -91,4 +91,36 @@ class Trabajos extends Component
             session()->flash('error',  $e->getMessage());
         }
     }
+    public function addComentario() {
+        try {
+            ComentarioCurso::create([
+                'body' => $this->comentario,
+                'action' => true,
+                'autor_id' => auth()->user()->id,
+                'curso_id' => $this->idCurso
+            ]);
+
+            $this->comentario = '';
+            $this->loadComentarios();
+
+            session()->flash('message', 'Se subió el comentario con éxito');
+
+        } catch (\Exception $e) {
+            session()->flash('error', $e->getMessage());
+        }
+    }
+    public function deleteComentario($id) {
+        try {
+            ComentarioCurso::find($id)->delete();
+            $this->loadComentarios();
+            session()->flash('message', 'El comentario se elimino con éxito');
+        } catch (\Exception $e) {
+            session()->flash('error', $e->getMessage());
+        }
+    }
+    public function loadComentarios()
+    {
+        $this->comentariosCurso = ComentarioCurso::where('curso_id', $this->idCurso)->get();
+    }
+
 }

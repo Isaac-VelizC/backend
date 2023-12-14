@@ -29,11 +29,7 @@
                 <div class="card-body">
                     <div class="text-center">
                         <div class="user-profile">
-                           @if ($estudiante->photo != 'user.jpg')
-                              <img src="{{ asset($estudiante->photo) }}" alt="profile-img" class="rounded-pill avatar-130 img-fluid">
-                           @else
-                              <img src="{{ asset('img/user.jpg') }}" alt="profile-img" class="rounded-pill avatar-130 img-fluid">
-                           @endif
+                            <img src="{{ asset($estudiante->photo != 'user.jpg' ? 'storage/' . $estudiante->photo : 'img/user.jpg') }}"" alt="profile-img" class="rounded-pill avatar-130 img-fluid">
                         </div>
                         <p class="d-inline-block pl-3"> {{ $estudiante->user->getRoleNames()->first() }}</p>
                      </div>

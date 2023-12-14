@@ -10,19 +10,19 @@
             <div class="overflow-hidden d-slider1 ">
                <ul  class="p-0 m-0 mb-2 swiper-wrapper list-inline">
                   <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="1000">
-                     <div class="card-body">
-                        <a href="{{ route('chef.cursos') }}">
-                            <div class="progress-widget">
-                                <div class="rounded p-3 bg-soft-warning">
-                                    <i class="fa fa-users"></i>
-                                </div>
-                                <div class="progress-detail">
-                                    <p  class="mb-2">Cursos</p>
-                                    <h4 class="counter">{{ $cursos->count() }}</h4>
-                                </div>
-                            </div>
-                        </a>
-                     </div>
+                     <a href="{{ route('chef.cursos') }}">   
+                        <div class="card-body">
+                           <div class="progress-widget">
+                              <div class="rounded p-3 bg-soft-warning">
+                                 <i class="fa fa-users"></i>
+                              </div>
+                              <div class="progress-detail">
+                                 <p  class="mb-2">Cursos</p>
+                                 <h4 class="counter">{{ count($cursos) }}</h4>
+                              </div>
+                           </div>
+                        </div>
+                     </a>
                   </li>
                   <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="1100">
                      <div class="card-body">

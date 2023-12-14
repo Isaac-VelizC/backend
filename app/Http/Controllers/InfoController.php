@@ -10,7 +10,7 @@ class InfoController extends Controller
     public function send($notifiable, Notification $notification)
     {
         dd($notifiable);
-        $message = $notification->toWhatsApp($notifiable);
+        /*$message = $notification->toWhatsApp($notifiable);
 
         $to = $notifiable->routeNotificationFor('WhatsApp');
         $from = config('services.twilio.whatsapp_from');
@@ -21,6 +21,6 @@ class InfoController extends Controller
         return $twilio->messages->create('whatsapp:' . $to, [
             "from" => 'whatsapp:' . $from,
             "body" => $message->content
-        ]);
+        ]);*/
     }
 }

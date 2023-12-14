@@ -12,4 +12,13 @@ class ComentarioCurso extends Model
     protected $primaryKey = "id";
     protected $fillable = ['body', 'action', 'autor_id', 'curso_id'];
 
+    public function autor()
+    {
+        return $this->belongsTo(User::class, 'autor_id');
+    }
+    
+    public function cursoHabilitado()
+    {
+        return $this->belongsTo(CursoHabilitado::class, 'curso_id');
+    }
 }

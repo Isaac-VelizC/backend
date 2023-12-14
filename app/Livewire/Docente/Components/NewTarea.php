@@ -64,25 +64,31 @@ class NewTarea extends Component
     }
     
     public function updatedFiles() {
-        if (!$this->idTarea) {
-            $this->createTarea();
+        try {
+            if (!$this->idTarea) {
+                $this->createTarea();
+            }
+            foreach ($this->files as $file) {
+                $originalName = $file->getClientOriginalName();
+                $filePath = $file->storeAs('public/files', $originalName);
+                $url = str_replace('public/', '', $filePath);
+
+                DocumentoDocente::create([
+                    'nombre' => $originalName,
+                    'url' => 'storage/'.$url,
+                    'fecha' => now(),
+                    'materia_id' => $this->idCurso,
+                    'user_id' => auth()->user()->id,
+                    'tarea_id' => $this->idTarea
+                ]);
+            }
+            $this->files = [];
+            $this->archivosTarea();
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error inesperado: ' . $e->getMessage());
         }
-        foreach ($this->files as $file) {
-            $originalName = $file->getClientOriginalName();
-            $filePath = $file->storeAs('public/files', $originalName);
-            $url = 'storage/' . $filePath;
-            DocumentoDocente::create([
-                'nombre' => $originalName,
-                'url' => $url,
-                'fecha' => now(),
-                'materia_id' => $this->idCurso,
-                'user_id' => auth()->user()->id,
-                'tarea_id' => $this->idTarea
-            ]);
-        }
-        $this->files = [];
-        $this->archivosTarea();
     }
+
     public function createTarea() {
         $tarea = Trabajo::create([
             'curso_id' => $this->idCurso, 'user_id' => auth()->user()->id, 'titulo' => ' '
@@ -94,7 +100,7 @@ class NewTarea extends Component
         $this->archivosTarea();
     }
     public function archivosTarea() {
-        $this->filesTarea = DocumentoDocente::where('tarea_id', $this->idCurso)->get();
+        $this->filesTarea = DocumentoDocente::where('tarea_id', $this->idTarea)->get();
     }
     public function salir() {
         if ($this->idTarea) {

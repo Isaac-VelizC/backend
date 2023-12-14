@@ -16,7 +16,7 @@ class Calificaciones extends Component
         $this->idCurso = $id;
         $curso = CursoHabilitado::with('inscripciones.estudiante')->find($id);
         $this->estudiantes = $curso->inscripciones->pluck('estudiante');
-        $this->trabajos = Trabajo::where('curso_id', $curso->id)->get();
+        $this->trabajos = Trabajo::where('curso_id', $curso->id)->where('estado', '!=', 'Borrador')->get();
         $this->cargarNotas();
     }
     public function cargarNotas() {

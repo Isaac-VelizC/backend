@@ -5,6 +5,7 @@ namespace App\Livewire\Trabajos;
 use App\Models\CursoHabilitado;
 use App\Models\DocumentoDocente;
 use App\Models\DocumentoEstudiante;
+use App\Models\Estudiante;
 use App\Models\Trabajo;
 use App\Models\TrabajoEstudiante;
 use Illuminate\Support\Facades\Storage;
@@ -12,7 +13,7 @@ use Livewire\Component;
 
 class ShowTarea extends Component
 {
-    public $tareaId, $num = 1, $fechaActual, $estudiantesConTareas, $trabajosSubidosCali;
+    public $tareaId, $num = 1, $fechaActual, $estudiantesConTareas, $trabajosSubidosCali, $tareaDelEstudiante = '';
     public Trabajo $tarea;
     public $entregas, $calificadas, $estudiantes, $filesTarea;
     public $filesSubidos, $trabajoSubido = [];
@@ -86,6 +87,8 @@ class ShowTarea extends Component
         });
     }
     public function VerTarea($id) {
+        $estudiante = Estudiante::find($id);
+        $this->tareaDelEstudiante = 'Estudiante '.$estudiante->persona->nombre . ' ' . $estudiante->persona->ap_paterno . ' ' . $estudiante->persona->ap_materno;
         $subidoPararRevisar = TrabajoEstudiante::where([
             'estudiante_id' => $id, 
             'trabajo_id' => $this->tareaId
@@ -93,7 +96,7 @@ class ShowTarea extends Component
         if ($subidoPararRevisar) {
             $this->trabajosSubidosCali = DocumentoEstudiante::where('entrega_id', $subidoPararRevisar->id)->get();
         } else {
-            session()->flash('success', 'No subio ningun trabajo' );
+            session()->flash('error', 'No subio ningun trabajo él/la estudiante '.$this->tareaDelEstudiante);
             $this->trabajosSubidosCali = '';
         }
     }

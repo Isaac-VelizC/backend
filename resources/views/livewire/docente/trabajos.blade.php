@@ -54,16 +54,59 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <form class="comment-text d-flex align-items-center mt-3" action="javascript:void(0);">
-                        <textarea type="text" class="form-control rounded" placeholder="Anunciar algo a la clase"></textarea>
+                    <form class="comment-text d-flex align-items-center needs-validation" novalidate wire:submit.prevent="addComentario">
+                        <textarea type="text" class="form-control rounded" wire:model='comentario' placeholder="Anunciar algo a la clase" required></textarea>
                         <div class="comment-attagement d-flex">
-                            <a href="javascript:void(0);" class="text-body">
-                                <svg class="icon-20" width="20"  viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M20,4H16.83L15,2H9L7.17,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6A2,2 0 0,0 20,4M20,18H4V6H8.05L9.88,4H14.12L15.95,6H20V18M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15Z" />
+                            <button type="submit" class="text-body btn btn-link">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M24 0l-6 22-8.129-7.239 7.802-8.234-10.458 7.227-7.215-1.754 24-12zm-15 16.668v7.332l3.258-4.431-3.258-2.901z"/>
                                 </svg>
-                            </a>
+                            </button>
                         </div>
                     </form>
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h4 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#acordeonComenterio" aria-expanded="true" aria-controls="acordeonComenterio">
+                                    Comentarios del cursos
+                                </button>
+                            </h4>
+                            <div id="acordeonComenterio" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            @if (count($comentariosCurso) > 0)
+                                                @foreach ($comentariosCurso as $coment)
+                                                    <div class="d-grid grid-flow-col justify-content-between">
+                                                        <div class="twit-feed">
+                                                            <div class="d-flex align-items-center">
+                                                                <img class="rounded-pill img-fluid avatar-50 me-3 p-1" src="{{ asset($coment->autor->persona->photo != 'user.jpg' ? 'storage/' . $coment->autor->persona->photo : 'img/user.jpg') }}" alt="">
+                                                                <div class="media-support-info">
+                                                                    <h6 class="mb-0">{{ $coment->autor->name }}</h6>
+                                                                    <div class="twit-date">{{ $coment->created_at }}</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="media-support-body">
+                                                                <p class="mb-0">{{ $coment->body }}</p>
+                                                            </div>
+                                                        </div>
+                                                        @if (auth()->user()->id == $coment->autor->id)
+                                                        <i class="bi bi-trash btn text-danger" wire:click='deleteComentario({{ $coment->id }})'></i>
+                                                        @endif
+                                                    </div>
+                                                    <hr>
+                                                @endforeach
+                                            @else
+                                                <div class="text-center">
+                                                    <p>No hay comentarios en este curso</p>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

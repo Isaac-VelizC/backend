@@ -2,11 +2,9 @@
 
 namespace App\Livewire\Estudiante;
 
-use App\Models\DocumentoDocente;
 use App\Models\DocumentoEstudiante;
 use App\Models\Trabajo;
 use App\Models\TrabajoEstudiante;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -42,23 +40,31 @@ class SubirTarea extends Component
         $this->archivosTarea();
     }
     public function updatedFiles() {
-
-        if ($this->idTareaEstudiante == '') {
-            $this->crearNuevo();
-        }
-        foreach ($this->files as $file) {
-            $originalName = $file->getClientOriginalName();
-            $filePath = $file->storeAs('public/trabajos', $originalName);
-            $url = 'storage/' . $filePath;
-            DocumentoEstudiante::create([
-                'nombre' => $originalName,
-                'url' => $url,
-                'user_id' => auth()->user()->id,
-                'entrega_id' => $this->idTareaEstudiante
+        try {
+            $this->validateOnly('files', [
+                'files.*' => 'file|max:2048',
             ]);
+
+            if (empty($this->idTareaEstudiante)) {
+                $this->crearNuevo();
+            }
+            foreach ($this->files as $file) {
+                $originalName = $file->getClientOriginalName();
+                $filePath = $file->storeAs('public/trabajos', $originalName);
+                $url = str_replace('public/', '', $filePath);
+                DocumentoEstudiante::create([
+                    'nombre' => $originalName,
+                    'url' => 'storage/'.$url,
+                    'user_id' => auth()->user()->id,
+                    'entrega_id' => $this->idTareaEstudiante
+                ]);
+            }
+
+            $this->files = [];
+            $this->archivosTarea();
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error inesperado: ' . $e->getMessage());
         }
-        $this->files = [];
-        $this->archivosTarea();
     }
     public function enviarTarea() {
         if ($this->idTareaEstudiante == '') {

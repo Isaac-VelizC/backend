@@ -53,5 +53,8 @@ class CursoHabilitado extends Model
     {
         return $this->hasMany(Programacion::class, 'curso_id');
     }
-
+    public function comentarios()
+    {
+        return $this->hasMany(ComentarioCurso::class, 'curso_id');
+    }
 }
