@@ -98,12 +98,12 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     //Cocina
     //Acerda de IGLA
     Route::get('/informacion', [HomeController::class, 'acercaDe'])->name('admin.ajustes');
-    //Route::post('/guardar-info', [InfoController::class, 'guardarInformacion'])->name('admin.guardar-registro');
-    //Route::put('/actualizar-info/{id}', [InfoController::class, 'actualizarInformacion'])->name('admin.actualizar-registro');
     //Administracion de informacion
     Route::get('/administrar-info', AdminInfo::class)->name('admin.administracion');
     //Evaluacion docente
     Route::get('/evaluacion/add/docente', EvaluacionDocente::class)->name('evaluacion.docente');
+    //Rutas para exportar
+    Route::get('/cursos/exp/pdf', [CursoController::class, 'exportarCurso'])->name('export.cursos');
 });
 
 Route::middleware(['auth', 'role:Docente'])->group(function () {

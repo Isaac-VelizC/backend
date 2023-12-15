@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\CursosExport;
 use App\Http\Controllers\Controller;
 use App\Models\Aula;
 use App\Models\Curso;
 use App\Models\CursoHabilitado;
 use App\Models\Docente;
-use App\Models\Estudiante;
 use App\Models\Horario;
-use App\Models\Programacion;
 use App\Models\Semestre;
-use Carbon\Carbon;
+use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CursoController extends Controller
 {
@@ -185,4 +186,36 @@ class CursoController extends Controller
         CursoHabilitado::where('id', $id)->delete();
         return back()->with('success', 'La materia se eliminó con éxito.');
     }
+    public function exportarCurso() {
+        try {
+            $cursos = Curso::with('semestre')
+            ->select('nombre', 'color', 'semestre_id', 'estado')
+            ->get();
+            if ($cursos->isEmpty()) {
+                return redirect()->back()->with('error', 'No hay datos para exportar.');
+            }
+        
+            $fileName = 'cursos_' . now()->format('Ymd_His') . '.xlsx';
+            return Excel::download(new CursosExport($cursos), $fileName);
+        } catch (\Exception $e) {
+          return redirect()->back()->with('success', 'Error al exportar los datos: ' . $e->getMessage());
+        }
+    }
+    /*public function exportarCurso() {
+        try {
+            $users = User::get();
+  
+        $data = [
+            'title' => 'Welcome to ItSolutionStuff.com',
+            'date' => date('m/d/Y'),
+            'users' => $users
+        ]; 
+            
+        $pdf = PDF::loadView('myPDF', $data);
+     
+        return $pdf->download('itsolutionstuff.pdf');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('success', 'Error al exportar los datos: ' . $e->getMessage());
+        }
+    }*/
 }
