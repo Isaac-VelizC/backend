@@ -3,12 +3,12 @@
 @section('content')
 
 <div class="position-relative iq-banner">
-    <div class="iq-navbar-header" style="height: 215px;">
+    <div class="iq-navbar-header" style="height: 150px;">
         <div class="container-fluid iq-container">
             <div class="row">
                 <div class="col-md-12">
                     <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
-                        <h1>Docentes</h1>
+                        <h5>{{ Breadcrumbs::render('Docentes') }}</h5>
                         <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Nuevo Docente</button>
                     </div>
                 </div>

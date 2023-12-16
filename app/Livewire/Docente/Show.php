@@ -7,7 +7,6 @@ use App\Models\Persona;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
-use Spatie\Permission\Models\Role;
 
 class Show extends Component
 {

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="iq-navbar-header" style="height: 215px;">
+<div class="iq-navbar-header" style="height: 150px;">
   <div class="iq-container">
       <div class="row">
           <div class="col-md-12">

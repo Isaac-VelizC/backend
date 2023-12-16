@@ -1,9 +1,27 @@
 <div>
-    <div class="iq-navbar-header" style="height: 80px;"></div> 
+    <div class="iq-navbar-header" style="height: 150px;">
+        <div class="container-fluid iq-container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
+                        <div>
+                          <h4>{{ Breadcrumbs::render($item->rol == 'P' ? 'Docentes.edit' : 'Trabajadores.edit' , $idDocente, $item) }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div> 
     <div class="conatiner-fluid content-inner mt-n5 py-0">
         @if(session('success'))
             <div id="myAlert" class="alert alert-left alert-success alert-dismissible fade show mb-3 alert-fade" role="alert">
                 <span>{{ session('success') }}</span>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if(session('error'))
+            <div id="myAlert" class="alert alert-left alert-danger alert-dismissible fade show mb-3 alert-fade" role="alert">
+                <span>{{ session('error') }}</span>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
@@ -43,11 +61,6 @@
             </div>
             <div class="col-xl-9 col-lg-8">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between">
-                        <div class="header-title">
-                            <h4 class="card-title">Docente {{$item->nombre}} {{$item->ap_paterno}} {{$item->ap_materno}}</h4>
-                        </div>
-                    </div>
                     <div class="card-body">
                         <div class="new-user-info">
                             <form class="needs-validation" novalidate id="formHabilitarDesabilitar" wire:submit.prevent='update'>

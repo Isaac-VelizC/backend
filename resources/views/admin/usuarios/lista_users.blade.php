@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="iq-navbar-header" style="height: 215px;">
+<div class="iq-navbar-header" style="height: 150px;">
   <div class="container-fluid iq-container">
       <div class="row">
           <div class="col-md-12">
-              <div class="flex-wrap d-flex justify-content-between align-items-center">
+              <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
                   <div>
-                     <h1 style="color: black">Todos los Usuarios</h1>
+                     <h4>{{ Breadcrumbs::render('Usuarios') }}</h4>
                   </div>
               </div>
           </div>

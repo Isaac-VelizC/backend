@@ -7,8 +7,8 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between flex-wrap">
-                        <p class="mb-md-0 mb-2 d-flex align-items-center">RECETAS</p>
+                    <div class="d-flex align-items-center justify-content-between flex-wrap text-black">
+                        <h4>{{ Breadcrumbs::render('recetas.all') }}</h4>
                         <div class="d-flex align-items-center flex-wrap">
                             <a class="btn btn-sm btn-icon btn-light" href="{{ route('recetas.add') }}">
                                 <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
