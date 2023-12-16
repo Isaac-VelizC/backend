@@ -198,7 +198,7 @@ class CursoController extends Controller
             $fileName = 'cursos_' . now()->format('Ymd_His') . '.xlsx';
             return Excel::download(new CursosExport($cursos), $fileName);
         } catch (\Exception $e) {
-          return redirect()->back()->with('success', 'Error al exportar los datos: ' . $e->getMessage());
+          return redirect()->back()->with('error', 'Error al exportar los datos: ' . $e->getMessage());
         }
     }
     /*public function exportarCurso() {
@@ -215,7 +215,7 @@ class CursoController extends Controller
      
         return $pdf->download('itsolutionstuff.pdf');
         } catch (\Exception $e) {
-            return redirect()->back()->with('success', 'Error al exportar los datos: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Error al exportar los datos: ' . $e->getMessage());
         }
     }*/
 }

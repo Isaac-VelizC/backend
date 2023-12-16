@@ -35,6 +35,12 @@
            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
        </div>
    @endif
+   @if(session('error'))
+       <div id="myAlert" class="alert alert-left alert-danger alert-dismissible fade show mb-3 alert-fade" role="alert">
+           <span>{{ session('error') }}</span>
+           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+       </div>
+   @endif
   <div class="row">
      <div class="col-sm-12">
         <div class="card">
