@@ -55,8 +55,6 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::post('/create-docentes-store', [UsersController::class, 'store'])->name('store.docentes');
     //Se usa para ambos
     //Route::post('/cambio/{id}/rol', [AdminController::class, 'cambiarRol'])->name('cambio.rol');
-    //Route::get('/show/{id}/personal', [AdminController::class, 'showPersonal'])->name('admin.P.show');
-    //Route::put('/create-personal-{id}-update', [AdminController::class, 'update'])->name('update.personal');
 
     Route::get('/show/{id}/docente', Show::class)->name('admin.D.show');
     Route::delete('admin/personal/{id}/{accion}', [UsersController::class, 'gestionarEstadoPersonal'])->name('admin.P.gestionarEstado');

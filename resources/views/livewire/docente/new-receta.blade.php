@@ -17,7 +17,7 @@
                 <div class="card-body">
                     <div class="new-user-info">
                         <form class="needs-validation" novalidate id="formHabilitarDesabilitar" wire:submit.prevent='guardarReceta'>
-                                @csrf
+                            @csrf
                             <div class="row">
                                 <div class="form-group col-md-12">
                                     <label class="form-label text-black"><span class="text-danger">*</span> Titulo</label>
@@ -26,7 +26,7 @@
                                 </div>                                    
                                 <div class="form-group col-md-12">
                                     <label class="form-label"><span class="text-black">Descripción</span> (Opcional)</label>
-                                    <textarea type="text" class="form-control" wire:model="recetaEdit.descripcion" placeholder="Escribe una breve descripción para la receta" required></textarea>
+                                    <textarea type="text" class="form-control" wire:model="recetaEdit.descripcion" placeholder="Escribe una breve descripción para la receta"></textarea>
                                     @error('recetaEdit.descripcion') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
                                 <div class="form-group col-md-12">
@@ -59,13 +59,13 @@
                                                     @foreach ($ingredientesSeleccionados as $item)
                                                         <li class="d-flex mb-4 align-items-center">
                                                             <img src="{{ asset('img/frutas-verduras.png')}}" alt="story-img" class="rounded-pill avatar-40">
-                                                            <div class="ms-3 flex-grow-1" style="cursor: pointer;" readonly data-bs-toggle="modal" data-bs-target="#ingedienteModal{{$item->id}}">
-                                                                <h6>{{ $item->nombre }}</h6>
-                                                                <p class="mb-0">1 mililitro</p>
+                                                            <div class="ms-3 flex-grow-1" style="cursor: pointer;" readonly wire:click="modalIngredietneCantidaUnid({{$item['id']}})">
+                                                                <h6>{{ $item['nombre'] }}</h6>
+                                                                <p class="mb-0">{{$item['cantidad']}} {{$item['unidades']}}</p>
                                                             </div>
-                                                            @include('admin.recetas.widgets.modal_ingrediente', ['idModal' => $item->id])
+                                                            @include('admin.recetas.widgets.modal_ingrediente', ['idModal' => $item['id'], 'abrirModalIngrediente' => 'abrirModalIngrediente'])
                                                             <div class="dropdown">
-                                                                <i class="bi bi-trash btn" wire:click="eliminarIngrediente({{ $item->id }})"></i>
+                                                                <i class="bi bi-trash btn" wire:click="eliminarIngrediente({{ $item['id'] }})"></i>
                                                             </div>
                                                         </li>
                                                     @endforeach
@@ -110,19 +110,19 @@
                                     <label class="form-label"><span class="text-danger">*</span> Ocasión</label>
                                     <div class="row">
                                         <div class="form-group col-md-12">
-                                            <input type="radio" wire:model="radios" class="form-check-input">
+                                            <input type="checkbox" wire:model="ocasion" value="Desayuno" class="form-check-input">
                                             <label class="form-check-label">Desayuno</label>
-                                            <input type="radio" wire:model="radios" class="form-check-input">
-                                            <label class="form-check-label" for>Comida</label>
-                                            <input type="radio" wire:model="radios" class="form-check-input">
+                                            <input type="checkbox" wire:model="ocasion" value="Comida" class="form-check-input">
+                                            <label class="form-check-label">Comida</label>
+                                            <input type="checkbox" wire:model="ocasion" value="Cena" class="form-check-input">
                                             <label class="form-check-label">Cena</label>
-                                            <input type="radio" wire:model="radios" class="form-check-input">
+                                            <input type="checkbox" wire:model="ocasion" value="Snack" class="form-check-input">
                                             <label class="form-check-label">Snack</label>
-                                            <input type="radio" wire:model="radios" class="form-check-input">
+                                            <input type="checkbox" wire:model="ocasion" value="Postre" class="form-check-input">
                                             <label class="form-check-label">Postre</label>
                                         </div>
                                     </div>
-                                    @error('recetaEdit.ocasion') <span class="text-danger">{{ $message }}</span> @enderror
+                                    @error('ocasion') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
                             </div>
                             <div class="row">
@@ -137,4 +137,13 @@
             </div>
         </div>
     </div>
+    @script
+        <script>
+            $wire.on('abrirModalIngrediente', (data) => {
+                var modalId = 'ingedienteModal' + data;
+                var modal = new bootstrap.Modal(document.getElementById(modalId));
+                modal.show();
+            });
+        </script>
+    @endscript
 </div>

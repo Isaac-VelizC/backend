@@ -4,17 +4,18 @@ namespace App\Livewire\Docente;
 
 use App\Models\Ingrediente;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class NewReceta extends Component
 {
-    
-    public $recetaEdit = ['titulo' => ''], $ingrediente = '';
+    use WithFileUploads;
+    public $recetaEdit = ['titulo' => '', 'descripcion' => '', 'imagen' => ''], $ingrediente = '';
     public $pasoEdit = ['descripcion' => ''];
     public $tiempo = 0, $porcion = 2;
-    public $pasos = [], $ingredientesSeleccionados = [];
+    public $ingreditenteDatos = ['cantidad' => 1, 'unidades' => ''];
+    public $pasos = [], $ingredientesSeleccionados = [], $ocasion = [], $ingredienteEdit = [];
     public $contadorPasos = 1, $botonActivado = false;
-    public function activarBoton()
-    {
+    public function activarBoton() {
         $this->botonActivado = true;
     }
     public function addPaso() {
@@ -50,19 +51,44 @@ class NewReceta extends Component
     }
     public function seleccionarIngrediente($id) {
         $ingrediente = Ingrediente::find($id);
-        if ($ingrediente) {
+        /*if ($ingrediente) {
             $this->ingredientesSeleccionados[] = $ingrediente;
+        }*/
+        if ($ingrediente) {
+            $this->ingredientesSeleccionados[] = [
+                'id' => $ingrediente->id,
+                'nombre' => $ingrediente->nombre,
+                'cantidad' => 1,
+                'unidades' => '',
+            ];
         }
         $this->ingrediente = '';
     }
-
-    
+    public function abrirModalEdicion($ingrediente) {
+        $this->ingredienteEdit = $ingrediente;
+        $this->dispatch('abrirModalEdicion', [$ingrediente['id']]);
+    }
+    public function guardarCantidadUnidades($id) {
+        $indice = array_search($id, array_column($this->ingredientesSeleccionados, 'id'));
+        if ($indice !== false) {
+            $this->ingredientesSeleccionados[$indice]['cantidad'] = $this->ingreditenteDatos['cantidad'];
+            $this->ingredientesSeleccionados[$indice]['unidades'] = $this->ingreditenteDatos['unidades'];
+        }
+        $this->reset(['ingreditenteDatos']);
+    }
+    public function modalIngredietneCantidaUnid($id) {
+        $indice = array_search($id, array_column($this->ingredientesSeleccionados, 'id'));
+        if ($indice !== false) {
+            $this->ingreditenteDatos['cantidad'] = $this->ingredientesSeleccionados[$indice]['cantidad'];
+            $this->ingreditenteDatos['unidades'] = $this->ingredientesSeleccionados[$indice]['unidades'];
+        }
+        $this->dispatch('abrirModalIngrediente', $id);
+    }
     public function render()
     {
         return view('livewire.docente.new-receta')->extends('layouts.app')->section('content');
     }
-    public function numeroALetras($numero)
-    {
+    public function numeroALetras($numero) {
         $unidades = ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve'];
         $decenas = ['', '', 'veinte', 'treinta', 'cuarenta', 'cincuenta', 'sesenta', 'setenta', 'ochenta', 'noventa'];
         if ($numero < 10) {
@@ -79,14 +105,19 @@ class NewReceta extends Component
     }
     public function eliminarIngrediente($id) {
         $this->ingredientesSeleccionados = array_filter($this->ingredientesSeleccionados, function ($ingrediente) use ($id) {
-            return $ingrediente->id != $id;
+            return $ingrediente['id'] != $id;
         });
     }
     public function guardarReceta()
     {
-        // Tu lógica para guardar la receta
+        //$this->recetaEdit
+        //$this->porcion; $this->tiempo
+        //$this->pasos; $this->ocasion
+        dd($this->ingredientesSeleccionados);
 
-        // Después de guardar, puedes realizar otras acciones y restablecer el estado del botón
+        $this->resetForm();
+    }
+    public function resetForm() {
         $this->botonActivado = false;
         $this->recetaEdit = ['titulo' => ''];
     }
