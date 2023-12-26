@@ -24,6 +24,22 @@
                         </div>
                     </div>
                     <p>{!! $materia->descripcion !!}</p>
+                    @if ($materia->documentos)
+                        @foreach ($materia->documentos as $file)
+                            <ol class="list-group">
+                                <a href="{{ asset($file->url) }}">
+                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                        <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
+                                            <path d="M22 24h-18v-22h12l6 6v16zm-7-21h-10v20h16v-14h-6v-6zm-1-2h-11v21h-1v-22h12v1zm2 7h4.586l-4.586-4.586v4.586z"/>
+                                        </svg>
+                                        <div class="me-auto">
+                                            <div class="fw-bold">{{ $file->nombre }}</div>
+                                        </div>
+                                    </li>
+                                </a>
+                            </ol>
+                        @endforeach
+                    @endif
                 </div>
                 @if(session('message'))
                     <div id="myAlert" class="alert alert-left alert-success alert-dismissible fade show mb-3 alert-fade" role="alert">

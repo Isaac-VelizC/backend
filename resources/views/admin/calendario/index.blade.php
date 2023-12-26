@@ -56,7 +56,7 @@
                         <input type="hidden" id="schedule-start-date" name="start" aria-describedby="helpId" required>
                         <div class="form-group col-md-12">
                             <label for="schedule-end-date">Fin</label>
-                            <input type="date" class="form-control" id="schedule-end-date" name="end" aria-describedby="helpId" required>
+                            <input type="date" class="form-control" id="schedule-end-date" name="end" aria-describedby="helpId" required min="{{ now()->format('Y-m-d') }}">
                         </div>
                     </div>
                 </div>

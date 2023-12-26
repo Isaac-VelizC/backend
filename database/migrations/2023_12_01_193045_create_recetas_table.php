@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('descripcion')->nullable();
             $table->integer('porcion');
             $table->integer('tiempo')->nullable();
-            $table->string('ocasion')->nullable();
+            $table->json('ocasion')->nullable();
             $table->text('consejos')->nullable();
             $table->timestamps();
         });

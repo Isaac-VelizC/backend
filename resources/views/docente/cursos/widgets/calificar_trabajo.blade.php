@@ -14,6 +14,9 @@
             <h3 class="block-title">Listado de Estudiantes</h3>
          </div>
          <div class="card-body p-0">
+            @error("errorNota")
+               <span class="text-danger">{{ $message }}</span>
+            @enderror
             <div class="table-responsive pricing pt-2">
                <table id="my-table" class="table mb-0">
                   <tbody>

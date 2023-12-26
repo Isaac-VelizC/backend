@@ -7,6 +7,12 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
+        @if(session('error'))
+            <div id="myAlert" class="alert alert-left alert-danger alert-dismissible fade show mb-3 alert-fade" role="alert">
+                <span>{{ session('error') }}</span>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="col-xl-12 col-lg-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
@@ -16,25 +22,25 @@
                 </div>
                 <div class="card-body">
                     <div class="new-user-info">
-                        <form class="needs-validation" novalidate id="formHabilitarDesabilitar" wire:submit.prevent='guardarReceta'>
+                        <form class="needs-validation" novalidate id="formHabilitarDesabilitar" wire:submit.prevent='guardarReceta' enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-6">
                                     <label class="form-label text-black"><span class="text-danger">*</span> Titulo</label>
                                     <input type="text" class="form-control" wire:model="recetaEdit.titulo" placeholder="Dale un nombre a tu receta" required wire:change="activarBoton">
                                     @error('recetaEdit.titulo') <span class="text-danger">{{ $message }}</span> @enderror
-                                </div>                                    
+                                </div>  
+                                <div class="form-group col-md-6">
+                                    <label class="form-label"><span class="text-black">Foto</span> (Opcional)</label>
+                                    <input type="file" class="form-control" wire:model="imagen">
+                                    @error('imagen') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>                                  
                                 <div class="form-group col-md-12">
                                     <label class="form-label"><span class="text-black">Descripción</span> (Opcional)</label>
                                     <textarea type="text" class="form-control" wire:model="recetaEdit.descripcion" placeholder="Escribe una breve descripción para la receta"></textarea>
                                     @error('recetaEdit.descripcion') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
-                                <div class="form-group col-md-12">
-                                    <label class="form-label"><span class="text-black">Foto</span> (Opcional)</label>
-                                    <input type="file" class="form-control" wire:model="recetaEdit.imagen">
-                                    @error('recetaEdit.imagen') <span class="text-danger">{{ $message }}</span> @enderror
-                                </div>
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-4">
                                     <label class="form-label text-black">Porciones</label>
                                     <div class="input-group">
                                         <button type="button" class="btn btn-light btn-sm" wire:click='decrementPorcion'>
@@ -45,6 +51,35 @@
                                             <i class="bi bi-plus"></i>
                                         </button>
                                     </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="form-label"><span class="text-black">Tiempo en minutos</span> (Opcional)</label>
+                                    <div class="input-group">
+                                        <button type="button" class="btn btn-light btn-sm" wire:click='decrementar'>
+                                            <i class="bi bi-dash"></i>
+                                        </button>
+                                        <input style="width: 100px; border:none; text-align: center;" type="numeric" wire:model="tiempo" readonly>
+                                        <button type="button" class="btn btn-light btn-sm" wire:click='incrementar'>
+                                            <i class="bi bi-plus"></i>
+                                        </button>
+                                    </div>
+                                    @error('tiempo') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="form-label text-black"><span class="text-danger">*</span> Ocasión</label>
+                                    <div class="row">
+                                        <div class="form-group col-md-12">
+                                            <input type="checkbox" wire:model="ocasion" value="Desayuno" class="form-check-input">
+                                            <label class="form-check-label">Desayuno</label>
+                                            <input type="checkbox" wire:model="ocasion" value="Comida" class="form-check-input">
+                                            <label class="form-check-label">Comida</label>
+                                            <input type="checkbox" wire:model="ocasion" value="Cena" class="form-check-input">
+                                            <label class="form-check-label">Cena</label>
+                                            <input type="checkbox" wire:model="ocasion" value="Postre" class="form-check-input">
+                                            <label class="form-check-label">Postre</label>
+                                        </div>
+                                    </div>
+                                    @error('ocasion') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label class="form-label text-black"><span class="text-danger">*</span>Ingredientes</label>
@@ -92,37 +127,6 @@
                                         </a>
                                     </div>
                                     @error('pasoEdit.descripcion') <span class="text-danger">{{ $message }}</span> @enderror
-                                </div>
-                                <div class="form-group col-md-12">
-                                    <label class="form-label"><span class="text-black">Tiempo en minutos</span> (Opcional)</label>
-                                    <div class="input-group">
-                                        <button type="button" class="btn btn-light btn-sm" wire:click='decrementar'>
-                                            <i class="bi bi-dash"></i>
-                                        </button>
-                                        <input style="width: 100px; border:none; text-align: center;" type="numeric" wire:model="tiempo" readonly>
-                                        <button type="button" class="btn btn-light btn-sm" wire:click='incrementar'>
-                                            <i class="bi bi-plus"></i>
-                                        </button>
-                                    </div>
-                                    @error('tiempo') <span class="text-danger">{{ $message }}</span> @enderror
-                                </div>
-                                <div class="form-group col-md-12">
-                                    <label class="form-label"><span class="text-danger">*</span> Ocasión</label>
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
-                                            <input type="checkbox" wire:model="ocasion" value="Desayuno" class="form-check-input">
-                                            <label class="form-check-label">Desayuno</label>
-                                            <input type="checkbox" wire:model="ocasion" value="Comida" class="form-check-input">
-                                            <label class="form-check-label">Comida</label>
-                                            <input type="checkbox" wire:model="ocasion" value="Cena" class="form-check-input">
-                                            <label class="form-check-label">Cena</label>
-                                            <input type="checkbox" wire:model="ocasion" value="Snack" class="form-check-input">
-                                            <label class="form-check-label">Snack</label>
-                                            <input type="checkbox" wire:model="ocasion" value="Postre" class="form-check-input">
-                                            <label class="form-check-label">Postre</label>
-                                        </div>
-                                    </div>
-                                    @error('ocasion') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
                             </div>
                             <div class="row">

@@ -22,6 +22,18 @@
          </div>
       </div>
       <div class="{{ $Rolestudiante ? 'col-lg-5' : 'col-lg-6'}}">
+         @if(session('success'))
+            <div id="myAlert" class="alert alert-left alert-success alert-dismissible fade show mb-3 alert-fade" role="alert">
+               <span>{{ session('success') }}</span>
+               <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+         @endif
+         @if(session('error'))
+            <div id="myAlert" class="alert alert-left alert-danger alert-dismissible fade show mb-3 alert-fade" role="alert">
+               <span>{{ session('error') }}</span>
+               <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+         @endif
              <div class="card">
                <div class="card-header">
                   <div class="header-title">

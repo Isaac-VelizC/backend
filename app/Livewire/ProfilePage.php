@@ -12,10 +12,7 @@ class ProfilePage extends Component
 {
     
     use WithFileUploads;
-    public $info, $user, $famil, $perfil, $Rolestudiante = false, $Roldocente = false;
-    protected $rules = [
-        'perfil' => 'image|mimes:jpeg,png,jpg|max:2048',
-    ];    
+    public $info, $user, $famil, $perfil, $Rolestudiante = false, $Roldocente = false;   
     public function mount()
     {
         $this->user = User::find(auth()->user()->id);
@@ -42,7 +39,7 @@ class ProfilePage extends Component
     public function updatedPerfil() {
         try {
             $this->validateOnly('perfil', [
-                'perfil' => 'image|mimes:jpeg,png,jpg|max:2048',
+                'perfil' => 'image|mimes:jpeg,png,jpg|max:5120',
             ]);
             if ($this->perfil) {
                 $path = $this->perfil->store('public/photos');

@@ -7,40 +7,40 @@
             </div>
             <form class="needs-validation" novalidate method="POST" action="{{ $formType ? route('store.docentes') : route('admin.personal.store') }}" enctype="multipart/form-data">
                 @csrf
-                <div class="modal-body">
+                <div class="modal-body text-black">
                     <div class="row">
                         <div class="col-sm-12 col-lg-12">
                             <div class="row">
                                 <div class="form-group col-md-12">
-                                    <label class="form-label" for="fname">Nombre de docente:</label>
+                                    <label class="form-label" for="fname">Nombre: *</label>
                                     <input type="text" class="form-control" id="fname" name="nombre" value="{{ old('nombre') }}" placeholder="Nombre" required>
                                     @error('nombre')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label class="form-label" for="ap_pat">Apellido Paterno:</label>
+                                    <label class="form-label" for="ap_pat">Primer Apellido:</label>
                                     <input type="text" class="form-control" id="ap_pat" name="ap_pat" value="{{ old('ap_pat') }}" placeholder="Apellido Paterno">
                                     @error('ap_pat')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label class="form-label" for="ap_mat">Apellido Materno:</label>
+                                    <label class="form-label" for="ap_mat">Segundo Apellido:</label>
                                     <input type="text" class="form-control" id="ap_mat" name="ap_mat" value="{{ old('ap_mat') }}" placeholder="Apellido Materno">
                                     @error('ap_mat')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label class="form-label" for="ci">Cedula de Identidad:</label>
+                                    <label class="form-label" for="ci">Cedula de Identidad: *</label>
                                     <input type="text" class="form-control" id="ci" name="ci" value="{{ old('ci') }}" placeholder="Cedula de Identidad" required>
                                     @error('ci')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group col-sm-6">
-                                    <label class="form-label">Genero:</label>
+                                    <label class="form-label">Genero: *</label>
                                     <select name="genero" class="selectpicker form-control" data-style="py-0" required>
                                         <option value="" selected>Seleccionar</option>
                                         <option value="Hombre" {{ old('Hombre') }}>Hombre</option>
@@ -51,14 +51,14 @@
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label class="form-label" for="mobno">Numero Celular:</label>
-                                    <input type="text" class="form-control" id="mobno" name="telefono" value="{{ old('telefono') }}" placeholder="Numero de Celular">
+                                    <label class="form-label" for="mobno">Numero Celular: *</label>
+                                    <input type="text" class="form-control" id="mobno" name="telefono" value="{{ old('telefono') }}" placeholder="Numero de Celular" required>
                                     @error('telefono')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label class="form-label" for="email">E mail:</label>
+                                    <label class="form-label" for="email">E mail: *</label>
                                     <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" placeholder="E mail" required>
                                     @error('email')
                                         <div class="alert alert-danger">{{ $message }}</div>
@@ -66,8 +66,8 @@
                                 </div>
                                 @if (!$formType)                    
                                     <div class="form-group col-md-12">
-                                        <label class="form-label" for="rol">Rol:</label>
-                                        <input type="number" class="form-control" id="rol" name="rol" value="{{ old('rol') }}">
+                                        <label class="form-label" for="rol">Rol: *</label>
+                                        <input type="number" class="form-control" id="rol" name="rol" value="{{ old('rol') }}" placeholder="Seleccionar Rol" required>
                                         @error('rol')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror

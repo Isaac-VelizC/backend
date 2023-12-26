@@ -10,27 +10,27 @@
             @csrf
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label class="form-label">Nombre del Familiar:</label>
+                        <label class="form-label">Nombre del Familiar: *</label>
                         <input type="text" class="form-control" wire:model="contactoEdit.nombre" placeholder="Nombre" required>
                         @error('contactoEdit.nombre') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="form-group col-md-6">
-                        <label class="form-label">Apellido Paterno:</label>
+                        <label class="form-label">Primer Apellido:</label>
                         <input type="text" class="form-control" wire:model="contactoEdit.paterno" placeholder="Apellido Paterno">
                         @error('contactoEdit.paterno') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="form-group col-md-6">
-                        <label class="form-label">Apellido Materno:</label>
+                        <label class="form-label">Segundo Apellido:</label>
                         <input type="text" class="form-control" wire:model="contactoEdit.materno" placeholder="Apellido Materno">
                         @error('contactoEdit.materno') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="form-group col-md-6">
-                        <label class="form-label" for="ci">Cedula de Identidad:</label>
+                        <label class="form-label" for="ci">Cedula de Identidad: *</label>
                         <input type="text" class="form-control" wire:model="contactoEdit.cedula" placeholder="Cedula de Identidad" required>
                         @error('contactoEdit.cedula') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="form-group col-sm-6">
-                        <label class="form-label">Genero:</label>
+                        <label class="form-label">Genero: *</label>
                         <select class="selectpicker form-control" wire:model="contactoEdit.genero" required>
                             <option selected>Seleccionar Genero</option>
                             <option value="Hombre">Hombre</option>
@@ -39,7 +39,7 @@
                         @error('contactoEdit.genero') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="form-group col-md-6">
-                        <label class="form-label" for="mobno">Numero Celular:</label>
+                        <label class="form-label" for="mobno">Numero Celular: *</label>
                         <input type="text" class="form-control" wire:model="contactoEdit.celular" placeholder="Numero de Celular" required>
                         @error('contactoEdit.celular') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>

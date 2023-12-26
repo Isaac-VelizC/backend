@@ -1,7 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="iq-navbar-header" style="height: 80px;"></div> 
+<div class="iq-navbar-header" style="height: 170px;">
+   <div class="container-fluid iq-container text-black">
+       <div class="row">
+           <div class="col-md-12">
+               <h5>{{ Breadcrumbs::render('Materias.show', $curso) }}</h5>
+           </div>
+       </div>
+   </div>
+</div>
 
 <div class="conatiner-fluid content-inner mt-n5 py-0">
    @if(session('success'))
@@ -59,16 +67,6 @@
                                        <td class="text-center child-cell">
                                           <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                              <path  d="M23 7L6.44526 17.8042C5.85082 18.1921 5.0648 17.9848 4.72059 17.3493L1 10.4798" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                          </svg>
-                                       </td>
-                                       <td class="text-center child-cell active">
-                                          <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                             <path d="M23 7L6.44526 17.8042C5.85082 18.1921 5.0648 17.9848 4.72059 17.3493L1 10.4798" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                          </svg>
-                                       </td>
-                                       <td class="text-center child-cell">
-                                          <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                             <path d="M23 7L6.44526 17.8042C5.85082 18.1921 5.0648 17.9848 4.72059 17.3493L1 10.4798" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                                           </svg>
                                        </td>
                                     </tr>

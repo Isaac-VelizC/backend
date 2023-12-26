@@ -23,6 +23,10 @@ class CursoHabilitado extends Model
         'fecha_fin',
         'estado'
     ];
+    public function documentos()
+    {
+        return $this->hasMany(DocumentoCurso::class, 'curso_id');
+    }
     public function asistencias()
     {
         return $this->hasMany(Asistencia::class, 'curso_id', 'curso_id');

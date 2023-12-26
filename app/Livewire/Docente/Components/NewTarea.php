@@ -4,8 +4,6 @@ namespace App\Livewire\Docente\Components;
 
 use App\Models\CursoHabilitado;
 use App\Models\DocumentoDocente;
-use App\Models\Tema;
-use App\Models\TipoTrabajo;
 use App\Models\Trabajo;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -18,20 +16,29 @@ class NewTarea extends Component
     public CursoHabilitado $materia;
     public $tarea = ['titulo' => '', 'tipo' => '', 'tema' => '', 'fin' => '', 'con_nota' => false, 'nota' => '100', 'descripcion' => ''];
     public $files = [], $filesTarea;
+    protected $listeners = ['refreshNewTareaComponent' => 'obtenerIdTarea'];
+
+    public function mount($idCurso) {
+        $this->idCurso = $idCurso;
+    }
+
+    public function obtenerIdTarea($tareaIds) {
+        // Recibe el ID de la tarea y almacénalo en la propiedad
+        $this->idTarea = $tareaIds[0]; // Accede al primer elemento del array
+    }
     
-    public function mount($id) {
-        $this->idCurso = $id;
-        $this->materia = CursoHabilitado::findOrFail($id);
-        $this->temasCurso = Tema::where('curso_id', $id)->get();
-        $this->tipoTrabajo = TipoTrabajo::all();
-        $this->tarea['tipo'] = optional($this->tipoTrabajo->first())->id;
+    public function render() {
+        $this->archivosTarea();
+        return view('livewire.docente.components.new-tarea')
+            ->extends('layouts.app')
+            ->section('content')
+            ->with([
+                'filesTarea' => $this->filesTarea,
+            ]);
     }
-    public function render()
-    {
-        return view('livewire.docente.components.new-tarea')->extends('layouts.app')
-        ->section('content'); 
-    }
+
     public function guardarTarea() {
+        dd('datos');
         if ($this->tarea['nota'] === '' || (floatval($this->tarea['nota']) === 0 || !ctype_digit((string)$this->tarea['nota']))) {
             $this->tarea['nota'] = '100';
         }
@@ -65,6 +72,7 @@ class NewTarea extends Component
     
     public function updatedFiles() {
         try {
+            dd($this->idTarea);
             if (!$this->idTarea) {
                 $this->createTarea();
             }
@@ -83,7 +91,7 @@ class NewTarea extends Component
                 ]);
             }
             $this->files = [];
-            $this->archivosTarea();
+            $this->dispatch('archivosActualizados');
         } catch (\Exception $e) {
             session()->flash('error', 'Error inesperado: ' . $e->getMessage());
         }

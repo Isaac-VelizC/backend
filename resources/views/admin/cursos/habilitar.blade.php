@@ -1,7 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="iq-navbar-header" style="height: 90px;"></div>
+<div class="iq-navbar-header" style="height: 170px;">
+    <div class="container-fluid iq-container text-black">
+        <div class="row">
+            <div class="col-md-12">
+                <h5>{{ Breadcrumbs::render( $isEditing ? 'Materias.edit' : 'Materias.create', $materia) }}</h5>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="conatiner-fluid content-inner mt-n5 py-0">
     <div class="row">                
         <div class="col-sm-12 col-lg-12">
@@ -23,7 +31,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-12 col-lg-4">
-                                <form class="needs-validation" novalidate method="POST" action="{{ $isEditing ? route('admin.asignar.actualizar-curso', $asignado->id) : route('admin.asignar.guardar.curso') }}" onsubmit="return validateForm()">
+                                <form class="needs-validation text-black" novalidate method="POST" action="{{ $isEditing ? route('admin.asignar.actualizar-curso', $asignado->id) : route('admin.asignar.guardar.curso') }}" onsubmit="return validateForm()">
                                     @csrf
                                     @if($isEditing)
                                         @method('PUT')
@@ -43,7 +51,7 @@
                                             @endif
                                         </div>
                                         <div class="form-group">
-                                            <label class="form-label" for="docenteSelect">Docentes</label>
+                                            <label class="form-label" for="docenteSelect">Docentes: *</label>
                                             <select name="docente" class="form-select" id="docenteSelect" required>
                                                 <option value="" selected disabled>Seleccionar</option>
                                                 @if ($docentes->count() > 0)
@@ -59,7 +67,7 @@
                                             @enderror
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label class="form-label" for="aulaSelect">Aulas</label>
+                                            <label class="form-label" for="aulaSelect">Aulas: *</label>
                                             <select name="aula" class="form-select" id="aulaSelect" required>
                                                 <option value="" selected disabled>Seleccionar</option>
                                                 @if ($aulas->count() > 0)
@@ -75,27 +83,25 @@
                                             @enderror
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label class="form-label" for="cupoid">Cupos:</label>
+                                            <label class="form-label" for="cupoid">Cupos: *</label>
                                             <input type="number" class="form-control" id="cupoid" name="cupo" value="{{ old('cupo', $isEditing ? $asignado->cupo : '') }}" required min="1">
                                             @error('cupo')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                        <div class="row">
-                                            <div class="form-group col-md-6">
-                                                <label class="form-label" for="fechaIniId">Fecha Inicio</label>
-                                                <input type="date" class="form-control" id="fechaIniId" name="fechaInicio" value="{{ old('fechaInicio', $isEditing ? $asignado->fecha_ini : '') }}" readonly>
-                                                @if($errors->has('fechaInicio'))
-                                                    <div class="alert alert-danger">{{ $errors->first('fechaInicio') }}</div>
-                                                @endif
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="form-label" for="fechaFinId">Fecha Fin</label>
-                                                <input type="date" class="form-control" id="fechaFinId" name="fechaFin" value="{{ old('fechaFin', $isEditing ? $asignado->fecha_fin : '') }}" readonly>
-                                                @if($errors->has('fechaFin'))
-                                                    <div class="alert alert-danger">{{ $errors->first('fechaFin') }}</div>
-                                                @endif
-                                            </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="form-label" for="fechaIniId">Fecha Inicio: *</label>
+                                            <input type="date" class="form-control" id="fechaIniId" name="fechaInicio" value="{{ old('fechaInicio', $isEditing ? $asignado->fecha_ini : '') }}" readonly required>
+                                            @if($errors->has('fechaInicio'))
+                                                <div class="alert alert-danger">{{ $errors->first('fechaInicio') }}</div>
+                                            @endif
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="form-label" for="fechaFinId">Fecha Fin: *</label>
+                                            <input type="date" class="form-control" id="fechaFinId" name="fechaFin" value="{{ old('fechaFin', $isEditing ? $asignado->fecha_fin : '') }}" readonly required>
+                                            @if($errors->has('fechaFin'))
+                                                <div class="alert alert-danger">{{ $errors->first('fechaFin') }}</div>
+                                            @endif
                                         </div>
                                     </div>
                                     <button type="submit" class="btn btn-primary">{{ $isEditing ? 'Actualizar' : 'Habilitar' }}</button>

@@ -8,13 +8,13 @@
     <form wire:submit.prevent='cambiarPassword'>
         @csrf
         <div class="form-group">
-            <label class="form-label">Contraseña:</label>
-            <input type="password" class="form-control" wire:model="pass" placeholder="***********">
+            <label class="form-label">Contraseña: *</label>
+            <input type="password" class="form-control" wire:model="pass" placeholder="***********" required>
             @error('pass') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
         <div class="form-group">
-            <label class="form-label">Confirmar Contraseña:</label>
-            <input type="password" class="form-control" wire:model="passConfirm" placeholder="***********">
+            <label class="form-label">Confirmar Contraseña: *</label>
+            <input type="password" class="form-control" wire:model="passConfirm" placeholder="***********" required>
             @error('passConfirm') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
         <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>

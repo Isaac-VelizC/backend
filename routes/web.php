@@ -88,7 +88,6 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::get('/asignados/cursos/{id}/edit', [CursoController::class, 'editCursoAsignado'])->name('admin.asigando.edit');
     Route::post('/asignados/cambiar/{id}', [CursoController::class, 'gestionarEstadoCurso'])->name('admin.cursos.cambiarEstado');
     Route::get('/borrar/cambiar-estado/{id}', [CursoController::class, 'deleteCursoActivo'])->name('admin.borrar.curso.activo');
-
     ///pagos
     Route::get('/admin-pagos-all', [PagosController::class, 'allPagos'])->name('admin.lista.pagos');
     Route::get('/pagos/formulario/hjfse', FormPagos::class)->name('admin.create.pago');
@@ -102,14 +101,23 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::get('/evaluacion/add/docente', EvaluacionDocente::class)->name('evaluacion.docente');
     //Rutas para exportar
     Route::get('/cursos/exp/pdf', [CursoController::class, 'exportarCurso'])->name('export.cursos');
+    //Rutasp para reportes
+    Route::get('/estudiantes/reporte/export', [AdminController::class, 'viewEstudiantes'])->name('admin.estudiantes.informe');
+    Route::get('/asistencias/reporte/export', [AdminController::class, 'viewAsistencias'])->name('admin.asistencias.informe');
+    Route::get('/materias/reporte/export', [AdminController::class, 'viewMaterias'])->name('admin.materias.informe');
+    Route::get('/pagos/reporte/export', [AdminController::class, 'viewPagos'])->name('admin.pagos.informe');
 });
 
 Route::middleware(['auth', 'role:Docente'])->group(function () {
     Route::get('/chef-dashboard', [DocenteController::class, 'index'])->name('docente.home');
-    Route::get('/trabajo/nueva/post/{id}', NewTarea::class)->name('nueva.tarea.docente');
+    //Route::get('/trabajo/nueva/post/{id}', NewTarea::class)->name('nueva.tarea.docente');
+    Route::get('/trabajo/nueva/post/{id}', [DocenteCursoController::class, 'createTareaNew'])->name('nueva.tarea.docente');
+    Route::post('/trabajo/tarea/new', [DocenteCursoController::class, 'crearTarea'])->name('guardar.tarea.new');
+    Route::post('/crear/tarea', [DocenteCursoController::class, 'tareaAutomatico'])->name('crear.tarea.automatico');
     Route::get('/calificando/tarea/{id}', CalificarTarea::class)->name('calificar.tarea.estudiante');
     Route::post('/planificacion/curso/{id}', [DocenteController::class, 'planificacion'])->name('guardar.planificacion');
     Route::get('/criterios/tareas/{id}/eval', CriteriosTrabajos::class)->name('docente.tareas.criterios');
+    Route::post('/selectReceta',[DocenteCursoController::class, 'selectReceta'])->name('search.recetas');
 });
 Route::middleware(['auth', 'role:Estudiante'])->group(function () {
     Route::get('/estud-dashboard', [EstudianteController::class, 'index'])->name('estudiante.home');
@@ -123,6 +131,8 @@ Route::middleware(['auth'])->group(function () {
     //cocina Ingredientes
     Route::get('/ingretientes-all', [CocinaController::class, 'allIngredientes'])->name('admin.ingredientes');
     Route::get('/recetas-all/dsgsa', [CocinaController::class, 'allrecetas'])->name('admin.recetas');
+    Route::get('/recetas-show/{id}', [CocinaController::class, 'showReceta'])->name('admin.show.receta');
+    Route::delete('/recetas-eliminar/{id}', [CocinaController::class, 'deleteReceta'])->name('admin.receta.eliminar');
     Route::post('/select',[CocinaController::class, 'selectIngredientes'])->name('search.ingredientes');
     Route::post('/admin/buscar-ingredientes', [CocinaController::class, 'buscarIngredientes'])->name('admin.buscar-ingredientes');
     Route::get('/agregar-receta/nueva', NewReceta::class)->name('recetas.add');

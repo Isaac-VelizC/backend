@@ -3,13 +3,16 @@
 namespace App\Livewire\Docente;
 
 use App\Models\Ingrediente;
+use App\Models\IngredienteReceta;
+use App\Models\PasosReceta;
+use App\Models\Receta;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class NewReceta extends Component
 {
     use WithFileUploads;
-    public $recetaEdit = ['titulo' => '', 'descripcion' => '', 'imagen' => ''], $ingrediente = '';
+    public $recetaEdit = ['titulo' => '', 'descripcion' => ''], $ingrediente = '', $imagen;
     public $pasoEdit = ['descripcion' => ''];
     public $tiempo = 0, $porcion = 2;
     public $ingreditenteDatos = ['cantidad' => 1, 'unidades' => ''];
@@ -108,17 +111,86 @@ class NewReceta extends Component
             return $ingrediente['id'] != $id;
         });
     }
-    public function guardarReceta()
-    {
-        //$this->recetaEdit
-        //$this->porcion; $this->tiempo
-        //$this->pasos; $this->ocasion
-        dd($this->ingredientesSeleccionados);
-
-        $this->resetForm();
+    public function guardarReceta() {
+        try {
+            $this->validate([
+                'recetaEdit.titulo' => 'required|string|max:255',
+                'recetaEdit.descripcion' => 'nullable|string',
+                'imagen' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+                'porcion' => 'required|numeric',
+                'tiempo' => 'nullable|numeric',
+                'pasos.*.descripcion' => 'required|string',
+                'ingredientesSeleccionados' => 'required|array|min:1', // Al menos un ingrediente requerido
+                'ingredientesSeleccionados.*.cantidad' => 'required|numeric',
+                'ingredientesSeleccionados.*.unidades' => 'required|string',
+                'ocasion' => 'required|array|min:1', // Al menos un elemento en ocasion
+            ]);
+            $receta = new Receta();
+            $receta->fill([
+                'titulo' => $this->recetaEdit['titulo'],
+                'descripcion' => $this->recetaEdit['descripcion'],
+                'porcion' => $this->porcion,
+                'tiempo' => $this->tiempo,
+                'ocasion' => json_encode($this->ocasion)
+            ]);
+            if ($this->imagen) {
+                $path = $this->imagen->store('public/recetas');
+                $path = str_replace('public/', '', $path);
+                $receta->imagen = 'storage/'.$path;
+            }
+            $receta->save();
+    
+            $this->guardarPasosReceta($receta->id);
+            $this->guardarIngredientesReceta($receta->id);
+    
+            session()->flash('success', 'Receta registrada con éxito');
+            $this->resetForm();
+            return redirect()->route('admin.show.receta', $receta->id);
+        } catch (\Throwable $th) {
+            session()->flash('error', $th->getMessage());
+        }
+    }
+    private function guardarPasosReceta($recetaId) {
+        foreach ($this->pasos as $paso) {
+            PasosReceta::create([
+                'paso' => $paso['descripcion'],
+                'numero' => $paso['numero'],
+                'receta_id' => $recetaId,
+            ]);
+        }
+    }
+    private function guardarIngredientesReceta($recetaId) {
+        foreach ($this->ingredientesSeleccionados as $ingrediente) {
+            IngredienteReceta::create([
+                'ingrediente_id' => $ingrediente['id'],
+                'cantidad' => $ingrediente['cantidad'],
+                'unida_media' => $ingrediente['unidades'],
+                'receta_id' => $recetaId,
+            ]);
+        }
     }
     public function resetForm() {
+        $this->recetaEdit = [
+            'titulo' => '',
+            'descripcion' => ''
+        ];
+        $this->imagen;
+        $this->ingrediente = '';
+        $this->pasoEdit = [
+            'descripcion' => '',
+        ];
+        $this->tiempo = 0;
+        $this->porcion = 2;
+        $this->ingreditenteDatos = [
+            'cantidad' => 1,
+            'unidades' => '',
+        ];
+        $this->pasos = [];
+        $this->ingredientesSeleccionados = [];
+        $this->ocasion = [];
+        $this->ingredienteEdit = [];
+        $this->contadorPasos = 1;
         $this->botonActivado = false;
-        $this->recetaEdit = ['titulo' => ''];
     }
+    
 }

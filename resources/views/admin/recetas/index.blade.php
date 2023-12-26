@@ -17,7 +17,7 @@
                                      0 1.543.14 2.242.397zm6.258 19.603h5v-7.505c-.715.307-1.38.47-1.953.525-.274.026-.518-.176-.545-.45-.025-.276.176-.52.451-.545 1.388-.132
                                       5.047-1.399 5.047-5.525 0-3.036-2.465-5.5-5.5-5.5-1.099 0-1.771.29-2.512.563-1.521-1.596-2.402-1.563-2.988-1.563-.595 0-1.474-.026-2.987
                                        1.563-.787-.291-1.422-.563-2.513-.563-3.035 0-5.5 2.464-5.5 5.5 0 4.13 3.663 5.394 5.048 5.525.274.025.476.269.45.545-.026.274-.27.476-.545.45-.573-.055-1.238-.218-1.953-.525v7.505h5v-3.5c0-.311.26-.5.5-.5.239 0 .5.189.5.5v3.5h4v-3.5c0-.311.26-.5.5-.5s.5.189.5.5v3.5z"/>
-                                </svg> Nueva Receta
+                                </svg> Registrar Receta
                             </a>
                         </div>
                     </div>
@@ -27,30 +27,35 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="card">
-                        <div class="card-body">
-                            <form method="POST" action="">
-                                <div class="mb-3">
-                                    <p>Tipo de receta</p>
-                                    <div class="form-check">
-                                        <input type="radio" name="radios" class="form-check-input" id="disabledRadio1">
-                                        <label class="form-check-label" for="disabledRadio1">Platos</label>
-                                    </div>
-                                    <div class="mb-3 form-check">
-                                        <input type="radio" name="radios" class="form-check-input" id="disabledRadio2">
-                                        <label class="form-check-label" for="disabledRadio2">Postres</label>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Ingredientes</label>
-                                    <select id="tags" class="form-select" name="tags[]" multiple="multiple"></select>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Procesar</button>
-                            </form>
-                        </div>
+            <div class="card"> 
+                <div class="card-header text-center">
+                    <div class="header-title">
+                        <h4 class="card-title">Generar Receta</h4>
                     </div>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="">
+                        <div class="row">
+                            <div class="mb-3">
+                                <p>Tipo de receta</p>
+                                <div class="form-check">
+                                    <input type="radio" name="radios" class="form-check-input" id="disabledRadio1">
+                                    <label class="form-check-label" for="disabledRadio1">Platos</label>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="radio" name="radios" class="form-check-input" id="disabledRadio2">
+                                    <label class="form-check-label" for="disabledRadio2">Postres</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Ingredientes</label>
+                                <select id="tags" class="form-select" name="tags[]" multiple="multiple"></select>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Procesar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

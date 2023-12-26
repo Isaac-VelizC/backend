@@ -7,8 +7,8 @@
           <div class="col-md-12">
               <div class="flex-wrap d-flex justify-content-between align-items-center">
                   <div class="btn-group" role="group" aria-label="Basic outlined example">
-                     <a type="button" class="btn btn-outline-primary" href="{{ route('admin.cursos') }}" style="color: black">Cursos</a>
                      <a type="button" class="btn btn-outline-primary active">Cursos Habilitados</a>
+                     <a type="button" class="btn btn-outline-primary" href="{{ route('admin.cursos') }}" style="color: black">Cursos</a>
                   </div>
               </div>
           </div>

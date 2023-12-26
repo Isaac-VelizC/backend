@@ -22,4 +22,19 @@ class AdminController extends Controller
         $materias = Curso::all();
         return view('admin.home', compact('users', 'estudiantes', 'docentes', 'materias'));
     }
+    ///Reportes e informes
+    public function viewEstudiantes() {
+        return view('admin.informes.estudiantes');
+    }
+    public function viewAsistencias() {
+        return view('admin.informes.asistencias');
+    }
+    public function viewMaterias() {
+        $materias = Curso::all();
+
+        return view('admin.informes.materias', compact('materias'));
+    }
+    public function viewPagos() {
+        return view('admin.informes.pagos');
+    }
 }

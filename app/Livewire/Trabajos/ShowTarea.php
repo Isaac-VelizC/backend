@@ -101,16 +101,23 @@ class ShowTarea extends Component
         }
     }
     public function calificarTarea($id) {
-        $notaEstudiante = $this->trabajoSubido[$id];
-        if ($notaEstudiante) {
-            $notaGuardar = TrabajoEstudiante::where([
-                'estudiante_id' => $id,
-                'trabajo_id' => $this->tareaId,
-            ])->first();
-
-            if ($notaGuardar) {
-                $notaGuardar->update(['nota' => $notaEstudiante, 'estado' => 'Calificado']);
+        try {
+            $notaEstudiante = $this->trabajoSubido[$id];
+            if ($notaEstudiante !== null) {
+                if (!preg_match('/^\d+(\.\d{0,2})?$/', $notaEstudiante)) {
+                    $this->addError("errorNota", 'Solo se permiten números o decimales con hasta dos lugares decimales.');
+                    return;
+                }
+                $notaGuardar = TrabajoEstudiante::where([
+                    'estudiante_id' => $id,
+                    'trabajo_id' => $this->tareaId,
+                ])->first();
+                if ($notaGuardar) {
+                    $notaGuardar->update(['nota' => $notaEstudiante, 'estado' => 'Calificado']);
+                }
             }
+        } catch (\Throwable $th) {
+            $this->addError("errorNota", 'Error al intentar calificar la tarea.');
         }
     }
 }
