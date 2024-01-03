@@ -120,6 +120,7 @@ Route::middleware(['auth', 'role:Docente'])->group(function () {
     Route::post('/selectReceta',[DocenteCursoController::class, 'selectReceta'])->name('search.recetas');
 });
 Route::middleware(['auth', 'role:Estudiante'])->group(function () {
+    Route::get('/calendar/mostrar/trabajos', [CalendarioController::class, 'mostrarTrabajos'])->name('admin.calendario.trabajos');
     Route::get('/estud-dashboard', [EstudianteController::class, 'index'])->name('estudiante.home');
     Route::get('/cursos/carrera/bamos', [EstudianteController::class, 'cursos'])->name('cursos.carrera');
     Route::get('/estud-submit/{id}/{edit}/editar', SubirTarea::class)->name('estudiante.subir.tarea');
@@ -142,4 +143,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/curso/{id}/materia', [DocenteCursoController::class, 'curso'])->name('cursos.curso');
     //Componetes
     Route::get('/posts-tareas/{id}', ShowTarea::class)->name('show.tarea');
+    //notificaciones
+    Route::get('/send-whatsapp', [InfoController::class, 'sendWhatsAppMessage']);
 });

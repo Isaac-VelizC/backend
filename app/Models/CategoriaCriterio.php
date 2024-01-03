@@ -12,4 +12,8 @@ class CategoriaCriterio extends Model
     protected $table = "categorias_criterio";
     protected $primaryKey = "id";
     protected $fillable = ['nombre', 'porcentaje', 'total', 'criterio_id'];
+    public function criterio()
+    {
+        return $this->belongsTo(Criterio::class, 'criterio_id');
+    }
 }

@@ -29,6 +29,7 @@ return new class extends Migration
             $table->date('fecha_ini');
             $table->date('fecha_fin');
             $table->boolean('estado')->default(true);
+            $table->integer('nota_total')->default(100);
             $table->timestamps();
         });
     }

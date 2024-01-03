@@ -51,6 +51,14 @@ return new class extends Migration
             $table->string('estado')->default('Borrador');
             $table->timestamps();
         });
+        Schema::create('catCritTrabajo', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('cat_id');
+            $table->foreign('cat_id')->references('id')->on('categorias_criterio')->onDelete('cascade');
+            $table->unsignedBigInteger('tarea_id');
+            $table->foreign('tarea_id')->references('id')->on('trabajos')->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     /**

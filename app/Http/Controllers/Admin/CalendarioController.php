@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Evento;
+use App\Models\Programacion;
 use App\Models\TipoEvento;
+use App\Models\Trabajo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -87,4 +89,28 @@ class CalendarioController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    public function mostrarTrabajos() {
+        try {
+            $estudianteId = auth()->user()->persona->estudiante->id;
+            $programado = Programacion::where('estudiante_id', $estudianteId)->with('cursoDocente')->get();
+            $trabajos = Trabajo::where('curso_id', $programado->pluck('cursoDocente.id'))->where('estado', '!=','Borrador')
+                ->get();
+            $events = $trabajos->map(function ($trabajo) {
+                return [
+                    'id' => $trabajo->id,
+                    'title' => $trabajo->titulo,
+                    'start' => $trabajo->inico,
+                    'end' => $trabajo->fin,
+                    'backgroundColor' =>'rgba(58,87,232,0.2)',
+                    'textColor' =>'rgba(58,87,232,1)',
+                    'borderColor' =>'rgba(58,87,232,1)'
+                ];
+            });
+            return response()->json($events);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
 }

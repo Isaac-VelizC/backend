@@ -21,7 +21,8 @@ class CursoHabilitado extends Model
         'imagen',
         'fecha_ini',
         'fecha_fin',
-        'estado'
+        'estado',
+        'nota_total'
     ];
     public function documentos()
     {

@@ -8,6 +8,7 @@ use App\Models\DocumentoEstudiante;
 use App\Models\Estudiante;
 use App\Models\Trabajo;
 use App\Models\TrabajoEstudiante;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
@@ -19,7 +20,7 @@ class ShowTarea extends Component
     public $filesSubidos, $trabajoSubido = [];
     public function mount($id) {
         $this->tareaId = $id;
-        $this->fechaActual = now();
+        $this->fechaActual = Carbon::now();
         $this->tarea = Trabajo::find($id);
         $this->entregas = TrabajoEstudiante::where('trabajo_id', $id)->count();
         $this->calificadas = TrabajoEstudiante::where('trabajo_id', $id)->where('nota', '<>', 0.00)->count();

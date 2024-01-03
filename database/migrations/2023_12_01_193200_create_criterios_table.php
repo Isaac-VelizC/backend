@@ -30,6 +30,7 @@ return new class extends Migration
             $table->foreign('criterio_id')->references('id')->on('criterios')->onDelete('cascade');
             $table->timestamps();
         });
+        
     }
 
     /**

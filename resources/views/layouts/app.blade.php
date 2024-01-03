@@ -44,6 +44,7 @@
     @livewireScripts
     @yield('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/livewire/sortable@v1.x.x/dist/livewire-sortable.js"></script>
     <script src="{{ asset('assets/js/core/libs.min.js')}}"></script>
     <script src="{{ asset('assets/js/core/external.min.js')}}"></script>
     <script src="{{ asset('assets/js/charts/widgetcharts.js')}}"></script>

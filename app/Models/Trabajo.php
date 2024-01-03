@@ -47,4 +47,9 @@ class Trabajo extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function criterio()
+    {
+        return $this->belongsTo(Criterio::class, 'criterio_id');
+    }
+
 }
