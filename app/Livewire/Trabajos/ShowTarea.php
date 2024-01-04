@@ -6,6 +6,7 @@ use App\Models\CursoHabilitado;
 use App\Models\DocumentoDocente;
 use App\Models\DocumentoEstudiante;
 use App\Models\Estudiante;
+use App\Models\Ingrediente;
 use App\Models\Trabajo;
 use App\Models\TrabajoEstudiante;
 use Carbon\Carbon;
@@ -16,12 +17,19 @@ class ShowTarea extends Component
 {
     public $tareaId, $num = 1, $fechaActual, $estudiantesConTareas, $trabajosSubidosCali, $tareaDelEstudiante = '';
     public Trabajo $tarea;
+    public $ingredientesTarea;
     public $entregas, $calificadas, $estudiantes, $filesTarea;
     public $filesSubidos, $trabajoSubido = [];
     public function mount($id) {
         $this->tareaId = $id;
         $this->fechaActual = Carbon::now();
         $this->tarea = Trabajo::find($id);
+        $ingredientesIds = json_decode($this->tarea->ingredientes);
+        if ($ingredientesIds) {
+            $this->ingredientesTarea = Ingrediente::whereIn('id', $ingredientesIds)->pluck('nombre')->toArray();
+        } else {
+            $this->ingredientesTarea = [];
+        }
         $this->entregas = TrabajoEstudiante::where('trabajo_id', $id)->count();
         $this->calificadas = TrabajoEstudiante::where('trabajo_id', $id)->where('nota', '<>', 0.00)->count();
         $this->filesTarea = DocumentoDocente::where('tarea_id', $id)->get();

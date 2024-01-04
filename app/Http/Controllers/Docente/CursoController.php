@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Docente;
 
 use App\Http\Controllers\Controller;
 use App\Models\CursoHabilitado;
+use App\Models\DocumentoDocente;
 use App\Models\Receta;
 use App\Models\Tema;
-use App\Models\TipoTrabajo;
 use App\Models\Trabajo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class CursoController extends Controller
 {
@@ -28,9 +29,7 @@ class CursoController extends Controller
     }
     public function createTareaNew($id) {
         $temasCurso = Tema::where('curso_id', $id)->get();
-        $tipoTrabajo = TipoTrabajo::all();
-
-        return view('docente.cursos.create_tarea', compact('temasCurso', 'tipoTrabajo', 'id'));
+        return view('docente.cursos.create_tarea', compact('temasCurso', 'id'));
     }
     public function selectReceta(Request $request) {
         $query = $request->input('name');
@@ -39,48 +38,62 @@ class CursoController extends Controller
     
         return response()->json($recetas);
     }
+
     public function crearTarea(Request $request) {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'titulo' => 'required|string|max:255',
             'fin' => ['date', 'after_or_equal:' . now()->toDateString()],
             'tipo_trabajo' => 'required|string|max:255',
+            'tema' => 'nullable|numeric',
+            'con_nota' => 'required|boolean',
+            'evaluacion' => 'required|boolean',
+            'tags.*' => 'exists:ingredientes,id',
+            'recetas' => 'exists:recetas,id',
+            'files.*' => 'file'
         ]);
-        dd('error');
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
         try {
-            dd($request);
-            $trabajo = Trabajo::create([
-                'tipo_id' => '',
+            $tarea = Trabajo::create([
+                'tipo' => $request->tipo_trabajo,
                 'curso_id' => $request->curso,
                 'user_id' => auth()->user()->id,
-                'tema_id' => $request->tema,
-                'ingrediente_id' => '',
-                'receta_id' => '',
-                'evaluacion' => '',
+                'tema_id' => $request->tema ?: null,
+                'ingredientes' => json_encode($request->tags) ?: null,
+                'receta_id' => $request->recetas ?: null,
+                'evaluacion' => $request->evaluacion,
                 'titulo' => $request->titulo,
                 'descripcion' => $request->descripcion,
                 'inico' => now(),
                 'fin' => $request->fin,
                 'con_nota' => $request->con_nota,
-                'nota' => $request->nota,
+                'nota' => 100,
+                'estado' => 'Publicado'
             ]);
-            return back()->with('');
+
+            $files = $request->file('files');
+            if ($files) {
+                foreach ($files as $file) {
+                    $originalName = $file->getClientOriginalName();
+                    $filePath = $file->storeAs('public/files', $originalName);
+                    $url = str_replace('public/', '', $filePath);
+                    DocumentoDocente::create([
+                        'nombre' => $originalName,
+                        'url' => 'storage/'.$url,
+                        'fecha' => now(),
+                        'materia_id' => $request->curso,
+                        'user_id' => auth()->user()->id,
+                        'tarea_id' => $tarea->id
+                    ]);
+                }
+            }
+
+            return redirect()->route('cursos.curso', $request->curso)->with('success', 'Trabajo publicado con éxito');
         } catch (\Throwable $th) {
             return back()->with(['error' => 'Error al crear el evento', 'error' => $th->getMessage()], 500);
         }
-    }
-    public function tareaAutomatico(Request $request) {
-        // Valida los datos del formulario
-        $request->validate([
-            'titulo' => 'required|string|max:255',
-            'idCurso' => 'required|numeric', // Ajusta la validación según tus necesidades
-        ]);
-        $tarea = Trabajo::create([
-            'curso_id' => $request->idCurso,
-            'user_id' => auth()->user()->id,
-            'titulo' => $request->titulo,
-        ]);
-    
-        // Devuelve el ID de la tarea creada
-        return response()->json(['id' => $tarea->id]);
     }
 }

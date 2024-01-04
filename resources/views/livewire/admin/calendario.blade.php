@@ -19,14 +19,17 @@
                     @error('eventos.nombre') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Color de Fondo:</label>
-                    <input type="color" class="form-control" wire:model="eventos.backgroundColor" required>
+                    <label class="form-label">Color de Fondo: </label>
+                    <select class="form-select" wire:model="eventos.backgroundColor" required>
+                        <option value="#0000FF">🔵 Azul</option>
+                        <option value="#800080">🟣 Morado</option>
+                        <option value="#FFA500">🟠 Naranja</option>
+                        <option value="#FF0000">🔴 Rojo</option>
+                        <option value="#008000">🟢 Verde</option>
+                        <option value="#FFFF00">🟡 Amarillo</option>
+                        <option value="#A52A2A">🟤 Marrón</option>
+                    </select>
                     @error('eventos.backgroundColor') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Color de Texto:</label>
-                    <input type="color" class="form-control" wire:model="eventos.textColor">
-                    @error('eventos.textColor') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
                 @if($modoEdicion)
                     <input type="hidden" wire:model="eventId">

@@ -16,27 +16,39 @@
        @endif
        <div class="row">
           <div class="col-md-12">
-             <div class="row row-cols-1">
+             <div class="row-cols-1">
                 <div class="col-sm-12">
                    <div class="card">
                       <div class="row no-gutters">
-                         <div class="col-md-7">
-                            <div class="card-body">
+                         <div class="col-md-8">
+                            <div class="card-body text-black">
                                <h4>{{ $tarea->titulo }}</h4>
-                               <p class="mt-2">{{ $tarea->descripcion }}</p>
-                               <div class="mb-5 pt-2">
-                                  <p class="line-around text-gray mb-0"><span class="line-around-1">Información</span></p>
-                               </div>
-                               <div class="row">
-                                    <p><b>Tipo de trabajo: </b>{{$tarea->tipo->nombre}}</p>
-                                    @if ($tarea->tema_id)
-                                        <p><b>Tema: </b>{{ $tarea->tema->tema }}</p>
-                                    @endif
-                                    <p><b>Fecha:</b> Se resive trabajos hasta {{ $tarea->fin }}</p>
-                               </div>
+                               <p class="mt-2">{!! $tarea->descripcion !!}</p>
+                            <div class="mb-5 pt-2">
+                              <p class="line-around text-gray mb-0"><span class="line-around-1">Información</span></p>
+                            </div>
+                                <p><b>Tipo de trabajo: </b>{{$tarea->tipo}}</p>
+                                @if ($tarea->tema_id)
+                                    <p><b>Tema: </b>{{ $tarea->tema->tema }}</p>
+                                @endif
+                                <p><b>Fecha:</b> Se resive trabajos hasta {{ $tarea->fin }}</p>
+                                @if ($ingredientesTarea)
+                                    <hr>
+                                    <p><b>Ingredientes</b></p>
+                                    @foreach ($ingredientesTarea as $ingrediente)
+                                        <p class="h6 mx-2">
+                                            <span class="badge bg-warning">{{ $ingrediente }}</span>
+                                        </p>
+                                    @endforeach
+                                @endif
+                                @if ( $tarea->receta )
+                                    <hr>
+                                    <p><b>Receta</b></p>
+                                    <p><a href="{{ route('admin.show.receta', $tarea->receta->id ) }}">{{ $tarea->receta->titulo }}</a></p>
+                                @endif
                             </div>
                          </div>
-                         <div class="col-md-5">
+                         <div class="col-md-4">
                             <div class="card-body text-center h-100 iq-single-card">
                                 <div class="flex-wrap mb-4 d-flex align-itmes-center justify-content-between">
                                     @if (auth()->user()->hasRole('Docente'))

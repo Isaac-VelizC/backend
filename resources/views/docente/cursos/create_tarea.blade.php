@@ -10,14 +10,14 @@
             </div>
         @endif
         <div class="row">
-            <form class="text-black" method="POST" action='{{ route('guardar.tarea.new') }}'>
+            <form class="text-black" method="POST" action='{{ route('guardar.tarea.new') }}' enctype="multipart/form-data">
                 @csrf
                 <div class="text-center">
                     <button type="submit" class="btn btn-secondary btn-sm">Guardar</button>
                     <button type="button" class="btn btn-outline-danger btn-sm">Cancelar</button>
                 </div><hr>
                 <div class="row">
-                    <div class="col-xl-8 col-lg-8">
+                    <div class="col-xl-12 col-lg-12">
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
@@ -36,8 +36,8 @@
                                         </select>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label class="form-label">Fecha Limite</label>
-                                        <input type="date" class="form-control" name="fin" min="{{ now()->format('Y-m-d') }}">
+                                        <label class="form-label">Fecha Limite: *</label>
+                                        <input type="datetime-local" class="form-control" name="fin" min="{{ now()->format('Y-m-d\TH:i') }}" required>
                                         @error('fin') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="form-group col-md-12">
@@ -49,19 +49,26 @@
                                                 <label class="form-check-label">Teórico</label>
                                             </div>
                                             <div class="form-group col-md-4">
-                                                <input class="form-check-input" type="checkbox" name='evaluacion'>
+                                                <input type="hidden" name="evaluacion" value="0">
+                                                <input class="form-check-input" type="checkbox" name='evaluacion' value="1">
                                                 <label class="form-label text-black">Examén:</label>
                                             </div>
                                             <div class="form-group col-md-4">
-                                                <input class="form-check-input" type="checkbox" name='con_nota'>
+                                                <input type="hidden" name="con_nota" value="0">
+                                                <input class="form-check-input" type="checkbox" name='con_nota' value="1">
                                                 <label class="form-label text-black">Sin Nota:</label>
                                             </div>
                                         </div>
                                         @error('tipo_trabajo') <span class="text-danger">{{ $message }}</span> @enderror
+                                        @error('evaluacion') <span class="text-danger">{{ $message }}</span> @enderror
+                                        @error('con_nota') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="form-group col-sm-6">
                                         <label class="form-label">Ingredientes:</label>
                                         <select id="tags" class="form-select" name="tags[]" multiple="multiple"></select>
+                                        @error('tags*')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="form-group col-lg-6">
                                         <label class="form-label" for="recetas">Recetas:</label>
@@ -70,9 +77,16 @@
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    <div class="form-group col-lg-12">
+                                        <label class="form-label" for="customFiles">Subir Archivos:</label>
+                                        <input class="form-control" type="file" name="files[]" id="customFiles" multiple>
+                                        @error('files')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <input type="hidden" value="{{$id}}" name="curso">
-                                <div class="">
+                                <div class="form-group">
                                     <label class="form-label">Instrucciones (Opcional)</label>
                                     <textarea class="form-control" name='descripcion' id="editorTarea" rows="5"></textarea>
                                 </div>

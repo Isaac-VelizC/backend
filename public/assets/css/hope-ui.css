@@ -85,7 +85,7 @@ hr {
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
   --bs-body-color: #8A92A6;
-  --bs-body-bg: #F5F6FA;
+  --bs-body-bg: #F5F6FA; /*Fondo de la pagina*/
   --bs-border-width: 1px;
   --bs-border-style: solid;
   --bs-border-color: #eee;
@@ -5159,7 +5159,7 @@ textarea.form-control-lg {
   --bs-card-cap-color: ;
   --bs-card-height: ;
   --bs-card-color: ;
-  --bs-card-bg: #ffffff;
+  --bs-card-bg: #ffffff; /*Fondo del card*/
   --bs-card-img-overlay-padding: 1rem;
   --bs-card-group-margin: 1rem;
   position: relative;
@@ -15375,10 +15375,10 @@ textarea.form-control-lg {
 
 .btn-download {
   position: fixed;
-  z-index: 900;
+  z-index: 800;
   right: 0;
   bottom: 0;
-  margin: 1.25rem;
+  margin: 1.50rem;
 }
 
 .form-group {

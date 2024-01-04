@@ -19,11 +19,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('tipo_trabajos', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre');
-        });
-
         Schema::create('trabajos', function (Blueprint $table) {
             $table->id();
             $table->string('tipo')->nullable();

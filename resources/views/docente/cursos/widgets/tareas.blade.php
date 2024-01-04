@@ -16,9 +16,6 @@
                         </svg>
                         <p class="mb-0">{{ \Carbon\Carbon::parse($tarea->inico)->format('Y-m-d') }} a {{ \Carbon\Carbon::parse($tarea->fin)->format('Y-m-d') }}</p>
                     </div>
-                    <div class="d-flex align-items-center">
-                        <p class="mb-0">{{ substr($tarea->descripcion, 0, 25) }}</p>
-                    </div>
                 </a>
                 @if (auth()->user()->hasRole('Docente'))
                     <div class="dropdown">

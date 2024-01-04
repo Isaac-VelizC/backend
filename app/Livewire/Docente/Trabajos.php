@@ -6,7 +6,6 @@ use App\Models\ComentarioCurso;
 use App\Models\CursoHabilitado;
 use App\Models\DocumentoDocente;
 use App\Models\Tema;
-use App\Models\TipoTrabajo;
 use App\Models\Trabajo;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -22,7 +21,6 @@ class Trabajos extends Component
         $this->idCurso = $id;
         $this->materia = CursoHabilitado::findOrFail($id);
         $this->temasCurso = Tema::where('curso_id', $id)->get();
-        $this->tipoTrabajo = TipoTrabajo::all();
         $this->temasEditados = $this->temasCurso->pluck('tema', 'id')->toArray();
         $allTareas = Trabajo::where('curso_id', $id)->where('estado', '!=', 'Borrador')->get();
         $this->tareas = collect($allTareas)->groupBy('tema_id');

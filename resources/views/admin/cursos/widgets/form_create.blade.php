@@ -46,7 +46,15 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label" for="exampleInputcolor">Color del Curso</label>
-                                        <input type="color" class="form-control" id="exampleInputcolor" value="#rrggbb" name="color">
+                                        <select class="form-select" id="exampleInputcolor" name="color" required>
+                                            <option value="#0000FF" selected>🔵 Azul</option>
+                                            <option value="#800080">🟣 Morado</option>
+                                            <option value="#FFA500">🟠 Naranja</option>
+                                            <option value="#FF0000">🔴 Rojo</option>
+                                            <option value="#008000">🟢 Verde</option>
+                                            <option value="#FFFF00">🟡 Amarillo</option>
+                                            <option value="#A52A2A">🟤 Marrón</option>
+                                          </select>
                                     </div>
                                   </div>
                               </div>

@@ -36,8 +36,6 @@ class TiposSeeder extends Seeder
         Semestre::create(['nombre' => 'Tercer Periodo', 'descripcion' => 'Modalidad Nocturna', 'costo' => 450]);
         Semestre::create(['nombre' => 'Cuarto Periodo', 'descripcion' => 'Modalidad Fin de Semana', 'costo' => 450]);
 
-        TipoTrabajo::create(['nombre' => 'Teorica']);
-        TipoTrabajo::create(['nombre' => 'Practica']);
         // Lista de materias de gastronomía
         $materias = [
             'Introducción a la Gastronomía',
@@ -66,7 +64,7 @@ class TiposSeeder extends Seeder
                 'nombre' => $materia,
                 'precio' => rand(200, 800), // Puedes ajustar este rango según tus necesidades
                 'semestre_id' => rand(1, 4), // Suponiendo que hay 8 semestres en la carrera
-                'color' => mt_rand(0, 100) / 100,
+                'color' => '#FFFFFF',
             ]);
         }
 

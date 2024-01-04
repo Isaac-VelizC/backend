@@ -76,7 +76,7 @@
                               <p><a href="#">{{ $item->persona->user->email }}</a></p>
                             </td>
                             <td>
-                              <p>{{ $item->persona->numTelefono->numero }}</p>
+                              <p>{{ $item->persona->numTelefono->numero ?? 'N/A' }}</p>
                             </td>
                             <td><p>{{ $item->persona->user->getRoleNames()->first() }}</p></td>
                            <td>

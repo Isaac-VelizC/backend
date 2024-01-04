@@ -10,12 +10,12 @@ class Trabajo extends Model
     use HasFactory;
     protected $table = "trabajos";
     protected $primaryKey = "id";
-    protected $fillable = ['tipo_id',
+    protected $fillable = ['tipo',
         'curso_id',
         'user_id',
         'tema_id',
         'criterio_id',
-        'ingrediente_id',
+        'ingredientes',
         'receta_id',
         'evaluacion',
         'titulo',
@@ -51,5 +51,13 @@ class Trabajo extends Model
     {
         return $this->belongsTo(Criterio::class, 'criterio_id');
     }
-
+    public function receta()
+    {
+        return $this->belongsTo(Receta::class, 'receta_id', 'id');
+    }
+    public function ingredientes()
+    {
+        return $this->belongsToMany(Ingrediente::class, 'ingrediente_recetas', 'receta_id', 'ingrediente_id')
+            ->withPivot(['cantidad', 'unida_media']);
+    }
 }

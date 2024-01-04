@@ -25,19 +25,17 @@ class Calendario extends Component
         $this->modoEdicion = true;
         $this->eventos['nombre'] = $category->nombre;
         $this->eventos['backgroundColor'] = $category->backgroundColor;
-        $this->eventos['textColor'] = $category->textColor;
     }
     public function update() {
         $this->validate([
             'eventos.nombre' => 'required|string|max:255',
             'eventos.backgroundColor' => 'required|string|max:255',
-            'eventos.textColor' => 'string|max:255',
         ]);
         $category = TipoEvento::find($this->eventId);
         $category->update([
             'nombre' => $this->eventos['nombre'],
             'backgroundColor' => $this->eventos['backgroundColor'],
-            'textColor' => $this->eventos['textColor'],
+            'textColor' => '#FFF',
         ]);
         $this->resetForm();
     }
@@ -45,12 +43,11 @@ class Calendario extends Component
         $this->validate([
             'eventos.nombre' => 'required|string|max:255',
             'eventos.backgroundColor' => 'required|string|max:255',
-            'eventos.textColor' => 'string|max:255',
         ]);
         TipoEvento::create([
             'nombre' => $this->eventos['nombre'],
             'backgroundColor' => $this->eventos['backgroundColor'],
-            'textColor' => $this->eventos['textColor'],
+            'textColor' => '#FFF',
         ]);
         $this->resetForm();
     }

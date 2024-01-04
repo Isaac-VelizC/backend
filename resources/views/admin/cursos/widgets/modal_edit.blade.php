@@ -46,8 +46,16 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label" for="exampleInputcolor">Color del Curso</label>
-                                        <input type="color" class="form-control" id="exampleInputcolor" value="{{ old('color', $item->color) }}" name="color">
+                                        <label class="form-label" for="exampleInputcolorSelect">Color del Curso (Menú desplegable)</label>
+                                        <select class="form-select" id="exampleInputcolorSelect" name="color" required>
+                                            <option value="#0000FF" {{ $item->color == '#0000FF' ? 'selected' : '' }}>🔵 Azul</option>
+                                            <option value="#800080" {{ $item->color == '#800080' ? 'selected' : '' }}>🟣 Morado</option>
+                                            <option value="#FFA500" {{ $item->color == '#FFA500' ? 'selected' : '' }}>🟠 Naranja</option>
+                                            <option value="#FF0000" {{ $item->color == '#FF0000' ? 'selected' : '' }}>🔴 Rojo</option>
+                                            <option value="#008000" {{ $item->color == '#008000' ? 'selected' : '' }}>🟢 Verde</option>
+                                            <option value="#FFFF00" {{ $item->color == '#FFFF00' ? 'selected' : '' }}>🟡 Amarillo</option>
+                                            <option value="#A52A2A" {{ $item->color == '#A52A2A' ? 'selected' : '' }}>🟤 Marrón</option>
+                                        </select>
                                     </div>
                                   </div>
                               </div>
