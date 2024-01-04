@@ -165,7 +165,7 @@
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a class="nav-link {{ Route::is('evaluacion.docente') ? 'active' : '' }}" href="{{ route('evaluacion.docente') }}">
+                      <a class="nav-link {{ Route::is('materia.evaluacion.docente') ? 'active' : '' }}" href="{{ route('materia.evaluacion.docente') }}">
                           <i class="bi bi-person-exclamation"></i>
                           <span class="item-name">Evaluación Docente</span>
                       </a>

@@ -11,18 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('eval_preguntas', function (Blueprint $table) {
-            $table->id();
-            $table->integer('numero');
-            $table->string('texto')->unique();
-            $table->timestamps();
-        });
-        
         Schema::create('evaluacion_docente', function (Blueprint $table) {
             $table->id();
             $table->string('codigo')->unique();
-            $table->unsignedBigInteger('pregunta_id')->nullable();
-            $table->foreign('pregunta_id')->references('id')->on('eval_preguntas')->onDelete('cascade');
+            $table->timestamps();
+        });
+
+        Schema::create('eval_preguntas', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('id_evaluacion')->nullable();
+            $table->foreign('id_evaluacion')->references('id')->on('evaluacion_docente')->onDelete('cascade');
+            $table->integer('numero');
+            $table->string('texto')->unique();
             $table->timestamps();
         });
         

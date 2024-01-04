@@ -14,6 +14,7 @@ use App\Http\Controllers\InfoController;
 use App\Livewire\Admin\AdminInfo;
 use App\Livewire\Admin\EvaluacionDocente;
 use App\Livewire\Admin\FormPagos;
+use App\Livewire\Admin\MateriaEvaluacionDocente;
 use App\Livewire\Docente\Components\NewTarea;
 use App\Livewire\Docente\CriteriosTrabajos;
 use App\Livewire\Docente\NewReceta;
@@ -99,6 +100,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::get('/administrar-info', AdminInfo::class)->name('admin.administracion');
     //Evaluacion docente
     Route::get('/evaluacion/add/docente', EvaluacionDocente::class)->name('evaluacion.docente');
+    Route::get('/evaluacion/listado/docente', MateriaEvaluacionDocente::class)->name('materia.evaluacion.docente');
     //Rutas para exportar
     Route::get('/cursos/exp/pdf', [CursoController::class, 'exportarCurso'])->name('export.cursos');
     //Rutasp para reportes

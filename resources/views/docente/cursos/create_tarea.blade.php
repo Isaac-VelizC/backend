@@ -3,9 +3,9 @@
 @section('content')
 <div class="iq-navbar-header" style="height: 80px;"></div> 
     <div class="conatiner-fluid content-inner mt-n5 py-0">
-        @if(session('success'))
+        @if(session('error'))
             <div id="myAlert" class="alert alert-left alert-danger alert-dismissible fade show mb-3 alert-fade" role="alert">
-                <span>{{ session('success') }}</span>
+                <span>{{ session('error') }}</span>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
@@ -24,7 +24,7 @@
                                     <div class="form-group col-md-12">
                                         <label class="form-label">Titulo: *</label>
                                         <input type="text" class="form-control" name="titulo" placeholder="Dale un titulo" required>
-                                        @error('titulo') <span class="error">{{ $message }}</span> @enderror
+                                        @error('titulo') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="form-group col-sm-6">
                                         <label class="form-label">Tema:</label>
@@ -38,28 +38,26 @@
                                     <div class="form-group col-md-6">
                                         <label class="form-label">Fecha Limite</label>
                                         <input type="date" class="form-control" name="fin" min="{{ now()->format('Y-m-d') }}">
+                                        @error('fin') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
-                                    <div class="form-group col-md-6">
-                                        <label class="form-label text-black">Tipo de trabajo: *</label>
+                                    <div class="form-group col-md-12">
                                         <div class="row">
-                                            <div class="form-group col-md-12">
+                                            <div class="form-group col-md-4">
                                                 <input type="radio" name="tipo_trabajo" value="Practico" class="form-check-input" checked>
                                                 <label class="form-check-label">Práctico</label>
                                                 <input type="radio" name="tipo_trabajo" value="Teorico" class="form-check-input">
                                                 <label class="form-check-label">Teórico</label>
                                             </div>
+                                            <div class="form-group col-md-4">
+                                                <input class="form-check-input" type="checkbox" name='evaluacion'>
+                                                <label class="form-label text-black">Examén:</label>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <input class="form-check-input" type="checkbox" name='con_nota'>
+                                                <label class="form-label text-black">Sin Nota:</label>
+                                            </div>
                                         </div>
-                                        @error('ocasion') <span class="text-danger">{{ $message }}</span> @enderror
-                                    </div>
-                                    <div class=" form-group col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name='con_nota'>
-                                            <label class="form-check-label">Sin Nota</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="text" id="tareaNotaInput" class="form-control" name='nota' value="100">
-                                            @error('nota') <span class="error">{{ $message }}</span> @enderror
-                                        </div>
+                                        @error('tipo_trabajo') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="form-group col-sm-6">
                                         <label class="form-label">Ingredientes:</label>
@@ -81,7 +79,6 @@
                             </div>
                         </div>
                     </div>
-                    @livewire('docente.components.new_tarea', ['idCurso' => $id])
                 </div>
             </form>
         </div>

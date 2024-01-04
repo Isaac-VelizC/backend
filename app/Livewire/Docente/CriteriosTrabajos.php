@@ -61,7 +61,7 @@ class CriteriosTrabajos extends Component
             "totalCurso" => 'required|numeric|max:100|min:0',
         ];
         $this->validate($rules);
-        $this->guardarCriterio($this->criteioEdit, 'curso_id', $this->idCurso, Criterio::class);
+        $this->guardarCriterio($this->criteioEdit, 'curso_id', $this->idCurso, Criterio::class, 'criterio');
     }
     public function categoriaAdd() {
         $rules = [
@@ -71,7 +71,7 @@ class CriteriosTrabajos extends Component
             "totalPocentCategoria" => 'required|numeric|max:100',
         ];
         $this->validate($rules);
-        $this->guardarCriterio($this->cat, 'criterio_id', $this->cat['criterio'], CategoriaCriterio::class);
+        $this->guardarCriterio($this->cat, 'criterio_id', $this->cat['criterio'], CategoriaCriterio::class, 'cat');
     }
     public function obtenerPorcentajeCriterioSeleccionado() {
         $criterioSeleccionado = Criterio::find($this->cat['criterio']);
@@ -98,7 +98,7 @@ class CriteriosTrabajos extends Component
         $this->cat = ['criterio' => '', 'nombre' => '', 'porcentaje' => ''];
         $this->llamadasModelos();
     }
-    protected function guardarCriterio($data, $claveRelacion, $valorRelacion, $model) {
+    protected function guardarCriterio($data, $claveRelacion, $valorRelacion, $model, $tipo) {
         try {
             $model::create([
                 'nombre' => $data['nombre'],
@@ -106,7 +106,7 @@ class CriteriosTrabajos extends Component
                 'total' => $data['porcentaje'],
                 $claveRelacion => $valorRelacion,
             ]);
-            if (!$data['criterio']) {
+            if ($tipo == 'criterio' ) {
                 $this->ActualizarTotalDB($this->totalCurso);
             } else {
                 $this->ActualizarTotalCat($this->totalPocentCategoria, $data['criterio']);

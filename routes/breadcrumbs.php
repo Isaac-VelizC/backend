@@ -94,3 +94,12 @@ Breadcrumbs::for('reportes.meterias', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Reportes Materias', route('admin.materias.informe'));
 });
+//evaluacion docente
+Breadcrumbs::for('listado.evaluacion', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Evaluacion Docente', route('materia.evaluacion.docente'));
+});
+Breadcrumbs::for('gestion.evaluacion', function (BreadcrumbTrail $trail) {
+    $trail->parent('listado.evaluacion');
+    $trail->push('Gestionar Preguntas', route('evaluacion.docente'));
+});

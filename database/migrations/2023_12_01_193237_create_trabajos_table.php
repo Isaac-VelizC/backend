@@ -26,8 +26,7 @@ return new class extends Migration
 
         Schema::create('trabajos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('tipo_id')->nullable();
-            $table->foreign('tipo_id')->references('id')->on('tipo_trabajos')->onDelete('cascade');
+            $table->string('tipo')->nullable();
             $table->unsignedBigInteger('curso_id');
             $table->foreign('curso_id')->references('id')->on('curso_habilitados')->onDelete('restrict');
             $table->unsignedBigInteger('user_id');
@@ -36,8 +35,7 @@ return new class extends Migration
             $table->foreign('tema_id')->references('id')->on('temas')->onDelete('cascade');
             $table->unsignedBigInteger('criterio_id')->nullable();
             $table->foreign('criterio_id')->references('id')->on('criterios')->onDelete('cascade');
-            $table->unsignedBigInteger('ingrediente_id')->nullable();
-            $table->foreign('ingrediente_id')->references('id')->on('ingredientes')->onDelete('cascade');
+            $table->json('ingredientes')->nullable();
             $table->unsignedBigInteger('receta_id')->nullable();
             $table->foreign('receta_id')->references('id')->on('recetas')->onDelete('cascade');
             $table->boolean('evaluacion')->default(false);

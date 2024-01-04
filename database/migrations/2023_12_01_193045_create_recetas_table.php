@@ -37,6 +37,7 @@ return new class extends Migration
         Schema::create('pasos_recetas', function (Blueprint $table) {
             $table->id();
             $table->text('paso')->nullable();
+            $table->integer('numero');
             $table->unsignedBigInteger('receta_id')->nullable();
             $table->foreign('receta_id')->references('id')->on('recetas')->onDelete('cascade');
             $table->timestamps();

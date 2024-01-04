@@ -40,7 +40,33 @@ class CursoController extends Controller
         return response()->json($recetas);
     }
     public function crearTarea(Request $request) {
-        dd($request);
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'fin' => ['date', 'after_or_equal:' . now()->toDateString()],
+            'tipo_trabajo' => 'required|string|max:255',
+        ]);
+        dd('error');
+        try {
+            dd($request);
+            $trabajo = Trabajo::create([
+                'tipo_id' => '',
+                'curso_id' => $request->curso,
+                'user_id' => auth()->user()->id,
+                'tema_id' => $request->tema,
+                'ingrediente_id' => '',
+                'receta_id' => '',
+                'evaluacion' => '',
+                'titulo' => $request->titulo,
+                'descripcion' => $request->descripcion,
+                'inico' => now(),
+                'fin' => $request->fin,
+                'con_nota' => $request->con_nota,
+                'nota' => $request->nota,
+            ]);
+            return back()->with('');
+        } catch (\Throwable $th) {
+            return back()->with(['error' => 'Error al crear el evento', 'error' => $th->getMessage()], 500);
+        }
     }
     public function tareaAutomatico(Request $request) {
         // Valida los datos del formulario

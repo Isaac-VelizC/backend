@@ -68,7 +68,7 @@
                                          <p>{{ $item->horario->turno }}</p>
                                        </td>
                                        <td>
-                                         <p>{{ $item->curso->periodo->nombre }}</p>
+                                         <p>{{ $item->curso->semestre->nombre }}</p>
                                        </td>
                                        <td>
                                          <p>{{ $item->fecha_ini }}</p>
