@@ -43,7 +43,6 @@
                                                 <span class="text-danger">{{ $message }}</span> 
                                             @enderror
                                         </div>
-                                        
                                         <div class="form-group col-lg-2">
                                             <input type="numeric" class="form-control form-control-sm" wire:model="totalCurso" disabled>
                                         </div>
@@ -132,31 +131,34 @@
                         <div class="list-group">
                             @forelse ($criterios as $criterio)
                                 <div class="list-group-item list-group-item-secondary">
-                                    <p wire:click="mostrarModal({{ $criterio->id }}, '0')" style="cursor: pointer;">
-                                        {{ $criterio->nombre }}
-                                    </p>
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <p wire:click="mostrarModal({{ $criterio->id }}, '0')" style="cursor: pointer;">{{ $criterio->nombre }}</p>
+                                        <span class="badge text-black">{{ $criterio->porcentaje }} %</span>
+                                    </div>
                                     @if ($criterio->categorias->isNotEmpty())
                                         @foreach ($criterio->categorias as $categoria)
-                                            <li class="list-group-item list-group-item-warning" wire:click="mostrarModal({{ $categoria->id }}, '1')" style="cursor: pointer;">
-                                                <i style="padding-right: 20px;" class="bi bi-bookmarks-fill"></i>
-                                                {{ $categoria->nombre }}
-                                                @if (!empty($categoria->tareas) && $categoria->tareas->isNotEmpty())
-                                                    <ul class="list-group">
-                                                        @foreach ($categoria->tareas as $tarea)
-                                                            <li class="list-group-item" wire:click="mostrarModal({{ $tarea->id }})" style="cursor: pointer;">
-                                                                {{ $tarea->titulo }}
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
+                                            <div class="list-group-item-warning" wire:click="mostrarModal({{ $categoria->id }}, '1')" style="cursor: pointer;">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <p>  {{ $categoria->nombre }}</p>
+                                                    <span class="badge text-black">{{ $categoria->porcentaje }} %</span>
+                                                </div>
+                                                @if ($categoria->catCritTrabajos->isNotEmpty())
+                                                    @foreach ($categoria->catCritTrabajos as $cat)
+                                                        @if ($cat->trabajo)
+                                                            <div class="list-group-item">
+                                                                <p><i class="bi bi-book"> {{ $cat->trabajo->titulo}}</i></p>
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
                                                 @endif
-                                            </li>
+                                            </div>
                                         @endforeach
                                     @endif
                                     @if ($criterio->trabajos->isNotEmpty())
                                         @foreach ($criterio->trabajos as $trabajo)
-                                            <li class="list-group-item list-group-item-link">
+                                            <div class="list-group-item">
                                                 <p><i class="bi bi-book"> {{ $trabajo->titulo }}</i></p>
-                                            </li>
+                                            </div>
                                         @endforeach
                                     @endif
                                 </div>

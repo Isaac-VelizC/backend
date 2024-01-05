@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Docente;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\InfoController;
 use App\Models\CursoHabilitado;
 use App\Models\DocumentoDocente;
 use App\Models\Receta;
@@ -90,7 +91,9 @@ class CursoController extends Controller
                     ]);
                 }
             }
-
+            //$ruta = route('show.tarea', $tarea->id);
+            $message = "Titulo: " . $tarea->titulo . ", Fecha de entrega " . $tarea->fin . ".";
+            InfoController::notificacionTrabajoPublicado($request->curso, $message);
             return redirect()->route('cursos.curso', $request->curso)->with('success', 'Trabajo publicado con éxito');
         } catch (\Throwable $th) {
             return back()->with(['error' => 'Error al crear el evento', 'error' => $th->getMessage()], 500);

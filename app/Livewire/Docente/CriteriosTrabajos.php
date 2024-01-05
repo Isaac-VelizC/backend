@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Docente;
 
+use App\Models\CatCritTrabajo;
 use App\Models\CategoriaCriterio;
 use App\Models\Criterio;
 use App\Models\CursoHabilitado;
@@ -15,7 +16,7 @@ class CriteriosTrabajos extends Component
     public CursoHabilitado $materia;
     public $criteioEdit = ['nombre' => '', 'porcentaje' => ''];
     public $cat = ['criterio' => '', 'nombre' => '', 'porcentaje' => ''];
-    public $criterioSeleccionado;
+    public $criterioSeleccionado, $tipoCriterio;
     protected $listeners = ['cerrarModal'];
 
     public function mount($id) {
@@ -128,6 +129,7 @@ class CriteriosTrabajos extends Component
         ]);
     }
     public function mostrarModal($id, $tipo) {
+        $this->tipoCriterio = $tipo;
         if ($tipo == 0) {
             $this->criterioSeleccionado = Criterio::find($id);
         } else if ($tipo == 1) {
@@ -137,17 +139,26 @@ class CriteriosTrabajos extends Component
     }
 
     public function asignarCriterios($idCriterio) {
-        foreach ($this->selectedTrabajos as $idTrabajo => $seleccionado) {
-            if ($seleccionado) {
-                $trabajo = Trabajo::find($idTrabajo);
-                if ($trabajo) {
-                    $trabajo->criterio_id = $idCriterio;
-                    $trabajo->save();
-                }
+        $trabajosIds = array_keys(array_filter($this->selectedTrabajos));
+    
+        if ($this->tipoCriterio == 0) {
+            Trabajo::whereIn('id', $trabajosIds)
+                ->update(['criterio_id' => $idCriterio]);
+        } else if ($this->tipoCriterio == 1) {
+            $cat = CategoriaCriterio::find($idCriterio);
+    
+            Trabajo::whereIn('id', $trabajosIds)
+                ->update(['criterio_id' => $cat->criterio->id]);
+    
+            foreach ($trabajosIds as $idTrabajo) {
+                CatCritTrabajo::create([
+                    'cat_id' => $idCriterio,
+                    'tarea_id' => $idTrabajo
+                ]);
             }
         }
+        $this->tipoCriterio = '';
         $this->selectedTrabajos = [];
-        session()->flash('success', 'Se asigno con éxito');
+        session()->flash('success', 'Se asignó con éxito');
     }
-
 }

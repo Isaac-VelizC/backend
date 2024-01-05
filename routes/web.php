@@ -147,4 +147,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/posts-tareas/{id}', ShowTarea::class)->name('show.tarea');
     //notificaciones
     Route::get('/send-whatsapp', [InfoController::class, 'sendWhatsAppMessage']);
+    //Route::get('/send-whatsapp/trabajo-post/{id}/{tarea}', [InfoController::class, 'notificacionTrabajoPublicado'])->name('notify.whatsapp.post');
 });

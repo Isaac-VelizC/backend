@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Estudiante;
 
+use App\Http\Controllers\InfoController;
 use App\Models\Curso;
 use App\Models\CursoHabilitado;
 use App\Models\Estudiante;
@@ -42,20 +43,40 @@ class MateriaSemestre extends Component
         }
     }
     public function programarCurso($id) {
-        Programacion::create([
-            'estudiante_id' => $this->idEst,
-            'responsable_id' => auth()->user()->id,
-            'curso_id' => $id,
-            'fecha' => Carbon::now()
-        ]);
-        $this->curso;
-        $this->CursoHabilitado = [];
-        session()->flash('success', 'Materia programada');
+        try {
+            Programacion::create([
+                'estudiante_id' => $this->idEst,
+                'responsable_id' => auth()->user()->id,
+                'curso_id' => $id,
+                'fecha' => Carbon::now()
+            ]);
+    
+            $this->notificarProgramacion($this->idEst, $id);
+            $this->curso;
+            $this->CursoHabilitado = [];
+    
+            session()->flash('success', 'Materia programada');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error al programar la materia: ' . $e->getMessage());
+        }
     }
+    
     public function desprogramarCurso($id) {
         Programacion::find($id)->delete();
         $this->curso;
         $this->CursoHabilitado = [];
         session()->flash('success', 'Materia desprogramada');
     }
+    public function notificarProgramacion($estudianteId, $cursoId) {
+        $curso = CursoHabilitado::find($cursoId);
+        $message = "Se le programó a la materia " . $curso->curso->nombre;
+        
+        $numeroTelefono = $this->obtenerNumeroTelefonoEstudiante($estudianteId);
+        InfoController::notificacionNotaTarea($numeroTelefono, $message);
+    }
+    protected function obtenerNumeroTelefonoEstudiante($estudianteId) {
+        $estudiante = Estudiante::find($estudianteId);
+        return optional($estudiante->persona->numTelefono)->numero;
+    }
+    
 }

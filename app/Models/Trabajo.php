@@ -27,6 +27,11 @@ class Trabajo extends Model
         'visible',
         'estado'
     ];
+    
+    public function catCritTrabajos() {
+        return $this->hasMany(CatCritTrabajo::class, 'tarea_id');
+    }
+
     public function curso()
     {
         return $this->belongsTo(CursoHabilitado::class, 'curso_id');

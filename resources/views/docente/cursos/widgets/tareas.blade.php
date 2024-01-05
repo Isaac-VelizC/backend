@@ -1,6 +1,6 @@
 <div class="col-lg-12">
     <div class="card">
-        <div class="card-body">
+        <div class="card-body text-black">
             <div class="d-grid grid-flow-col align-items-center justify-content-between mb-2">
                 <a class="btn btn-sm btn-ligth" href="{{ route('show.tarea', $tarea->id) }}">
                     <div class="d-flex align-items-center">

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Trabajos;
 
+use App\Http\Controllers\InfoController;
 use App\Models\CursoHabilitado;
 use App\Models\DocumentoDocente;
 use App\Models\DocumentoEstudiante;
@@ -123,10 +124,19 @@ class ShowTarea extends Component
                 ])->first();
                 if ($notaGuardar) {
                     $notaGuardar->update(['nota' => $notaEstudiante, 'estado' => 'Calificado']);
+                    $this->notificar($id, $notaGuardar->trabajo->titulo, $notaEstudiante);
                 }
             }
         } catch (\Throwable $th) {
-            $this->addError("errorNota", 'Error al intentar calificar la tarea.');
+            $this->addError("errorNota", 'Error al intentar calificar la tarea.'. $th);
+        }
+    }
+    public function notificar($id, $titulo, $nota) {
+        $estudiante = Estudiante::find($id);
+        $num = $estudiante->persona->numTelefono->numero;
+        $message = "Se le califico al Trabajo que enviaste ". $titulo . ", con una nota de " . $nota;
+        if ($num) {
+            InfoController::notificacionNotaTarea($num, $message);
         }
     }
 }
