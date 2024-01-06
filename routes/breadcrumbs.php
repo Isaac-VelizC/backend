@@ -103,3 +103,25 @@ Breadcrumbs::for('gestion.evaluacion', function (BreadcrumbTrail $trail) {
     $trail->parent('listado.evaluacion');
     $trail->push('Gestionar Preguntas', route('evaluacion.docente'));
 });
+// Home Docente
+Breadcrumbs::for('homeDocente', function (BreadcrumbTrail $trail) {
+    $trail->push('Inicio', route(auth()->user()->hasRole('Estudiante') ? 'estudiante.home' : 'docente.home'));
+});
+//Materias Docente Estudiante
+Breadcrumbs::for('materias.inicio', function (BreadcrumbTrail $trail) {
+    $trail->parent('homeDocente');
+    $trail->push('Materias', route(auth()->user()->hasRole('Estudiante') ? 'cursos.carrera' : 'chef.cursos'));
+});
+Breadcrumbs::for('Materia.show', function (BreadcrumbTrail $trail, $curso) {
+    $trail->parent('materias.inicio');
+    $trail->push($curso->curso->nombre, route('cursos.curso', $curso->id));
+});
+Breadcrumbs::for('trabajo.show', function (BreadcrumbTrail $trail, $curso, $tarea) {
+    $trail->parent('Materia.show', $curso);
+    $trail->push($tarea->titulo, route('show.tarea', $tarea->id));
+});
+
+Breadcrumbs::for('criterios.gestion', function (BreadcrumbTrail $trail, $curso) {
+    $trail->parent('Materia.show', $curso);
+    $trail->push('Gestionar Criterios', route('docente.tareas.criterios', $curso->id));
+});

@@ -8,7 +8,7 @@
                     <div class="col-md-12">
                         <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
                             <div>
-                                <h1>{{ $curso->curso->nombre }}</h1>
+                                <h4>{{ Breadcrumbs::render('Materia.show', $curso) }}</h4>                            
                                 <p>{{ $curso->curso->descripcion }}</p>
                             </div>
                         </div>
