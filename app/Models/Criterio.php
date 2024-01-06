@@ -20,21 +20,8 @@ class Criterio extends Model
     {
         return $this->hasMany(Trabajo::class, 'criterio_id');
     }
-}
-
-class CatCritTrabajo extends Model
-{
-    use HasFactory;
-    protected $table = "catCritTrabajo";
-    protected $primaryKey = "id";
-    protected $fillable = ['cat_id', 'tarea_id'];
-
-    public function categorias()
+    public function cursosHabilitado()
     {
-        return $this->hasMany(CategoriaCriterio::class, 'criterio_id');
-    }
-    public function trabajos()
-    {
-        return $this->hasMany(Trabajo::class, 'criterio_id');
+        return $this->belongsTo(CursoHabilitado::class, 'curso_id');
     }
 }

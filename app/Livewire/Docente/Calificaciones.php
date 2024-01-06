@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Docente;
 
+use App\Models\Calificacion;
 use App\Models\CursoHabilitado;
 use App\Models\Trabajo;
 use App\Models\TrabajoEstudiante;
@@ -21,6 +22,7 @@ class Calificaciones extends Component
     }
     public function cargarNotas() {
         $this->notas = [];
+        $calificacionesCurso = Calificacion::where('curso_id', $this->idCurso)->get();
 
         foreach ($this->estudiantes as $est) {
             $this->notas[$est->id] = [];
@@ -33,10 +35,15 @@ class Calificaciones extends Component
 
                 $this->notas[$est->id][$tra->id] = $nota;
             }
+            // Agrega la calificación final
+            $calificacionEstudiante = $calificacionesCurso->firstWhere('estudiante_id', $est->id);
+            $this->notas[$est->id]['notaFinal'] = $calificacionEstudiante ? $calificacionEstudiante->calificacion : 'N/A';
         }
+
     }
     public function render()
     {
         return view('livewire.docente.calificaciones');
     }
+    
 }

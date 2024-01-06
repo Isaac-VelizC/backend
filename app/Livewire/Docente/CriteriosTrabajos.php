@@ -16,17 +16,21 @@ class CriteriosTrabajos extends Component
     public CursoHabilitado $materia;
     public $criteioEdit = ['nombre' => '', 'porcentaje' => ''];
     public $cat = ['criterio' => '', 'nombre' => '', 'porcentaje' => ''];
-    public $criterioSeleccionado, $tipoCriterio;
+    public $criterioSeleccionado, $tipoCriterio, $isEditing = false, $idParaEditar;
     protected $listeners = ['cerrarModal'];
 
     public function mount($id) {
         $this->idCurso = $id;
         $this->materia = CursoHabilitado::find($id);
-        $this->trabajos = Trabajo::where('curso_id', $id)
+        $this->trabajosSinCriterio();
+        $this->llamadasModelos();
+    }
+
+    public function trabajosSinCriterio() {
+        $this->trabajos = Trabajo::where('curso_id', $this->idCurso )
             ->where('estado', '!=', 'Borrador')
             ->whereNull('criterio_id')
             ->get();
-        $this->llamadasModelos();
     }
 
     private function llamadasModelos() {
@@ -38,7 +42,6 @@ class CriteriosTrabajos extends Component
         $this->totalPocentCategoria = 0;
         $this->totalCatOriginal = 0;
     }
-
     public function actualizarTotalCurso() {
         if (empty($this->criteioEdit['porcentaje'])) {
             $this->totalCurso = $this->totalCursoOriginal;
@@ -101,16 +104,37 @@ class CriteriosTrabajos extends Component
     }
     protected function guardarCriterio($data, $claveRelacion, $valorRelacion, $model, $tipo) {
         try {
-            $model::create([
-                'nombre' => $data['nombre'],
-                'porcentaje' => $data['porcentaje'], 
-                'total' => $data['porcentaje'],
-                $claveRelacion => $valorRelacion,
-            ]);
-            if ($tipo == 'criterio' ) {
-                $this->ActualizarTotalDB($this->totalCurso);
+            if ($this->isEditing) {
+                $instance = $model::find($this->idParaEditar);
+            
+                if ($instance) {
+                    $instance->update([
+                        'nombre' => $data['nombre'],
+                        'porcentaje' => $data['porcentaje'], 
+                        'total' => $data['porcentaje'],
+                        $claveRelacion => $valorRelacion,
+                    ]);
+            
+                    if ($tipo == 'criterio') {
+                        $this->ActualizarTotalDB($this->totalCurso);
+                    } else {
+                        $this->ActualizarTotalCat($this->totalPocentCategoria, $data['criterio']);
+                    }
+                    $this->isEditing = false;
+                    $this->idParaEditar = '';
+                }
             } else {
-                $this->ActualizarTotalCat($this->totalPocentCategoria, $data['criterio']);
+                $model::create([
+                    'nombre' => $data['nombre'],
+                    'porcentaje' => $data['porcentaje'], 
+                    'total' => $data['porcentaje'],
+                    $claveRelacion => $valorRelacion,
+                ]);
+                if ($tipo == 'criterio' ) {
+                    $this->ActualizarTotalDB($this->totalCurso);
+                } else {
+                    $this->ActualizarTotalCat($this->totalPocentCategoria, $data['criterio']);
+                }
             }
             $this->resetForm();
             session()->flash('success', 'Se guardó con éxito');
@@ -157,8 +181,102 @@ class CriteriosTrabajos extends Component
                 ]);
             }
         }
+        $this->trabajosSinCriterio();
         $this->tipoCriterio = '';
         $this->selectedTrabajos = [];
         session()->flash('success', 'Se asignó con éxito');
     }
+    public function quitarTrabajoCatCrit($id, $catId) {
+        try {
+            $trabajo = Trabajo::find($id);
+            if (!$trabajo) {
+                throw new \Exception('No se encontró el trabajo');
+            }
+            if ($catId !== 0) {
+                $trabajo->catCritTrabajos()->where('cat_id', $catId)->delete();
+            }
+            $trabajo->update([
+                'criterio_id' => null,
+            ]);
+            $this->trabajosSinCriterio();
+            session()->flash('success', 'Operación realizada con éxito');
+        } catch (\Throwable $th) {
+            session()->flash('error', $th->getMessage());
+        }
+    }
+    public function editarCatCrit($id, $tipo) {
+        try {
+            $this->isEditing = true;
+            $this->idParaEditar = $id;
+    
+            if ($tipo == 0) {
+                $criterio = Criterio::find($id);
+    
+                if (!$criterio) {
+                    throw new \Exception('No se encontró el criterio con ID ' . $id);
+                }
+    
+                $this->criteioEdit['nombre'] = $criterio->nombre;
+                $this->criteioEdit['porcentaje'] = $criterio->porcentaje;
+                $this->totalCursoOriginal = $criterio->cursosHabilitado->nota_total + $criterio->total;
+            } else {
+                $cat = CategoriaCriterio::find($id);
+    
+                if (!$cat) {
+                    throw new \Exception('No se encontró la categoría con ID ' . $id);
+                }
+    
+                $this->cat['criterio'] = $cat->criterio_id;
+                $this->cat['nombre'] = $cat->nombre;
+                $this->cat['porcentaje'] = $cat->porcentaje;
+                $this->totalCatOriginal = $cat->total;
+                $this->totalPocentCategoria = $cat->criterio->total;
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', $e->getMessage());
+        }
+    }
+    
+    public function borrarCatCrit($id, $tipo) {
+        try {
+            if ($tipo == 0) {
+                $criterio = Criterio::find($id);
+                if (!$criterio) {
+                    throw new \Exception('No se encontró el criterio');
+                }
+                // Verificar si el criterio tiene categorías
+                if ($criterio->categorias()->exists()) {
+                    throw new \Exception('El criterio tiene categorías y no se puede borrar');
+                }
+                // Verificar si el criterio tiene relaciones con tareas
+                if ($criterio->trabajos()->exists()) {
+                    throw new \Exception('El criterio tiene relaciones con tareas y no se puede borrar');
+                }
+                $nota = $this->materia->nota_total + $criterio->total;
+                $this->ActualizarTotalDB($nota);
+                $criterio->delete();
+            } else {
+                $cat = CategoriaCriterio::find($id);
+                if (!$cat) {
+                    throw new \Exception('No se encontró la categoría con ID ' . $id);
+                }
+                if ($cat->catCritTrabajos()->exists()) {
+                    throw new \Exception('La categoría tiene relaciones con tareas y no se puede borrar');
+                }
+                $criterio = Criterio::find($cat->criterio_id);
+                if (!$criterio) {
+                    throw new \Exception('No se encontró el criterio relacionado con la categoría');
+                }
+                $criterio->total = $criterio->total + $cat->total;
+                $criterio->save();
+                $cat->delete();
+            }
+            $this->llamadasModelos();
+            session()->flash('success', 'Operación realizada con éxito');
+        } catch (\Throwable $th) {
+            // Manejo de excepciones
+            session()->flash('error', $th->getMessage());
+        }
+    }
+    
 }

@@ -122,6 +122,12 @@
                         </div>
                     </div>
                     <hr>
+                    @if(session('error'))
+                        <div id="myAlert" class="alert alert-left alert-danger alert-dismissible fade show mb-3 alert-fade" role="alert">
+                            <span>{{ session('error') }}</span>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
                             <h4 class="card-title">Criterios de Evaluación</h4>
@@ -132,21 +138,32 @@
                             @forelse ($criterios as $criterio)
                                 <div class="list-group-item list-group-item-secondary">
                                     <div class=" d-flex justify-content-between align-items-center">
-                                        <p wire:click="mostrarModal({{ $criterio->id }}, '0')" style="cursor: pointer;">{{ $criterio->nombre }}</p>
+                                        <div>
+                                            {{ $criterio->nombre }}
+                                            <button class="btn text-success" title="Doble click" wire:click="mostrarModal({{ $criterio->id }}, '0')">Aqui <i class="bi bi-check"></i></button>
+                                            <button class="btn text-secondary" title="Editar" wire:click="editarCatCrit({{$criterio->id}}, '0')"><i class="bi bi-pencil"></i></button>
+                                            <button class="btn text-danger" title="Borrar" wire:click="borrarCatCrit({{$criterio->id}}, '0')"><i class="bi bi-trash"></i></button>
+                                        </div>
                                         <span class="badge text-black">{{ $criterio->porcentaje }} %</span>
                                     </div>
                                     @if ($criterio->categorias->isNotEmpty())
                                         @foreach ($criterio->categorias as $categoria)
-                                            <div class="list-group-item-warning" wire:click="mostrarModal({{ $categoria->id }}, '1')" style="cursor: pointer;">
+                                            <div class="list-group-item-warning">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                    <p>  {{ $categoria->nombre }}</p>
+                                                    <div>{{ $categoria->nombre }}
+                                                        <button class="btn text-success" title="Doble click" wire:click="mostrarModal({{ $categoria->id }}, '1')">Aqui <i class="bi bi-check"></i></button>
+                                                        <button class="btn text-secondary" wire:click="editarCatCrit({{$categoria->id}}, '1')"><i class="bi bi-pencil"></i></button>
+                                                        <button class="btn text-danger" wire:click="borrarCatCrit({{$categoria->id}}, '1')"><i class="bi bi-trash"></i></button>
+                                                    </div>
                                                     <span class="badge text-black">{{ $categoria->porcentaje }} %</span>
                                                 </div>
                                                 @if ($categoria->catCritTrabajos->isNotEmpty())
                                                     @foreach ($categoria->catCritTrabajos as $cat)
                                                         @if ($cat->trabajo)
                                                             <div class="list-group-item">
-                                                                <p><i class="bi bi-book"> {{ $cat->trabajo->titulo}}</i></p>
+                                                                <p><i class="bi bi-book"> {{ $cat->trabajo->titulo}}</i>
+                                                                    <button class="btn text-danger" wire:click='quitarTrabajoCatCrit({{$cat->trabajo->id}}, {{$cat->cat_id}})'><i class="bi bi-x-circle"></i></button>
+                                                                </p>
                                                             </div>
                                                         @endif
                                                     @endforeach
@@ -154,10 +171,12 @@
                                             </div>
                                         @endforeach
                                     @endif
-                                    @if ($criterio->trabajos->isNotEmpty())
+                                    @if ($criterio->trabajos->isNotEmpty() && !$criterio->categorias->isNotEmpty())
                                         @foreach ($criterio->trabajos as $trabajo)
                                             <div class="list-group-item">
-                                                <p><i class="bi bi-book"> {{ $trabajo->titulo }}</i></p>
+                                                <p><i class="bi bi-book"> {{ $trabajo->titulo }}</i>
+                                                    <button class="btn text-danger" wire:click="quitarTrabajoCatCrit({{$trabajo->id}}, 0)"><i class="bi bi-x-circle"></i></button>
+                                                </p>
                                             </div>
                                         @endforeach
                                     @endif

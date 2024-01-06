@@ -36,10 +36,6 @@ class Trabajo extends Model
     {
         return $this->belongsTo(CursoHabilitado::class, 'curso_id');
     }
-    public function Tipo()
-    {
-        return $this->belongsTo(TipoTrabajo::class, 'tipo_id');
-    }
     public function tema()
     {
         return $this->belongsTo(Tema::class, 'tema_id');

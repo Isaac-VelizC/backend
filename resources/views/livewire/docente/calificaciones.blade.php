@@ -2,8 +2,14 @@
     <hr>
     <div class="row">
         <div class="col-sm-12">
+            @if(session('error'))
+                <div id="myAlert" class="alert alert-left alert-danger alert-dismissible fade show mb-3 alert-fade" role="alert">
+                    <span>{{ session('error') }}</span>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <div class="card">
-                <div class="header-title d-flex align-items-center justify-content-between flex-wrap">
+                <div class="header-title d-flex align-items-center justify-content-between flex-wrap">    
                     <h4 class="card-title mb-0">Calificaciones</h4>
                     @if (auth()->user()->hasRole('Docente'))
                         <div class="d-flex align-items-center flex-wrap">
@@ -31,7 +37,7 @@
                                             @foreach ($trabajos as $tra)
                                                 <td class="text-center">{{ $notas[$est->id][$tra->id] ?? 'N/A' }}</td>
                                             @endforeach
-                                            <td class="text-center">0</td>
+                                            <td class="text-center">{{ $notas[$est->id]['notaFinal'] ?? 'N/A' }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -53,7 +59,7 @@
                                     @endforeach
                                     <tr>
                                         <td>Nota Final</td>
-                                        <td class="text-center">0</td>
+                                        <td class="text-center">{{ $notas[Auth::user()->persona->estudiante->id]['notaFinal'] ?? 'N/A' }}</td>
                                     </tr>
                                 </tbody>
                             </table>

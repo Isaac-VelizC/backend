@@ -47,6 +47,12 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
+                @if(session('error'))
+                    <div id="myAlert" class="alert alert-left alert-danger alert-dismissible fade show mb-3 alert-fade" role="alert">
+                        <span>{{ session('error') }}</span>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                 @if (auth()->user()->hasRole('Docente'))
                     <div class="accordion-item">
                         <div id="collapseThree" class="accordion-collapse collapse {{ $AD3 ? 'show' : '' }}" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
