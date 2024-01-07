@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Aula;
 use App\Models\Curso;
+use App\Models\CursoHabilitado;
 use App\Models\Docente;
 use App\Models\Estudiante;
+use App\Models\Horario;
 use App\Models\Persona;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -21,20 +26,5 @@ class AdminController extends Controller
         $docentes = Docente::all();
         $materias = Curso::all();
         return view('admin.home', compact('users', 'estudiantes', 'docentes', 'materias'));
-    }
-    ///Reportes e informes
-    public function viewEstudiantes() {
-        return view('admin.informes.estudiantes');
-    }
-    public function viewAsistencias() {
-        return view('admin.informes.asistencias');
-    }
-    public function viewMaterias() {
-        $materias = Curso::all();
-
-        return view('admin.informes.materias', compact('materias'));
-    }
-    public function viewPagos() {
-        return view('admin.informes.pagos');
     }
 }

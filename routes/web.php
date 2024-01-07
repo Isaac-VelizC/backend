@@ -15,8 +15,11 @@ use App\Http\Controllers\InfoController;
 use App\Livewire\Admin\AdminInfo;
 use App\Livewire\Admin\EvaluacionDocente;
 use App\Livewire\Admin\FormPagos;
+use App\Livewire\Admin\Informe\AsistenciaReportes;
+use App\Livewire\Admin\Informe\EstudianteReportes;
+use App\Livewire\Admin\Informe\MateriaReportes;
+use App\Livewire\Admin\Informe\PagosReportes;
 use App\Livewire\Admin\MateriaEvaluacionDocente;
-use App\Livewire\Docente\Components\NewTarea;
 use App\Livewire\Docente\CriteriosTrabajos;
 use App\Livewire\Docente\NewReceta;
 use App\Livewire\Docente\Show;
@@ -106,10 +109,10 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     //Rutas para exportar
     Route::get('/cursos/exp/pdf', [CursoController::class, 'exportarCurso'])->name('export.cursos');
     //Rutasp para reportes
-    Route::get('/estudiantes/reporte/export', [AdminController::class, 'viewEstudiantes'])->name('admin.estudiantes.informe');
-    Route::get('/asistencias/reporte/export', [AdminController::class, 'viewAsistencias'])->name('admin.asistencias.informe');
-    Route::get('/materias/reporte/export', [AdminController::class, 'viewMaterias'])->name('admin.materias.informe');
-    Route::get('/pagos/reporte/export', [AdminController::class, 'viewPagos'])->name('admin.pagos.informe');
+    Route::get('/estudiantes/reporte/export', EstudianteReportes::class)->name('admin.estudiantes.informe');
+    Route::get('/asistencias/reporte/export', AsistenciaReportes::class)->name('admin.asistencias.informe');
+    Route::get('/materias/reporte/export', MateriaReportes::class)->name('admin.materias.informe');
+    Route::get('/pagos/reporte/export', PagosReportes::class)->name('admin.pagos.informe');
 });
 
 Route::middleware(['auth', 'role:Docente'])->group(function () {

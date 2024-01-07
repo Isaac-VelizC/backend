@@ -86,3 +86,7 @@ addEventIfElementExists('exportBtnMaterias1', 'click', function () {
 addEventIfElementExists('exportBtnPagos1', 'click', function () {
     exportTableToExcel('datatablePagos', 'Export_Pagos');
 });
+
+addEventIfElementExists('exportBtnReportMaterias', 'click', function () {
+    exportTableToExcel('datatableReportMateria', 'Reporte_Materias');
+});
