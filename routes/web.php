@@ -10,6 +10,7 @@ use App\Http\Controllers\Docente\DocenteController;
 use App\Http\Controllers\Estudent\EstudianteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\PagosController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\InfoController;
 use App\Livewire\Admin\AdminInfo;
 use App\Livewire\Admin\EvaluacionDocente;
@@ -45,6 +46,7 @@ Auth::routes();
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.home');
+    Route::get('/backup', [BackupController::class, 'downloadBackup'])->name('admin.backup.db_igla');
     Route::get('/admin-estudiantes', [UsersController::class, 'estudiantesAll'])->name('admin.estudinte');
     Route::get('/admin-inscripcions', [UsersController::class, 'formInscripcion'])->name('admin.inscripcion');
     Route::post('/admin-inscripcions/store', [UsersController::class, 'inscripcion'])->name('admin.inscripcion.store');

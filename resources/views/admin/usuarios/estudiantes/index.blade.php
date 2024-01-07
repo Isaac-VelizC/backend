@@ -33,8 +33,16 @@
      <div class="col-sm-12">
         <div class="card">
            <div class="card-body">
+            <div class="flex-wrap d-flex justify-content-between align-items-center">
+               <p></p>
+               <button id="exportBtnEstudiantes1" class="btn btn-link text-black">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                     <path d="M17 13v-13h-2v5h-2v-3h-2v7h-2v-9h-2v13h-6l11 11 11-11z"/>
+                  </svg> Descargar
+               </button>
+            </div>
               <div class="table-responsive">
-                 <table id="datatable" class="table table-striped" data-toggle="data-table">
+                 <table id="datatableEstudiantes" class="table table-striped" data-toggle="data-table">
                     <thead>
                        <tr>
                         <th>Nombre Completo</th>
@@ -52,13 +60,11 @@
                             <td><p>{{ $item->persona->email }}</p></td>
                             <td><p>{{ $item->persona->ci }}</p></td>
                             <td><p>{{ $item->fecha_nacimiento }}</p></td>
-                            <td>
                               @if ($item->estado == true)
-                                 <p> <span class="badge rounded-pill bg-info text-white">Activo</span></p>
+                                 <td><p> <span class="badge rounded-pill bg-info text-white">Activo</span></p></td>
                               @else
-                                 <p> <span class="badge rounded-pill bg-danger text-white">Inactivo</span></p>
+                                 <td><p> <span class="badge rounded-pill bg-danger text-white">Inactivo</span></p></td>
                               @endif
-                            </td>
                             <td>
                               <div class="flex align-items-center list-user-action">
                                  @if ($item->estado == true)

@@ -38,7 +38,7 @@
             @yield('content')
             @if (in_array('Admin', Auth::user()->getRoleNames()->toArray()))
                 <div class="btn-download">
-                    <a class="btn btn-light px-3 py-2" href="#">
+                    <a class="btn btn-light px-3 py-2" href="{{ route('admin.backup.db_igla') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <path d="M15.836 7.353c-.793-.828-1.931-1.44-3.27-1.628l.211-1.492-3.097 2.02 2.465 2.57.202-1.486c.86.15 1.515.509 
                             1.96.972 1.035 1.081.919 2.73-.453 3.625-1.299.847-3.182.664-4.216-.415-.727-.758-.938-1.852-.183-2.846l-1.297-1.352c-1.605 
@@ -57,6 +57,10 @@
     @yield('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/livewire/sortable@v1.x.x/dist/livewire-sortable.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src='{{ asset('assets/js/plugins/exports.js')}}'></script>
     <script src="{{ asset('assets/js/core/libs.min.js')}}"></script>
     <script src="{{ asset('assets/js/core/external.min.js')}}"></script>
     <script src="{{ asset('assets/js/charts/widgetcharts.js')}}"></script>
