@@ -97,7 +97,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     ///pagos
     Route::get('/admin-pagos-all', [PagosController::class, 'allPagos'])->name('admin.lista.pagos');
     Route::get('/pagos/formulario/hjfse', FormPagos::class)->name('admin.create.pago');
-    Route::get('/pagos/guadar/imprimir', [PagosController::class, 'guardarImprimirPago'])->name('admin.pago.guardar.imprimir');
+    Route::get('/pagos/guadar/imprimir/{id}', [PagosController::class, 'guardarImprimirPago'])->name('admin.pago.guardar.imprimir');
     //Cocina
     //Acerda de IGLA
     Route::get('/informacion', [HomeController::class, 'acercaDe'])->name('admin.ajustes');

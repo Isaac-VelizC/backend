@@ -49,47 +49,26 @@
                    <table id="datatablePagos" class="table table-striped" data-toggle="data-table">
                       <thead>
                          <tr>
-                            <th>Nombre</th>
-                            <th>Docente</th>
-                            <th>Aula</th>
-                            <th>Modalidad</th>
-                            <th>Horario</th>
-                            <th>Estado</th>
-                            <th>Tags</th>
+                            <th>Nombre Completo</th>
+                            <th>Tipo Pago</th>
+                            <th>Fecha</th>
+                            <th>Monto</th>
+                            <th></th>
                          </tr>
                       </thead>
                       <tbody>
                        @foreach ($pagos as $item)
                           <tr>
-                             <td><p>{{ $item->nombre }}</p></td>
-                             <td>
-                             <p><a href="#0">{{ $item->nombre }} {{ $item->ap_paterno }} {{ $item->ap_materno }}</a></p>
-                             </td>
-                             <td>
-                             <p>{{ $item->nombre }}</p>
-                             </td>
-                             <td>
-                             <p>{{ $item->nombre }}</p>
-                             </td>
-                             <td>
-                              <p>{{ $item->horarios }}</p>
-                              </td>
-                              <td>
-                                @if ($item->estado == true)
-                                   <p> <span class="badge rounded-pill bg-info text-white">Activo</span></p>
-                                @else
-                                   <p> <span class="badge rounded-pill bg-danger text-white">Inactivo</span></p>
-                                @endif
-                              </td>
+                             <td>{{ $item->estudiante->persona->nombre }} {{ $item->estudiante->persona->ap_paterno }} {{ $item->estudiante->persona->ap_materno }}</td>
+                             <td>{{ $item->metodoPago->nombre }}</td>
+                             <td>{{ \Carbon\Carbon::parse($item->fecha)->locale('es_ES')->isoFormat('LL') }}</td>
+                             <td>{{ $item->monto }}Bs.</td>
                              <td>
                                 <div class="flex align-items-center list-user-action">
-                                   <a href="{{ route('admin.cursos.show', [$item->id]) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Asignar">
-                                      <i class="bi bi-eye"></i>
+                                   <a href="{{ route('admin.pago.guardar.imprimir', [$item->id]) }}" title="Imprimir">
+                                      <i class="bi bi-printer"></i>
                                    </a>
-                                   <a data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"  href="{{ route('admin.asigando.edit', [$item->id]) }}">
-                                      <i class="bi bi-pen"></i>
-                                   </a>
-                                   <a data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#deleteConfirm" data-curso-id="{{ $item->id }}">
+                                   <a data-bs-toggle="modal" data-bs-target="#deleteConfirm" data-curso-id="{{ $item->id }}">
                                       <i class="bi bi-trash"></i>
                                    </a>
                                 </div>

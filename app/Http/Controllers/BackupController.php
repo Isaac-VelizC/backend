@@ -12,10 +12,7 @@ class BackupController extends Controller
         // Ejecutar el comando para realizar un nuevo backup
         Artisan::call('backup:run');
 
-        // Ruta al último archivo de copia de seguridad generado
-        $backupPath = storage_path('app/backups/') . Artisan::output();
-
         // Enviar el archivo al usuario
-        return response()->download($backupPath);
+        return back();
     }
 }

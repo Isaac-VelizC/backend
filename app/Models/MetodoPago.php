@@ -12,6 +12,11 @@ class MetodoPago extends Model
     protected $table = "metodo_pagos";
     protected $primaryKey = "id";
     protected $fillable = ['nombre', 'monto'];
+    
+    public function pagos()
+    {
+        return $this->hasMany(Pagos::class, 'metodo_id');
+    }
 
 }
 

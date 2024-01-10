@@ -12,4 +12,9 @@ class FormaPago extends Model
     protected $table = "formas_pagos";
     protected $primaryKey = "id";
     protected $fillable = ['nombre'];
+    
+    public function pagos()
+    {
+        return $this->hasMany(Pagos::class, 'forma_id');
+    }
 }
