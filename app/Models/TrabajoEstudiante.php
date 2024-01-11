@@ -10,11 +10,15 @@ class TrabajoEstudiante extends Model
     use HasFactory;
     protected $table = "trabajo_estudiantes";
     protected $primaryKey = "id";
-    protected $fillable = ['trabajo_id', 'estudiante_id', 'descripcion', 'estado', 'nota'];
+    protected $fillable = ['curso_id', 'trabajo_id', 'estudiante_id', 'descripcion', 'estado', 'nota'];
 
     public function trabajo()
     {
         return $this->belongsTo(Trabajo::class, 'trabajo_id');
+    }
+    public function materia()
+    {
+        return $this->belongsTo(CursoHabilitado::class, 'curso_id');
     }
     public function estudiante()
     {

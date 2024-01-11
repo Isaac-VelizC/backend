@@ -12,4 +12,8 @@ class Calificacion extends Model
     protected $primaryKey = "id";
     protected $fillable = ['estudiante_id', 'curso_id', 'num_trabajos', 'num_evaluaciones', 'calificacion'];
 
+    public function cursoHabilitado()
+    {
+        return $this->belongsTo(CursoHabilitado::class, 'curso_id');
+    }
 }

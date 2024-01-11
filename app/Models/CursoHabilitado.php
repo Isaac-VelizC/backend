@@ -36,12 +36,10 @@ class CursoHabilitado extends Model
     {
         return $this->belongsTo(Curso::class, 'curso_id');
     }
-
     public function docente()
     {
         return $this->belongsTo(Docente::class, 'docente_id');
     }
-
     public function responsable()
     {
         return $this->belongsTo(User::class, 'responsable_id');
@@ -61,5 +59,16 @@ class CursoHabilitado extends Model
     public function comentarios()
     {
         return $this->hasMany(ComentarioCurso::class, 'curso_id');
+    }
+    public function trabajos() {
+        return $this->hasMany(Trabajo::class, 'curso_id');
+    }
+    public function tareasEstudiantes()
+    {
+        return $this->hasMany(TrabajoEstudiante::class, 'curso_id');
+    }
+    public function calificaciones()
+    {
+        return $this->hasMany(Calificacion::class, 'curso_id');
     }
 }

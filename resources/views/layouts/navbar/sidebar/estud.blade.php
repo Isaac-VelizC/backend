@@ -35,6 +35,12 @@
               <span class="item-name">Materias</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link {{ Route::is('estudiante.calificaciones') ? 'active' : '' }}" href="{{ route('estudiante.calificaciones') }}">
+              <i class="bi bi-journal-check"></i>
+              <span class="item-name">Calificaciones</span>
+            </a>
+          </li>
         </ul>
       </div>
     </div>

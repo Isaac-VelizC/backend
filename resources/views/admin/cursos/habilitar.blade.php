@@ -104,7 +104,7 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">{{ $isEditing ? 'Actualizar' : 'Habilitar' }}</button>
+                                    <button type="submit" class="btn btn-warning">{{ $isEditing ? 'Actualizar' : 'Habilitar' }}</button>
                                 </form>
                             </div>
                             <div class="col-sm-12 col-lg-8">

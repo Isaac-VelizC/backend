@@ -8,8 +8,8 @@
               <div class="flex-wrap d-flex justify-content-between align-items-center">
                   <div>
                      <div class="btn-group" role="group" aria-label="Basic outlined example">
-                        <a type="button" class="btn btn-outline-primary" href="{{ route('admin.cursos.activos') }}" style="color: black">Cursos Habilitados</a>
-                        <a type="button" class="btn btn-outline-primary active">Cursos</a>
+                        <a type="button" class="btn btn-outline-warning" href="{{ route('admin.cursos.activos') }}" style="color: black">Cursos Habilitados</a>
+                        <a type="button" class="btn btn-outline-warning active">Cursos</a>
                      </div>
                   </div>
                   <div>

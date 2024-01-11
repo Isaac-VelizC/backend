@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('trabajo_estudiantes', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('curso_id');
+            $table->foreign('curso_id')->references('id')->on('curso_habilitados')->onDelete('restrict');
             $table->unsignedBigInteger('trabajo_id')->nullable();
             $table->foreign('trabajo_id')->references('id')->on('trabajos')->onDelete('cascade');
             $table->unsignedBigInteger('estudiante_id')->nullable();

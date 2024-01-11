@@ -78,6 +78,7 @@ class SubirTarea extends Component
     }
     public function crearNuevo() {
         $tarea = TrabajoEstudiante::create([
+            'curso_id' => $this->trabajo->curso->id,
             'trabajo_id' => $this->idTarea,
             'estudiante_id' => $this->authid,
         ]);

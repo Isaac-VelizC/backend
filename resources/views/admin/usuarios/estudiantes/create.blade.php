@@ -43,7 +43,7 @@
                 </div>
                 <div class="card-body">
                     <div class="new-user-info">
-                        <form class="needs-validation text-black" novalidate method="POST" action="{{ route('admin.inscripcion.store') }}">
+                        <form class="needs-validation" novalidate method="POST" action="{{ route('admin.inscripcion.store') }}">
                         @csrf
                         <div class="row">
                             <div class="col-sm-12 col-lg-6">

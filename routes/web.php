@@ -131,6 +131,7 @@ Route::middleware(['auth', 'role:Estudiante'])->group(function () {
     Route::get('/estud-dashboard', [EstudianteController::class, 'index'])->name('estudiante.home');
     Route::get('/cursos/carrera/bamos', [EstudianteController::class, 'cursos'])->name('cursos.carrera');
     Route::get('/estud-submit/{id}/{edit}/editar', SubirTarea::class)->name('estudiante.subir.tarea');
+    Route::get('/calificaiones', [EstudianteController::class, 'calificaionesMaterias'])->name('estudiante.calificaciones');
 });
 
 Route::middleware(['auth'])->group(function () {
