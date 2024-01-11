@@ -40,136 +40,152 @@
                         </i>
                     </a>
                     <ul class="sub-nav collapse" id="horizontal-menu" data-bs-parent="#sidebar-menu">
-                        <li class="nav-item">
-                            <a class="nav-link {{ Route::is('admin.estudinte') ? 'active' : '' }}" href="{{ route('admin.estudinte') }}">
-                                <i class="icon">
-                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                                        <g>
-                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                        </g>
-                                    </svg>
-                                </i>
-                                <i class="sidenav-mini-icon"> E </i>
-                                <span class="item-name">Estudiantes</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Route::is('admin.docentes') ? 'active' : '' }}" href="{{ route('admin.docentes') }}">
-                                <i class="icon svg-icon">
-                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                                        <g>
-                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                        </g>
-                                    </svg>
-                                </i>
-                                <i class="sidenav-mini-icon"> D </i>                   
-                                <span class="item-name">Docentes</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Route::is('admin.personal') ? 'active' : '' }}" href="{{ route('admin.personal') }}">
-                                <i class="icon">
-                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                                        <g>
-                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                        </g>
-                                    </svg>
-                                </i>
-                                <i class="sidenav-mini-icon"> P </i>
-                                <span class="item-name">Personal</span>
-                            </a>
-                        </li>
+                        @can('GestionEstudiante')
+                            <li class="nav-item">
+                                <a class="nav-link {{ Route::is('admin.estudinte') ? 'active' : '' }}" href="{{ route('admin.estudinte') }}">
+                                    <i class="icon">
+                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                            <g>
+                                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                            </g>
+                                        </svg>
+                                    </i>
+                                    <i class="sidenav-mini-icon"> E </i>
+                                    <span class="item-name">Estudiantes</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('GestionDocente')
+                            <li class="nav-item">
+                                <a class="nav-link {{ Route::is('admin.docentes') ? 'active' : '' }}" href="{{ route('admin.docentes') }}">
+                                    <i class="icon svg-icon">
+                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                            <g>
+                                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                            </g>
+                                        </svg>
+                                    </i>
+                                    <i class="sidenav-mini-icon"> D </i>                   
+                                    <span class="item-name">Docentes</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('GestionUsers')
+                            <li class="nav-item">
+                                <a class="nav-link {{ Route::is('admin.personal') ? 'active' : '' }}" href="{{ route('admin.personal') }}">
+                                    <i class="icon">
+                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                            <g>
+                                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                            </g>
+                                        </svg>
+                                    </i>
+                                    <i class="sidenav-mini-icon"> P </i>
+                                    <span class="item-name">Personal</span>
+                                </a>
+                            </li>
+                        @endcan
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ Route::is('admin.cursos.activos') ? 'active' : '' }}" href="{{ route('admin.cursos.activos') }}">
-                        <i class="bi bi-bookshelf"></i>
-                        <span class="item-name">Cursos</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-user" role="button" aria-expanded="false" aria-controls="sidebar-user">
-                        <i class="bi bi-journal-check"></i>
-                        <span class="item-name">Reportes</span>
-                        <i class="right-icon">
-                            <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </i>
-                    </a>
-                    <ul class="sub-nav collapse" id="sidebar-user" data-bs-parent="#sidebar-menu">
+                @can('GestionCurso')
+                    <li class="nav-item">
+                        <a class="nav-link {{ Route::is('admin.cursos.activos') ? 'active' : '' }}" href="{{ route('admin.cursos.activos') }}">
+                            <i class="bi bi-bookshelf"></i>
+                            <span class="item-name">Cursos</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('Informes')
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-user" role="button" aria-expanded="false" aria-controls="sidebar-user">
+                            <i class="bi bi-journal-check"></i>
+                            <span class="item-name">Reportes</span>
+                            <i class="right-icon">
+                                <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </i>
+                        </a>
+                        <ul class="sub-nav collapse" id="sidebar-user" data-bs-parent="#sidebar-menu">
+                            <li class="nav-item">
+                                <a class="nav-link {{ Route::is('admin.estudiantes.informe') ? 'active' : '' }}" href="{{ route('admin.estudiantes.informe') }}">
+                                    <i class="icon">
+                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                            <g>
+                                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                            </g>
+                                        </svg>
+                                    </i>
+                                    <i class="sidenav-mini-icon"> U </i>
+                                    <span class="item-name">Estudiantes</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ Route::is('admin.asistencias.informe') ? 'active' : '' }}" href="{{ route('admin.asistencias.informe') }}">
+                                    <i class="icon">
+                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                            <g>
+                                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                            </g>
+                                        </svg>
+                                    </i>
+                                    <i class="sidenav-mini-icon"> A </i>
+                                    <span class="item-name">Asistencias</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ Route::is('admin.materias.informe') ? 'active' : '' }}" href="{{ route('admin.materias.informe')}}">
+                                    <i class="icon">
+                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                            <g>
+                                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                            </g>
+                                        </svg>
+                                    </i>
+                                    <i class="sidenav-mini-icon"> M </i>
+                                    <span class="item-name">Materias</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ Route::is('admin.pagos.informe') ? 'active' : '' }}" href="{{ route('admin.pagos.informe')}}">
+                                    <i class="icon">
+                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                            <g>
+                                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                            </g>
+                                        </svg>
+                                    </i>
+                                    <i class="sidenav-mini-icon"> P </i>
+                                    <span class="item-name">Pagos</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endcan
+                    @can('GestionPagos')
                         <li class="nav-item">
-                            <a class="nav-link {{ Route::is('admin.estudiantes.informe') ? 'active' : '' }}" href="{{ route('admin.estudiantes.informe') }}">
-                                <i class="icon">
-                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                                        <g>
-                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                        </g>
-                                    </svg>
-                                </i>
-                                <i class="sidenav-mini-icon"> U </i>
-                                <span class="item-name">Estudiantes</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Route::is('admin.asistencias.informe') ? 'active' : '' }}" href="{{ route('admin.asistencias.informe') }}">
-                                <i class="icon">
-                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                                        <g>
-                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                        </g>
-                                    </svg>
-                                </i>
-                                <i class="sidenav-mini-icon"> A </i>
-                                <span class="item-name">Asistencias</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Route::is('admin.materias.informe') ? 'active' : '' }}" href="{{ route('admin.materias.informe')}}">
-                                <i class="icon">
-                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                                        <g>
-                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                        </g>
-                                    </svg>
-                                </i>
-                                <i class="sidenav-mini-icon"> M </i>
-                                <span class="item-name">Materias</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Route::is('admin.pagos.informe') ? 'active' : '' }}" href="{{ route('admin.pagos.informe')}}">
-                                <i class="icon">
-                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                                        <g>
-                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                        </g>
-                                    </svg>
-                                </i>
-                                <i class="sidenav-mini-icon"> P </i>
+                            <a class="nav-link {{ Route::is('admin.lista.pagos') ? 'active' : '' }}" href="{{ route('admin.lista.pagos') }}">
+                                <i class="bi bi-receipt"></i>
                                 <span class="item-name">Pagos</span>
                             </a>
                         </li>
-                    </ul>
-                </li>
-                  <li class="nav-item">
-                      <a class="nav-link {{ Route::is('admin.lista.pagos') ? 'active' : '' }}" href="{{ route('admin.lista.pagos') }}">
-                          <i class="bi bi-receipt"></i>
-                          <span class="item-name">Pagos</span>
-                      </a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link {{ Route::is('admin.calendario') ? 'active' : '' }}" href="{{ route('admin.calendario') }}">
-                          <i class="bi bi-calendar"></i>
-                          <span class="item-name">Calendario</span>
-                      </a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link {{ Route::is('materia.evaluacion.docente') ? 'active' : '' }}" href="{{ route('materia.evaluacion.docente') }}">
-                          <i class="bi bi-person-exclamation"></i>
-                          <span class="item-name">Evaluación Docente</span>
-                      </a>
-                  </li>
+                    @endcan
+                    @can('GestionCalendario')
+                        <li class="nav-item">
+                            <a class="nav-link {{ Route::is('admin.calendario') ? 'active' : '' }}" href="{{ route('admin.calendario') }}">
+                                <i class="bi bi-calendar"></i>
+                                <span class="item-name">Calendario</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('EvaluacionDocente')
+                        <li class="nav-item">
+                            <a class="nav-link {{ Route::is('materia.evaluacion.docente') ? 'active' : '' }}" href="{{ route('materia.evaluacion.docente') }}">
+                                <i class="bi bi-person-exclamation"></i>
+                                <span class="item-name">Evaluación Docente</span>
+                            </a>
+                        </li>
+                    @endcan
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-receta" role="button" aria-expanded="false" aria-controls="sidebar-receta">
                             <i class="bi bi-list"></i>
@@ -198,12 +214,14 @@
                         </ul>
                     </li>
                   <li><hr class="hr-horizontal"></li>
-                  <li class="nav-item">
-                      <a class="nav-link {{ Route::is('admin.administracion') ? 'active' : '' }}" href="{{ route('admin.administracion') }}">
-                          <i class="bi bi-person-exclamation"></i>
-                          <span class="item-name">Administración</span>
-                      </a>
-                  </li>
+                  @role('Admin')
+                    <li class="nav-item">
+                        <a class="nav-link {{ Route::is('admin.administracion') ? 'active' : '' }}" href="{{ route('admin.administracion') }}">
+                            <i class="bi bi-person-exclamation"></i>
+                            <span class="item-name">Administración</span>
+                        </a>
+                    </li>
+                  @endrole
               </ul>
           </div>
       </div>

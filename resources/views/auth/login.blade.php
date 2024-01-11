@@ -10,8 +10,8 @@
                 <div class="col-md-10">
                    <div class="card card-transparent shadow-none d-flex justify-content-center mb-0 auth-card">
                       <div class="card-body">
-                         <div class="navbar-brand d-flex align-items-center mb-3">
-                            <h4 class="logo-title ms-3">INSTITUTO TÉCNICO IGLA</h4>
+                         <div class="navbar-brand mb-3">
+                            <h4 class="logo-title text-center"><b>INSTITUTO TECNICO IGLA</b></h4>
                          </div>
                          <h2 class="mb-2 text-center">Inicia sesión</h2>
                          <p class="text-center">Inicie sesión para mantenerse conectado.</p>
@@ -20,7 +20,7 @@
                             <div class="row">
                                <div class="col-lg-12">
                                   <div class="form-group">
-                                     <label for="email" class="form-label">Email</label>
+                                     <label for="email" class="form-label">E-mail o Username</label>
                                      <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required aria-describedby="email" autocomplete="email" autofocus>
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
@@ -31,7 +31,7 @@
                                </div>
                                <div class="col-lg-12">
                                   <div class="form-group">
-                                     <label for="password" class="form-label">Password</label>
+                                     <label for="password" class="form-label">Contraseña</label>
                                      <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" aria-describedby="password" required autocomplete="current-password">
                                     @error('password')
                                         <span class="invalid-feedback" role="alert">

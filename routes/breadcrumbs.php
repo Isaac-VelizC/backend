@@ -19,6 +19,10 @@ Breadcrumbs::for('Usuarios', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Listado de Usuarios', route('admin.users'));
 });
+Breadcrumbs::for('gestion.permisos', function (BreadcrumbTrail $trail) {
+    $trail->parent('Usuarios');
+    $trail->push('Gestionar Permisos y Roles', route('admin.gestion.permisos'));
+});
 // Estudiantes
 Breadcrumbs::for('Estudiantes', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
@@ -32,6 +36,7 @@ Breadcrumbs::for('Estudiantes.edit', function (BreadcrumbTrail $trail, $est) {
     $trail->parent('Estudiantes');
     $trail->push($est->nombre .' ' .$est->ap_paterno .' '.$est->ap_materno, route('admin.E.show', $est->id));
 });
+
 // Docentes
 Breadcrumbs::for('Docentes', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
@@ -125,3 +130,4 @@ Breadcrumbs::for('criterios.gestion', function (BreadcrumbTrail $trail, $curso) 
     $trail->parent('Materia.show', $curso);
     $trail->push('Gestionar Criterios', route('docente.tareas.criterios', $curso->id));
 });
+

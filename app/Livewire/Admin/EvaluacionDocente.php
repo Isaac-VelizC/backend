@@ -90,7 +90,7 @@ class EvaluacionDocente extends Component
                     $pregunta->save();
                     $i++;
                 }
-    
+                $this->dispatch('success', ['message'=> 'Pregunta borrada con éxito!']);
                 session()->flash('message', 'Pregunta borrada con éxito.');
                 $this->cancelar();
             }

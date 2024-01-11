@@ -15,6 +15,7 @@ use App\Http\Controllers\InfoController;
 use App\Livewire\Admin\AdminInfo;
 use App\Livewire\Admin\EvaluacionDocente;
 use App\Livewire\Admin\FormPagos;
+use App\Livewire\Admin\GestionPermisos;
 use App\Livewire\Admin\Informe\AsistenciaReportes;
 use App\Livewire\Admin\Informe\EstudianteReportes;
 use App\Livewire\Admin\Informe\MateriaReportes;
@@ -49,6 +50,7 @@ Auth::routes();
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.home');
+    Route::get('/gestionar/permisos/admin', GestionPermisos::class)->name('admin.gestion.permisos');
     Route::get('/backup', [BackupController::class, 'downloadBackup'])->name('admin.backup.db_igla');
     Route::get('/admin-estudiantes', [UsersController::class, 'estudiantesAll'])->name('admin.estudinte');
     Route::get('/admin-inscripcions', [UsersController::class, 'formInscripcion'])->name('admin.inscripcion');

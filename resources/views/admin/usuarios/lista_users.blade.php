@@ -27,13 +27,19 @@
         <div class="card">
            <div class="card-body">
                <div class="flex-wrap d-flex justify-content-between align-items-center">
-                  <p></p>
+                  <a class="btn btn-link text-black" href="{{ route('admin.gestion.permisos') }}">
+                     <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
+                        <path d="M24 22h-24v-20h7c1.695 1.942 2.371 3 4 3h13v17zm-17.917-18h-4.083v16h20v-13h-11c-2.339 0-3.537-1.388-4.917-3zm9.917 
+                        14h-8v-5h1v-1c0-1.656 1.344-3 3-3s3 1.344 3 3v1h1v5zm-5-6v1h2v-1c0-.552-.448-1-1-1s-1 .448-1 1z"/>
+                     </svg> Gestionar Permisos
+                  </a>
                   <button id="exportBtnUsers1" class="btn btn-link text-black">
                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path d="M17 13v-13h-2v5h-2v-3h-2v7h-2v-9h-2v13h-6l11 11 11-11z"/>
                      </svg> Descargar
                   </button>
                </div>
+               <br>
               <div class="table-responsive">
                  <table id="datatableUsers" class="table table-striped" data-toggle="data-table">
                     <thead>

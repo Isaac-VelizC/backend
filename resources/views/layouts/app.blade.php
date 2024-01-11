@@ -7,13 +7,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ 'IGLA' }}</title>
     <link rel="stylesheet" href="{{ asset('assets/css/core/libs.min.css')}}" />
-    <!--link rel="stylesheet" href="{{ asset('assets/css/hope-ui.min.css?v=2.0.0')}}" /-->
     <link rel="stylesheet" href="{{ asset('assets/css/hope-ui.css')}}" />
     <link rel="stylesheet" href="{{ asset('assets/css/select2.min.css')}}"/>
-    <!--link rel="stylesheet" href="{{ asset('assets/css/custom.min.css?v=2.0.0')}}" /-->
-    <!--link rel="stylesheet" href="{{ asset('assets/css/dark.min.css')}}"/-->
-    <!--link rel="stylesheet" href="{{ asset('assets/css/customizer.min.css')}}" /-->
-    <!--link rel="stylesheet" href="{{ asset('assets/css/rtl.min.css')}}"/-->
     <link rel='stylesheet' href='{{ asset('assets/vendor/fullcalendar/core/main.css')}}' />
     <link rel='stylesheet' href='{{ asset('assets/vendor/fullcalendar/daygrid/main.css')}}' />
     <link rel='stylesheet' href='{{ asset('assets/vendor/fullcalendar/timegrid/main.css')}}' />
@@ -26,12 +21,12 @@
 </head>
 <body>
     @if (auth()->check())
-        @if (in_array('Admin', Auth::user()->getRoleNames()->toArray()))
-            @include('layouts.navbar.sidebar.admin')
+        @if (in_array('Estudiante', Auth::user()->getRoleNames()->toArray()))
+            @include('layouts.navbar.sidebar.estud')
         @elseif (in_array('Docente', Auth::user()->getRoleNames()->toArray()))
             @include('layouts.navbar.sidebar.docente')
         @else
-            @include('layouts.navbar.sidebar.estud')
+            @include('layouts.navbar.sidebar.admin')
         @endif
         <main class="main-content">
             @include('layouts.navbar.nav')
