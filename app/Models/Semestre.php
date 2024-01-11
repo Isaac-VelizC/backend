@@ -11,7 +11,7 @@ class Semestre extends Model
     public $timestamps = false;
     protected $table = "semestres";
     protected $primaryKey = "id";
-    protected $fillable = ['nombre', 'costo', 'descripcion'];
+    protected $fillable = ['nombre', 'descripcion'];
 
     public function cursos()
     {

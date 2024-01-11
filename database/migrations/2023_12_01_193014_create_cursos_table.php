@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('cursos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->decimal('precio', 10, 2)->nullable();
             $table->unsignedBigInteger('semestre_id')->nullable();
             $table->foreign('semestre_id')->references('id')->on('semestres')->onDelete('restrict');
             $table->string('color')->nullable();

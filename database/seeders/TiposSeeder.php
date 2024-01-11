@@ -30,40 +30,30 @@ class TiposSeeder extends Seeder
         Aula::create(['nombre' => 'Sala de Degustación 401', 'codigo' => 'GD401', 'capacidad' => 15]);
         Aula::create(['nombre' => 'Aula de Panadería 501', 'codigo' => 'GP501', 'capacidad' => 25]);
         
-        Semestre::create(['nombre' => 'Primer Periodo', 'descripcion' => 'Modalidad Regular', 'costo' => 450]);
-        Semestre::create(['nombre' => 'Segundo Periodo', 'descripcion' => 'Modalidad Intensiva', 'costo' => 450]);
-        Semestre::create(['nombre' => 'Tercer Periodo', 'descripcion' => 'Modalidad Nocturna', 'costo' => 450]);
-        Semestre::create(['nombre' => 'Cuarto Periodo', 'descripcion' => 'Modalidad Fin de Semana', 'costo' => 450]);
+        Semestre::create(['nombre' => 'Primer Semestre', 'descripcion' => 'Modalidad Regular']);
+        Semestre::create(['nombre' => 'Segundo Semestre', 'descripcion' => 'Modalidad Intensiva']);
+        Semestre::create(['nombre' => 'Tercer Semestre', 'descripcion' => 'Modalidad Nocturna']);
+        Semestre::create(['nombre' => 'Cuarto Semestre', 'descripcion' => 'Modalidad Fin de Semana']);
 
         // Lista de materias de gastronomía
         $materias = [
-            'Introducción a la Gastronomía',
-            'Técnicas Culinarias',
-            'Pastelería Básica',
-            'Cocina Internacional',
-            'Gastronomía Molecular',
-            'Gestión de Restaurantes',
-            'Enología y Maridaje',
-            'Cocina Asiática',
-            'Nutrición en la Gastronomía',
-            'Cocina Italiana',
-            'Cocina Vegetariana',
-            'Panadería Artesanal',
-            'Cocina de Autor',
-            'Prácticas Profesionales',
-            'Diseño de Menús',
-            'Cocina Creativa',
-            'Seguridad e Higiene Alimentaria',
-            'Gastronomía Española',
-            'Marketing Gastronómico',
+            'Computación',
+            'Dietética y alimentación',
+            'Pastelería',
+            'Ingles',
+            'Cocina',
+            'Cócteleria',
+            'Dietética y alimentación II',
+            'Pastelería II',
+            'Ingles II',
+            'Cocina II',
         ];
         // Itera para crear registros de cursos con materias reales
         foreach ($materias as $materia) {
             Curso::create([
                 'nombre' => $materia,
-                'precio' => rand(200, 800), // Puedes ajustar este rango según tus necesidades
-                'semestre_id' => rand(1, 4), // Suponiendo que hay 8 semestres en la carrera
-                'color' => '#FFFFFF',
+                'semestre_id' => rand(1, 2),
+                'color' => '#ff0000',
             ]);
         }
 
@@ -92,15 +82,16 @@ class TiposSeeder extends Seeder
         }
         
         MetodoPago::create(['nombre' => 'Cuotas', 'monto' => 450]);
-        MetodoPago::create(['nombre' => 'Total', 'monto' => 5000]);
+        MetodoPago::create(['nombre' => 'Total', 'monto' => 16200]);
         
         FormaPago::create(['nombre' => 'Transferencia Bancaria']);
         FormaPago::create(['nombre' => 'Pago en Efectivo']);
         FormaPago::create(['nombre' => 'Pagos a Través de Aplicaciones Móviles']);
 
         TipoEvento::create(['nombre' => 'Clases Regulares']);
-        TipoEvento::create(['nombre' => 'Fechas Límite para Inscripciones y Pago']);
-        TipoEvento::create(['nombre' => 'Fechas de Inicio y Final de Períodos']);
+        TipoEvento::create(['nombre' => 'Límite para Inscripciones y Pago']);
+        TipoEvento::create(['nombre' => 'Límites de Pago']);
+        TipoEvento::create(['nombre' => 'Inicio y Final de Períodos']);
         TipoEvento::create(['nombre' => 'Festivales y Eventos Especiales']);
     }
 }

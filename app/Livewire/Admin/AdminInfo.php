@@ -3,7 +3,6 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Aula;
-use App\Models\Curso;
 use App\Models\CursoHabilitado;
 use App\Models\Estudiante;
 use App\Models\Horario;
@@ -17,7 +16,7 @@ class AdminInfo extends Component
     public $horarios, $aulas, $metodoPagos;
     public $horariosEdit = ['turno' => '', 'inicio' => '', 'fin' => ''], $idHora = '';
     public $aulasEdit = ['nombre' => '', 'tipo' => 2, 'codigo' => '', 'capacidad' => ''], $idAula = '';
-    public $metodoPagoEdit = '', $idMetodo;
+    public $metodoPagoEdit = '', $metodoMontoEdit = '' ,$idMetodo;
     public function mount() {
         $this->horarios = Horario::all();
         $this->aulas = Aula::all();
@@ -79,15 +78,18 @@ class AdminInfo extends Component
     public function formMetodo() {
         $data = $this->validate([
             'metodoPagoEdit' => 'required|string',
+            'metodoMontoEdit' => 'required'
         ]);
         try {
             if ($this->idMetodo != '') {
                 MetodoPago::find($this->idMetodo)->update([
                     'nombre' => $data['metodoPagoEdit'],
+                    'monto' => $data['metodoMontoEdit'],
                 ]);
             } else {
                 MetodoPago::create([
                     'nombre' => $data['metodoPagoEdit'],
+                    'monto' => $data['metodoMontoEdit'],
                 ]);
             }
             $this->resetForm();
@@ -127,6 +129,7 @@ class AdminInfo extends Component
         $this->idAula = '';
         $this->idMetodo = '';
         $this->metodoPagoEdit = '';
+        $this->metodoMontoEdit = '';
         $this->mount();
     }
     public function seleccionarAula($id) {
@@ -141,6 +144,7 @@ class AdminInfo extends Component
         $metodo =  MetodoPago::find($id);
         $this->idMetodo = $metodo->id;
         $this->metodoPagoEdit = $metodo->nombre;
+        $this->metodoMontoEdit = $metodo->monto;
     }
     public function eliminarMetodo($id) {
         $aula = MetodoPago::find($id);

@@ -11,7 +11,7 @@ class Pagos extends Model
     public $timestamps = false;
     protected $table = "pagos";
     protected $primaryKey = "id";
-    protected $fillable = ['responsable_id', 'est_id', 'forma_id', 'metodo_id', 'fecha', 'monto', 'estado', 'comentario'];
+    protected $fillable = ['responsable_id', 'est_id', 'forma_id', 'metodo_id', 'fecha', 'monto', 'estado', 'comentario', 'anio', 'mes', 'pagoEst_id'];
     
     public function responsable()
     {

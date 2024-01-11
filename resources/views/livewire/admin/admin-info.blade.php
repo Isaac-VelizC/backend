@@ -100,8 +100,11 @@
                         <form wire:submit.prevent='formMetodo'>
                             @csrf
                             <div class="row">
-                                <div class="form-group">
+                                <div class="form-group col-lg-6">
                                     <input type="text" class="form-control" wire:model='metodoPagoEdit' placeholder="Ingrese un metodo de pago">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <input type="text" class="form-control" wire:model='metodoMontoEdit' placeholder="Ingrese el monto">
                                 </div>
                             </div>
                             <div class="text-center">
@@ -115,7 +118,7 @@
                                 @foreach ($metodoPagos as $metodo)
                                     <li class="list-group-item d-flex justify-content-between align-items-start">
                                         <div class="ms-2 me-auto" wire:click='seleccionarMetodo({{$metodo->id}})'>
-                                            <div class="fw-bold">{{ $metodo->nombre }}</div>
+                                            <div class="fw-bold">{{ $metodo->nombre }} - {{ $metodo->monto }}bs.</div>
                                         </div>
                                         <span class="badge bg-ligth btn" wire:click='eliminarMetodo({{$metodo->id}})'><i class="bi bi-trash text-danger"></i></span>
                                     </li>
@@ -144,7 +147,7 @@
                                     <input type="text" class="form-control" wire:model='aulasEdit.nombre' placeholder="Nombre">
                                 </div>
                                 <div class="form-group col-lg-6">
-                                    <select type="text" class="form-control" wire:model='aulasEdit.tipo' placeholder="Tipo de Aula">
+                                    <select type="text" class="form-select" wire:model='aulasEdit.tipo' placeholder="Tipo de Aula">
                                         <option value="1">Teorico</option>
                                         <option value="2" selected>Practico</option>
                                     </select>

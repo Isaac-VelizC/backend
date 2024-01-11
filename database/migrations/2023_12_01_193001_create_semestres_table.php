@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('nombre')->unique();
             $table->text('descripcion')->nullable();
-            $table->decimal('costo', 10, 2)->nullable();
         });
     }
 
