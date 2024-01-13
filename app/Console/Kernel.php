@@ -2,17 +2,22 @@
 
 namespace App\Console;
 
+use App\Console\Commands\GenerarRegistrosMensuales;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-    /**
-     * Define the application's command schedule.
-     */
+    protected $commands = [
+        \App\Console\Commands\GenerarRegistrosMensuales::class,
+    ];
+
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command(GenerarRegistrosMensuales::class)->monthlyOn(1, '00:00');
+        $schedule->command('app:generar-registros-mensuales');//->dailyAt('10:45');
+
+        //$schedule->command('inspire')->hourly();
         /*$schedule->command('backup:clean')->daily()->at('01:00');
         $schedule->command('backup:run')->daily()->at('02:00');
 

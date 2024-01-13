@@ -20,14 +20,14 @@
                             <hr>
                             <div class="row">
                                 <div class="col-sm-12 col-lg-12">
-                                    <form >
+                                    <form class="needs-validation" novalidate wire:submit.prevent='guardarPago'>
                                         @csrf
                                             <div class="col-sm-12 col-lg-12">
                                                 <div class="row">
                                                     <div class="form-group">
-                                                        <label class="form-label" for="metodo"> <span class="text-danger">*</span> Tipo de Pago:</label>
-                                                        <select class="form-select mb-3 shadow-none" id="metodo" name="metodo">
-                                                            @foreach ($metodos as $met)
+                                                        <label class="form-label"> <span class="text-danger">*</span> Forma de Pago:</label>
+                                                        <select class="form-select mb-3 shadow-none" wire:model='datosPagos.formaPago' required>
+                                                            @foreach ($formaPagos as $met)
                                                                 <option value="{{ $met->id }}">{{ $met->nombre }}</option>
                                                             @endforeach
                                                         </select>
@@ -36,29 +36,29 @@
                                                         @enderror
                                                     </div>
                                                     <div class="form-group col-lg-6">
-                                                        <label class="form-label" for="fname"><span class="text-danger">*</span> Estudiante:</label>
-                                                        <select id="estudiante" class="form-select" name="estudiante"></select>
+                                                        <label class="form-label"><span class="text-danger">*</span> Estudiante:</label>
+                                                        <select id="estudiante" class="form-select" wire:model="datosPagos.estudiante" required></select>
                                                         @error('estudiante')
                                                             <div class="alert alert-danger">{{ $message }}</div>
                                                         @enderror
                                                     </div>
                                                     <div class="form-group col-lg-3">
-                                                        <label class="form-label" for="fecha"><span class="text-danger">*</span> Fecha:</label>
-                                                        <input type="date" class="form-control" id="fecha" name="fecha" value="{{ now()->toDateString() }}" required>
+                                                        <label class="form-label"><span class="text-danger">*</span> Fecha:</label>
+                                                        <input type="date" class="form-control" wire:model='datosPagos.fecha' required>
                                                         @error('fecha')
                                                             <div class="alert alert-danger">{{ $message }}</div>
                                                         @enderror
                                                     </div>
                                                     <div class="form-group col-lg-3">
-                                                        <label class="form-label" for="monto"><span class="text-danger">*</span> Monto:</label>
-                                                        <input type="number" step="0.01" class="form-control" id="monto" name="monto" value="{{ old('monto') }}" placeholder="Bs." required>
+                                                        <label class="form-label"><span class="text-danger">*</span> Monto:</label>
+                                                        <input type="number" step="0.01" class="form-control" wire:model="datosPagos.monto" value="{{ old('monto') }}" placeholder="Bs." required>
                                                         @error('monto')
                                                             <div class="alert alert-danger">{{ $message }}</div>
                                                         @enderror
                                                     </div>                            
                                                     <div class="form-group col-lg-12">
-                                                        <label class="form-label" for="descripcion">Descripción: (Opcional) </label>
-                                                        <textarea type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Escribe una breve descripción" required></textarea>
+                                                        <label class="form-label">Descripción: (Opcional) </label>
+                                                        <textarea type="text" class="form-control" wire:model="datosPagos.descripcion" placeholder="Escribe una breve descripción"></textarea>
                                                         @error('descripcion')
                                                             <div class="alert alert-danger">{{ $message }}</div>
                                                         @enderror
@@ -72,7 +72,7 @@
                                                     <span class="visually-hidden">Toggle Dropdown</span>
                                                 </button>
                                                 <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" href="{{ Route('admin.pago.guardar.imprimir') }}">Guardar e Imprimir</a></li>
+                                                    <li><a class="dropdown-item" href="">Guardar e Imprimir</a></li>
                                                 </ul>
                                             </div>
                                     </form>

@@ -2,7 +2,7 @@
     <div class="modal-dialog">
        <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Formulario de Pago {{ $met->nombre }}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Registrar pago del {{ $tituloFormPago ?: null }} </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form class="needs-validation" novalidate wire:submit.prevent='guardarPago'>
@@ -40,7 +40,7 @@
                                         </div>
                                         <div class="form-group col-lg-6">
                                             <label class="form-label"><span class="text-danger">*</span> Monto:</label>
-                                            <input type="number" step="0.01" class="form-control" wire:model='pagosEdit.monto' value="{{ $met->monto }}" placeholder="Bs." required>
+                                            <input type="number" step="0.01" class="form-control" wire:model='pagosEdit.monto' placeholder="Bs." required disabled>
                                             @error('monto')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror

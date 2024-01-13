@@ -8,12 +8,13 @@ use App\Models\Docente;
 use App\Models\Estudiante;
 use App\Models\Horario;
 use App\Models\NumTelefono;
+use App\Models\PagoEstudiante;
 use App\Models\Persona;
 use App\Models\Personal;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 
 class UsersController extends Controller
 {
@@ -36,66 +37,109 @@ class UsersController extends Controller
         return view('admin.usuarios.estudiantes.create', compact('horarios'));
     }
     public function inscripcion(Request $request) {
-        if ($request->telefono == $request->telefonoC) {
-            return back()->with('error', 'El numero de telefono ' . $request->telefono .' del estudiante es el mismo del contacto.');
-        }
-        $rules = [
-            'nombre' => 'required|string',
-            'ci' => 'required|string|unique:personas,ci|unique:personas,email|unique:personas',
-            'genero' => 'required|in:Mujer,Hombre',
-            'email' => 'required|email',
-            'telefono' => 'nullable|string|unique:num_telefonos,numero',
-            'direccion' => 'required|string',
-            'fNac' => 'required|date',
-            'nombreC' => 'required|string',
-            'ciC' => 'required|string|unique:personas,ci',
-            'generoC' => 'required|in:Mujer,Hombre',
-            'emailC' => 'nullable|email',
-            'telefonoC' => 'required|string|unique:num_telefonos,numero',
-            'horario' => 'required|numeric',
-        ];
-        $request->validate($rules);
-        $user = User::firstOrCreate(
-            ['name' => $this->generateUniqueUsername($request->nombre)],
-            ['email' => $request->email, 'password' => Hash::make('u.'.$request->ci)]
-        );
-        $user->assignRole('Estudiante');
-        $pers = $user->persona()->create([
-            'nombre' => $request->nombre,
-            'ap_paterno' => $request->ap_pat,
-            'ap_materno' => $request->ap_mat,
-            'ci' => $request->ci,
-            'genero' => $request->genero,
-            'email' => $request->email,
-        ]);
-        $pers->numTelefono()->create(['numero' => $request->telefono]);
+        try {
+            if ($request->telefono == $request->telefonoC) {
+                return back()->with('error', 'El número de teléfono ' . $request->telefono .' del estudiante es el mismo del contacto.');
+            }
 
-        $contacto = Persona::create([
-            'nombre' => $request->nombreC,
-            'ap_paterno' => $request->ap_patC,
-            'ap_materno' => $request->ap_matC,
-            'ci' => $request->ciC,
-            'genero' => $request->generoC,
-            'email' => $request->emailC,
-            'rol' => 'F',
-        ]);
+            $rules = [
+                'nombre' => 'required|string',
+                'ci' => 'required|string|unique:personas,ci|min:7',
+                'genero' => 'required|in:Mujer,Hombre,Otro',
+                'email' => 'required|email|unique:personas,email',
+                'telefono' => 'nullable|string|unique:num_telefonos,numero',
+                'direccion' => 'required|string',
+                'fNac' => 'required|date',
+                'horario' => 'required|numeric',
+            ];
 
-        $contacto->numTelefono()->create(['numero' => $request->telefonoC]);
-        $contac = $contacto->contacto()->create();
+            $request->validate($rules);
 
-        $pers->estudiante()->create([
-            'direccion' => $request->direccion,
-            'fecha_nacimiento' => $request->fNac,
-            'contact_id' => $contac->id,
-            'turno_id' => $request->horario,
-        ]);
+            $user = User::firstOrCreate(
+                ['name' => $this->generateUniqueUsername($request->nombre)],
+                ['email' => $request->email, 'password' => Hash::make('u.'.$request->ci)]
+            );
+            $user->assignRole('Estudiante');
 
-        return redirect()->route('admin.estudinte')->with('success', 'La inscripción se ejecutó con éxito.');
+            $pers = $user->persona()->create([
+                'nombre' => $request->nombre,
+                'ap_paterno' => $request->ap_pat,
+                'ap_materno' => $request->ap_mat,
+                'ci' => $request->ci,
+                'genero' => $request->genero,
+                'email' => $request->email,
+            ]);
+
+            $telefono = $request->telefono ? ['numero' => $request->telefono] : null;
+            $pers->numTelefono()->create($telefono);
+
+            if (!empty($request->nombreC)) {
+                // El campo nombreC no está vacío
+                $contacId = $this->saveContacto($request);
+                $pers->estudiante()->create([
+                    'direccion' => $request->direccion,
+                    'fecha_nacimiento' => $request->fNac,
+                    'contact_id' => $contacId,
+                    'turno_id' => $request->horario,
+                ]);
+            } else {
+                // El campo nombreC está vacío
+                $pers->estudiante()->create([
+                    'direccion' => $request->direccion,
+                    'fecha_nacimiento' => $request->fNac,
+                    'turno_id' => $request->horario,
+                ]);
+            }
+            /*$date = Carbon::now();
+            $year = $date->year;
+            PagoEstudiante::create([
+                'estudiante_id' => $pers->estudiante->id,
+                'anio' => $year,
+                'fecha' => $date,
+                'total' => 16500,
+            ]);*/
+
+            return redirect()->route('admin.E.show', $pers->id);
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Hubo un error durante la inscripción. Por favor, inténtalo de nuevo. Detalles: ' . $th->getMessage());
+        }            
     }
     private function generateUniqueUsername($nombre) {
         $username = strtolower($nombre);
         $numeroAleatorio = mt_rand(1000, 9999);
         return $username . $numeroAleatorio;
+    }
+
+    public function saveContacto(Request $request) {
+        $rules = [
+            'nombreC' => 'required|string',
+            'ciC' => 'required|string|unique:personas,ci',
+            'generoC' => 'required|in:Mujer,Hombre',
+            'emailC' => 'nullable|email',
+            'telefonoC' => 'required|string|unique:num_telefonos,numero',
+        ];
+
+        $request->validate($rules);
+
+        try {
+            $contacto = Persona::create([
+                'nombre' => $request->nombreC,
+                'ap_paterno' => $request->ap_patC,
+                'ap_materno' => $request->ap_matC,
+                'ci' => $request->ciC,
+                'genero' => $request->generoC,
+                'email' => $request->emailC,
+                'rol' => 'F',
+            ]);
+
+            $telefono = ['numero' => $request->telefonoC];
+            $contacto->numTelefono()->create($telefono);
+
+            $contac = $contacto->contacto()->create();
+            return $contac->id;
+        } catch (\Throwable $th) {
+            return null;
+        }
     }
 
     public function store(Request $request) {

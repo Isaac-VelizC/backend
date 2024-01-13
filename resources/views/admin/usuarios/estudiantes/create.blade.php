@@ -85,10 +85,11 @@
                                     @enderror
                                     <div class="form-group col-sm-6">
                                         <label class="form-label">Genero: *</label>
-                                        <select name="genero" class="selectpicker form-control" data-style="py-0" value="{{ old('genero') }}" required>
+                                        <select name="genero" class="selectpicker form-select" data-style="py-0" value="{{ old('genero') }}" required>
                                             <option value="" selected>Seleccionar</option>
                                             <option value="Hombre">Hombre</option>
                                             <option value="Mujer">Mujer</option>
+                                            <option value="Otro">Otro</option>
                                         </select>
                                     </div>
                                     @error('genero')
@@ -103,7 +104,7 @@
                                     @enderror
                                     <div class="form-group col-sm-6">
                                         <label class="form-label">Horario: *</label>
-                                        <select class="selectpicker form-control" data-style="py-0" name="horario" required>
+                                        <select class="selectpicker form-select" data-style="py-0" name="horario" required>
                                             <option value="" disabled selected>Seleccionar</option>
                                             @if ($horarios->count() > 0)
                                                 @foreach ($horarios as $mod)
@@ -134,11 +135,11 @@
                                 </div>
                             </div>
                             <div class="col-sm-12 col-lg-6">
-                                <h5 class="mb-3">Información de Contacto</h5>
+                                <h5 class="mb-3">Información de Contacto (Opcional)</h5>
                                 <div class="row">
                                     <div class="form-group col-md-12">
                                         <label class="form-label" for="nomb">Nombre: *</label>
-                                        <input type="text" class="form-control" id="nomb" name="nombreC" value="{{ old('nombreC') }}" placeholder="Nombre" required>
+                                        <input type="text" class="form-control" id="nomb" name="nombreC" value="{{ old('nombreC') }}" placeholder="Nombre">
                                     </div>
                                     @error('nombreC')
                                         <div class="alert alert-danger">{{ $message }}</div>
@@ -161,7 +162,7 @@
                                     @enderror
                                     <div class="form-group col-md-12">
                                         <label class="form-label" for="ciC">Cedular de Identidad: *</label>
-                                        <input type="text" class="form-control" id="ciC" name="ciC" value="{{ old('ciC') }}" placeholder="Cedular de Identidad" required>
+                                        <input type="text" class="form-control" id="ciC" name="ciC" value="{{ old('ciC') }}" placeholder="Cedular de Identidad">
                                     </div>
                                     @error('ciC')
                                         <div class="alert alert-danger">{{ $message }}</div>
@@ -169,16 +170,17 @@
                     
                                     <div class="form-group col-md-6">
                                         <label class="form-label" for="numcelC">Numero de Celular: *</label>
-                                        <input type="text" class="form-control" id="numcelC" name="telefonoC" value="{{ old('telefonoC') }}" placeholder="Numero de Celular" required>
+                                        <input type="text" class="form-control" id="numcelC" name="telefonoC" value="{{ old('telefonoC') }}" placeholder="Numero de Celular">
                                     </div>
                                     @error('telefonoC')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                                     <div class="form-group col-sm-6">
                                         <label class="form-label">Genero: *</label>
-                                        <select name="generoC" class="selectpicker form-control" value="{{ old('generoC') }}" data-style="py-0" required>
+                                        <select name="generoC" class="selectpicker form-select" value="{{ old('generoC') }}" data-style="py-0">
                                             <option value="Hombre">Hombre</option>
                                             <option value="Mujer">Mujer</option>
+                                            <option value="Otro">Otro</option>
                                         </select>
                                     </div>
                                     @error('generoC')

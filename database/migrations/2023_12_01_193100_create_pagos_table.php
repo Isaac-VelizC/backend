@@ -30,11 +30,9 @@ return new class extends Migration
             $table->foreign('forma_id')->references('id')->on('formas_pagos')->onDelete('restrict');
             $table->unsignedBigInteger('est_id')->nullable();
             $table->foreign('est_id')->references('id')->on('estudiantes')->onDelete('restrict');
-            $table->unsignedBigInteger('pagoEst_id');
-            $table->foreign('pagoEst_id')->references('id')->on('pago_estudiantes')->onDelete('restrict');
+            $table->unsignedBigInteger('pagoMes_id')->nullable();
+            $table->foreign('pagoMes_id')->references('id')->on('pago_mensuals')->onDelete('restrict');
             $table->dateTime('fecha');
-            $table->integer('anio')->nullable();
-            $table->string('mes')->nullable();
             $table->decimal('monto', 5, 2);
             $table->boolean('estado')->default(true);
             $table->text('comentario')->nullable();

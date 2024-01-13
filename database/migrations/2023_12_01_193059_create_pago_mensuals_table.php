@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pago_estudiantes', function (Blueprint $table) {
+        Schema::create('pago_mensuals', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('estudiante_id');
             $table->foreign('estudiante_id')->references('id')->on('estudiantes')->onDelete('cascade');
+            $table->integer('mes')->nullable();
             $table->integer('anio')->nullable();
             $table->date('fecha')->default(now());
-            $table->decimal('total', 5, 2);
-            $table->boolean('descuento')->nullable(false);
-            $table->decimal('con_descuento', 5, 2)->nullable();
-            $table->boolean('estado')->default(true);
+            $table->boolean('pagado')->default(false);
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pago_estudiantes');
+        Schema::dropIfExists('pago_mensuals');
     }
 };

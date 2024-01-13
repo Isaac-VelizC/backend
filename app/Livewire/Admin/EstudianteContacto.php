@@ -11,8 +11,8 @@ use Livewire\Component;
 class EstudianteContacto extends Component
 {
     public Persona $persona;
-    public $num;
-    public $contactId = '';
+    public $num, $isEditing = false;
+    public $contactId = '', $idEstudiante;
 
     public $contactoEdit = [
         'nombre' => '',
@@ -24,13 +24,17 @@ class EstudianteContacto extends Component
         'email' => '',
     ];
 
-    public function mount(Estudiante $estudiante)
-    {
-        $contacto = Contacto::find($estudiante->contact_id);
-        $this->num = NumTelefono::where('id_persona', $contacto->persona_id)->first();
-        $this->contactId = $contacto->id;
-        $this->persona = Persona::find($contacto->persona_id);
-        $this->edit();
+    public function mount(Estudiante $estudiante) {
+        if ($estudiante->contact_id != null) {
+            $contacto = Contacto::find($estudiante->contact_id);
+            $this->num = NumTelefono::where('id_persona', $contacto->persona_id)->first();
+            $this->contactId = $contacto->id;
+            $this->persona = Persona::find($contacto->persona_id);
+            $this->edit();
+        } else {
+            $this->persona = new Persona();
+            $this->idEstudiante = $estudiante->id;
+        }
     }
 
     public function edit() {
@@ -40,7 +44,8 @@ class EstudianteContacto extends Component
         $this->contactoEdit['cedula'] = $this->persona->ci;
         $this->contactoEdit['genero'] = $this->persona->genero;
         $this->contactoEdit['celular'] = $this->num->numero;  
-        $this->contactoEdit['email'] = $this->persona->email;  
+        $this->contactoEdit['email'] = $this->persona->email;
+        $this->isEditing = true;
     }
 
     public function update() {
@@ -49,7 +54,7 @@ class EstudianteContacto extends Component
             'contactoEdit.paterno' => 'string',
             'contactoEdit.materno' => 'string',
             'contactoEdit.cedula' => 'required|string|unique:personas,ci,' . $this->persona->id,
-            'contactoEdit.genero' => 'required|in:Mujer,Hombre',
+            'contactoEdit.genero' => 'required|in:Mujer,Hombre,Otro',
             'contactoEdit.email' => 'nullable|email|unique:personas,email,' . $this->persona->id,
         ];
         $this->validate($rules);
@@ -67,6 +72,42 @@ class EstudianteContacto extends Component
         );
         session()->flash('success', 'La informacion del contacto se actualizo con éxito.');
     }
+
+    public function store() {
+        try {
+            $rules = [
+                'contactoEdit.nombre' => 'required|string',
+                'contactoEdit.paterno' => 'string',
+                'contactoEdit.materno' => 'string',
+                'contactoEdit.cedula' => 'required|string|unique:personas,ci',
+                'contactoEdit.genero' => 'required|in:Mujer,Hombre,Otro',
+                'contactoEdit.email' => 'nullable|email|unique:personas,email',
+            ];
+            $this->validate($rules);
+            // Crear una nueva persona para el contacto
+            $persona = Persona::create([
+                'nombre' => $this->contactoEdit['nombre'],
+                'ap_paterno' => $this->contactoEdit['paterno'],
+                'ap_materno' => $this->contactoEdit['materno'],
+                'ci' => $this->contactoEdit['cedula'],
+                'genero' => $this->contactoEdit['genero'],
+                'email' => $this->contactoEdit['email'],
+            ]);
+            // Asociar número de teléfono a la nueva persona
+            $persona->numTelefono()->create([
+                'numero' => $this->contactoEdit['celular']
+            ]);
+            // Crear un nuevo contacto asociado a la persona
+            $contac = $persona->contacto()->create();
+            // Actualizar el ID del contacto en el estudiante
+            Estudiante::find($this->idEstudiante)->update(['contact_id' => $contac->id]);
+            $this->isEditing = false;
+            return back();
+        } catch (\Exception $e) {
+            session()->flash('error', 'Hubo un error al procesar la solicitud: ' . $e->getMessage());
+        }
+    }
+    
 
     public function render()
     {

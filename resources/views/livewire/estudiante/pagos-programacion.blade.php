@@ -1,24 +1,41 @@
 <div>
     <div class="col-sm-12">
+      @if(session('success'))
+         <div id="myAlert" class="alert alert-left alert-success alert-dismissible fade show mb-3 alert-fade" role="alert">
+            <span>{{ session('success') }}</span>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+         </div>
+      @endif
+      @if(session('error'))
+         <div id="myAlert" class="alert alert-left alert-danger alert-dismissible fade show mb-3 alert-fade" role="alert">
+            <span>{{ session('error') }}</span>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+         </div>
+      @endif
         <div class="card">
            <div class="card-body p-0">
               <div class="table-responsive pricing pt-2">
                  <table class="table table-bordered mb-0">
                     <thead>
                        <tr>
-                          @foreach ($metodos as $met)
-                            <th>
-                                <div>
-                                    <div class="text-bold h5">{{ $met->nombre }}</div>
+                        @if (count($pagosMensuales) > 0)
+                           <p class="text-center h4">Pagos Mensuales Pendientes</p>
+                           <br>
+                           @foreach ($pagosMensuales as $met)
+                              <th>
+                                 <div>
+                                    <div class="text-bold h5">{{ $met['mes'] }} {{ $met['anio'] }}</div>
                                     <div class="d-flex justify-content-start align-items-center mt-4">
-                                        <small>Bs.</small>
-                                        <div class="mx-2 h4">{{ $met->monto }}</div>
-                                        <small> / mo</small>
+                                       <small>Bs.</small>
+                                       <div class="mx-2 h4">{{ $met['monto'] }}</div>
                                     </div>
-                                    <button class="btn btn-primary rounded-pill mt-3 w-100" wire:click="formPago({{$met->id}})">Seleccionar</button>
-                                </div>
-                            </th>
-                          @endforeach
+                                    <button class="btn btn-primary rounded-pill mt-3 w-100" wire:click="formPago({{ $met['idMetodo'] }}, {{ $met['id'] }}, '{{ $met['mes'] }}')">Pagar</button>
+                                 </div>
+                              </th>
+                           @endforeach
+                        @else
+                           <p class="text-center text-black">No hay pagos mensuales pendientes.</p>
+                        @endif
                        </tr>
                     </thead>
                     <tbody>
@@ -34,6 +51,9 @@
                                     </svg>
                                     {{ \Carbon\Carbon::parse($pago->fecha)->locale('es_ES')->isoFormat('LL') }}
                                  </th>
+                                 <td class="text-center">
+                                    <p>{{ \Carbon\Carbon::create()->month($pago->pagoMensual->mes)->locale('es_ES')->monthName }} {{ $pago->pagoMensual->anio }}</p>
+                                 </td>
                                  <td class="text-center">
                                     <p>{{ $pago->monto }}bs.</p>
                                  </td>
@@ -57,12 +77,11 @@
               </div>
            </div>
         </div>
-        @include('admin.pagos.widgets.modal_form')
+            @include('admin.pagos.widgets.modal_form')
      </div>
       @script
          <script>
             $wire.on('modalPago', (event) => {
-                  // Abrir el modal
                   $('#formPago').modal('show');
             });
          </script>
