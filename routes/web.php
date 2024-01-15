@@ -139,6 +139,7 @@ Route::middleware(['auth', 'role:Estudiante'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     //calendario
     Route::get('/calendar/mostrar', [CalendarioController::class, 'mostrar'])->name('admin.calendario.ver');
+    Route::get('/calendar/inicio/fin', [CalendarioController::class, 'mostrarInicioFin'])->name('admin.calendario.ver.curso.asignar');
     //cocina Ingredientes
     Route::get('/ingretientes-all', [CocinaController::class, 'allIngredientes'])->name('admin.ingredientes');
     Route::get('/recetas-all/dsgsa', [CocinaController::class, 'allrecetas'])->name('admin.recetas');

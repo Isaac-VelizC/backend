@@ -89,6 +89,26 @@ class CalendarioController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+    public function mostrarInicioFin() {
+        try {
+            $events = Evento::with('tipo')->where('tipo_id', 4)->get();
+            $events = $events->map(function ($event) {
+                return [
+                    'id' => $event->id,
+                    'title' => $event->title,
+                    'start' => $event->start,
+                    'end' => $event->end,
+                    'descripcion' => $event->descripcion,
+                    'tipo_id' => $event->tipo_id,
+                    'backgroundColor' => $event->tipo->backgroundColor,
+                    'textColor' => $event->tipo->textColor,
+                ];
+            });
+            return response()->json($events);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
     public function mostrarTrabajos() {
         try {

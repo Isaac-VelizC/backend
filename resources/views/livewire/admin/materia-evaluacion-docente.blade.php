@@ -35,7 +35,7 @@
                                    <table id="datatable" class="table table-striped" data-toggle="data-table">
                                       <thead>
                                          <tr>
-                                            <th>Seleccionar</th>
+                                            <th></th>
                                             <th>Nombre</th>
                                             <th>Horario</th>
                                             <th>Modalidad</th>
@@ -56,7 +56,7 @@
                                                     >
                                                 </td>                                               
                                                 <td>
-                                                    <a href="">{{ $item->curso->nombre }}</a>
+                                                    <a href="{{ route('admin.cursos.show', [$item->id]) }}">{{ $item->curso->nombre }}</a>
                                                 </td>
                                                 <td>{{ $item->horario->turno }}</td>
                                                 <td>{{ $item->curso->semestre->nombre }}</td>

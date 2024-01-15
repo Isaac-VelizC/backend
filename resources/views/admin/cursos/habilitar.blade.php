@@ -119,43 +119,44 @@
 </div>
 
 <script>
-
-"use strict"
-
-if (document.querySelectorAll('#calendar2').length) {
-    document.addEventListener('DOMContentLoaded', function () {
-        let calendarEl = document.getElementById('calendar2');
-        let calendar2 = new FullCalendar.Calendar(calendarEl, {
-        selectable: true,
-        plugins: ["timeGrid", "dayGrid", "list", "interaction"],
-        timeZone: "UTC",
-        defaultView: "dayGridMonth",
-        locale: 'es',
-        displayEventTime:false,
-        contentHeight: "auto",
-        eventLimit: true,
-        droppable: true,
-        dayMaxEvents: 4,
-        header: {
-            left: "prev,next today",
-            center: "title",
-            right: "dayGridMonth"
-        },
-        events: baseUrl+"/calendar/mostrar",
-
-        eventClick:function (info) {
-            axios.post(baseUrl+"/calendar/"+info.event.id+"/evento/edit")
-            .then((respuesta) => {
-                document.getElementById('fechaIniId').value = respuesta.data.start;
-                document.getElementById('fechaFinId').value = respuesta.data.end;
-            })
-            .catch(error => {
-                console.error(error);
+    "use strict";
+    
+    if (document.querySelectorAll('#calendar2').length) {
+        document.addEventListener('DOMContentLoaded', function () {
+            let calendarEl = document.getElementById('calendar2');
+            let calendar2 = new FullCalendar.Calendar(calendarEl, {
+                selectable: true,
+                plugins: ["timeGrid", "dayGrid", "list", "interaction"],
+                timeZone: "UTC",
+                defaultView: "listYear", // Puedes usar "timeGridWeek" o "timeGridDay"
+                locale: 'es',
+                displayEventTime: false,
+                contentHeight: "auto",
+                eventLimit: true,
+                droppable: true,
+                dayMaxEvents: 4,
+                header: {
+                    left: "prev,next today",
+                    center: "title",
+                    right: ""
+                },
+                events: baseUrl + "/calendar/inicio/fin",
+    
+                eventClick: function (info) {
+                    axios.post(baseUrl + "/calendar/" + info.event.id + "/evento/edit")
+                        .then((respuesta) => {
+                            document.getElementById('fechaIniId').value = respuesta.data.start;
+                            document.getElementById('fechaFinId').value = respuesta.data.end;
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                }
             });
-        }
-    });
-    calendar2.render();
-    });
-}
-</script>
+    
+            calendar2.render();
+        });
+    }
+    </script>
+    
 @endsection

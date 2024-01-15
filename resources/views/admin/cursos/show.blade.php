@@ -35,7 +35,7 @@
                               <p><b>Docente:</b> {{ $curso->docente->persona->nombre }} {{ $curso->docente->persona->ap_paterno }} {{ $curso->docente->persona->ap_materno }}</p>
                               <p><b>Horario:</b> {{ $curso->horario->turno }} {{ $curso->horario->inicio }} - {{ $curso->horario->fin }}</p>
                               <p><b>Aula:</b> {{ $curso->aula->nombre }} - <b>Codigo:</b> {{ $curso->aula->codigo }}</p>
-                              <p><b>Fecha:</b> {{ $curso->fecha_ini }} - {{ $curso->fecha_fin }}</p>
+                              <p><b>Fecha:</b> de {{ $curso->fecha_ini }} al {{ $curso->fecha_fin }}</p>
                            </div>
                         </div>
                      </div>
