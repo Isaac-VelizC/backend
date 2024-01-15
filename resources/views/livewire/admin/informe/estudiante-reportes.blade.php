@@ -5,7 +5,7 @@
                 <div class="col-md-12">
                     <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
                         <div>
-                            <h1>Reporte de Estudiantes</h1>
+                            <h5>{{ Breadcrumbs::render('reportes.estudiantes') }}</h5>
                         </div>
                     </div>
                 </div>
@@ -85,7 +85,9 @@
                                                         <td>{{ $item->persona->ci }}</td>
                                                         <td>{{ $item->persona->email }}</td>
                                                         <td>{{ $item->turnos->turno }}</td>
-                                                        <td>Semestre</td>
+                                                        <td>@if ($item->graduado == 0)
+                                                            Primer Semestre
+                                                        @endif</td>
                                                     </tr>
                                                 @endforeach
                                             @endif

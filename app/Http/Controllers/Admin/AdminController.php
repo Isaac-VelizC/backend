@@ -12,7 +12,10 @@ use App\Models\User;
 class AdminController extends Controller
 {
     public function allUsers() {
-        $users = Persona::join('users', 'personas.user_id', '=', 'users.id')->select('personas.*')->get();
+        $users = Persona::join('users', 'personas.user_id', '=', 'users.id')
+            ->where('users.id', '<>', 1) // Excluir usuario con ID 1
+            ->select('personas.*')
+            ->get();
         return view('admin.usuarios.lista_users', compact('users'));
     }   
     public function index() {

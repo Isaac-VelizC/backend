@@ -99,6 +99,10 @@ Breadcrumbs::for('reportes.meterias', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Reportes Materias', route('admin.materias.informe'));
 });
+Breadcrumbs::for('reportes.estudiantes', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Reportes de Estudiantes', route('admin.estudiantes.informe'));
+});
 //evaluacion docente
 Breadcrumbs::for('listado.evaluacion', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
