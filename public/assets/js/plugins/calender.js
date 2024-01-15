@@ -21,7 +21,7 @@ if (document.querySelectorAll('#calendar1').length) {
       header: {
           left: "prev,next today",
           center: "title",
-          right: "dayGridMonth,timeGridWeek"
+          right: "dayGridMonth,listYear"
       },
       
       events: baseUrl+"/calendar/mostrar",

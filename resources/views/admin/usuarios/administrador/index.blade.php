@@ -72,7 +72,7 @@
                     <tbody>
                       @foreach ($personals as $item)
                         <tr>
-                           <td><a href="{{ route('admin.P.show', [$item->id]) }}">{{ $item->persona->nombre }} {{ $item->persona->ap_paterno }} {{ $item->persona->ap_materno }}</a>
+                           <td><a href="{{ route('admin.P.show', [$item->persona->id]) }}">{{ $item->persona->nombre }} {{ $item->persona->ap_paterno }} {{ $item->persona->ap_materno }}</a>
                            </td>
                             <td>{{ $item->persona->ci }}</td>
                             <td><a href="#">{{ $item->persona->user->email }}</a></td>
