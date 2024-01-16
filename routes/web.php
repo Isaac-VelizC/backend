@@ -156,6 +156,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/buscar-ingredientes', [CocinaController::class, 'buscarIngredientes'])->name('admin.buscar-ingredientes');
     Route::get('/agregar-receta/nueva', NewReceta::class)->name('recetas.add');
     Route::get('/profile', ProfilePage::class)->name('users.profile');
+    Route::post('/new-type/ingrediente', [CocinaController::class, 'guardarIngrediente'])->name('new.ingrediente.db');
+    
     //Cursos
     Route::get('/cursos', [DocenteCursoController::class, 'index'])->name('chef.cursos');
     Route::get('/curso/{id}/materia', [DocenteCursoController::class, 'curso'])->name('cursos.curso');

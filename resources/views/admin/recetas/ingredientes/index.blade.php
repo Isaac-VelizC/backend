@@ -21,12 +21,17 @@
         </div>
     </div>
 </div>
-
-
+@include('admin.recetas.ingredientes.modal_create')
 <div class="conatiner-fluid content-inner mt-n5 py-0">
      @if(session('success'))
          <div id="myAlert" class="alert alert-left alert-success alert-dismissible fade show mb-3 alert-fade" role="alert">
              <span>{{ session('success') }}</span>
+             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+         </div>
+     @endif
+     @if(session('error'))
+         <div id="myAlert" class="alert alert-left alert-danger alert-dismissible fade show mb-3 alert-fade" role="alert">
+             <span>{{ session('error') }}</span>
              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
          </div>
      @endif

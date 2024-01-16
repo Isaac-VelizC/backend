@@ -27,7 +27,6 @@ class CursoController extends Controller
             'descripcion' => 'nullable|string|max:255',
             'dependencia' => 'nullable|numeric'
         ]);
-        dd($request->dependencia);
         $curso = new Curso();
         $curso->nombre = $request->nombre;
         $curso->semestre_id = $request->semestre;

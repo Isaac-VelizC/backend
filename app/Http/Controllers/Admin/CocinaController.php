@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Ingrediente;
 use App\Models\Receta;
+use App\Models\TipoIngrediente;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,8 @@ class CocinaController extends Controller
 {
     public function allIngredientes() {
         $recetas = Receta::all();
-        return view('admin.recetas.ingredientes.index', compact('recetas'));
+        $types = TipoIngrediente::all();
+        return view('admin.recetas.ingredientes.index', compact('recetas', 'types'));
     }
     public function allrecetas() {
         return view('admin.recetas.index');
@@ -49,6 +51,21 @@ class CocinaController extends Controller
         } catch (\Exception $e) {
             // Manejar otras excepciones
             return back()->with('error', 'Error al eliminar la receta: ' . $e->getMessage());
+        }
+    }
+    public function guardarIngrediente(Request $request) {
+        try {
+            $this->validate($request, [
+                'nombre' => 'required|string|max:255|unique:ingredientes,nombre',
+                'tipo' => 'required|numeric',
+            ]);
+            $ingre = new Ingrediente();
+            $ingre->nombre = $request->nombre;
+            $ingre->tipo_id = $request->tipo;
+            $ingre->save();
+            return back()->with('success', 'Se registro con éxito.');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Error al registrar: ' . $th->getMessage());
         }
     }
 
