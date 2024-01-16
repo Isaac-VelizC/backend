@@ -9,7 +9,7 @@
                <div class="col-md-12">
                   <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
                      <div>
-                        <h1>Listado de Pagos</h1>
+                        <h5>{{ Breadcrumbs::render( 'Pagos.list') }}</h5>
                      </div>
                      <a class="btn btn-light" href="{{ route('admin.create.pago') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">

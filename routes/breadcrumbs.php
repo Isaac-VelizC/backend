@@ -135,3 +135,12 @@ Breadcrumbs::for('criterios.gestion', function (BreadcrumbTrail $trail, $curso) 
     $trail->push('Gestionar Criterios', route('docente.tareas.criterios', $curso->id));
 });
 
+// Pagos
+Breadcrumbs::for('Pagos.list', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Listado de Pagos', route('admin.lista.pagos'));
+});
+Breadcrumbs::for('Pagos.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('Pagos.list');
+    $trail->push('Registrar nuevo Pago', route('admin.create.pago'));
+});

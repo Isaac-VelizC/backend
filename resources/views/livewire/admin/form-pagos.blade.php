@@ -1,5 +1,20 @@
 <div>
-    <div class="iq-navbar-header" style="height: 90px;"></div>
+    <div class="position-relative iq-banner">
+        <div class="iq-navbar-header text-black" style="height: 200px;">
+           <div class="container-fluid iq-container">
+              <div class="row">
+                    <div class="col-md-12">
+                        <div>
+                            <h5>{{ Breadcrumbs::render( 'Pagos.create') }}</h5>
+                       </div>
+                    </div>
+              </div>
+           </div>
+           <div class="iq-header-img">
+              <img src="{{ asset('img/portada.jpg') }}" alt="header" class="theme-color-default-img img-fluid w-100 h-100 animated-scaleX">
+           </div>
+        </div>
+     </div>
     <div class="conatiner-fluid content-inner mt-n5 py-0">
         <div class="row">                
             <div class="col-sm-12 col-lg-12">
@@ -24,9 +39,10 @@
                                         @csrf
                                             <div class="col-sm-12 col-lg-12">
                                                 <div class="row">
-                                                    <div class="form-group">
+                                                    <div class="form-group col-lg-6">
                                                         <label class="form-label"> <span class="text-danger">*</span> Forma de Pago:</label>
                                                         <select class="form-select mb-3 shadow-none" wire:model='datosPagos.formaPago' required>
+                                                            <option value="" selected disabled>Selecciona Forma de Pago</option>
                                                             @foreach ($formaPagos as $met)
                                                                 <option value="{{ $met->id }}">{{ $met->nombre }}</option>
                                                             @endforeach
@@ -56,7 +72,7 @@
                                                             <div class="alert alert-danger">{{ $message }}</div>
                                                         @enderror
                                                     </div>                            
-                                                    <div class="form-group col-lg-12">
+                                                    <div class="form-group col-lg-6">
                                                         <label class="form-label">Descripción: (Opcional) </label>
                                                         <textarea type="text" class="form-control" wire:model="datosPagos.descripcion" placeholder="Escribe una breve descripción"></textarea>
                                                         @error('descripcion')

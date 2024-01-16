@@ -23,6 +23,21 @@
                                                 <div>
                                                     <p class="h4">
                                                         @if($event->inscripciones()->count() < $event->cupo)
+                                                        @php
+                                                            $puedeProgramar = true;
+                                                            // Verificar si tiene curso habilitado reprobado
+                                                            $cursoReprobado = $estudiante->inscripciones()->where('curso_id', $event->id)->where('estado', 'Reprobado')->first();
+                                                            if($cursoReprobado) {
+                                                                $puedeProgramar = false;
+                                                            }
+                                                            // Verificar dependencia
+                                                            if ($puedeProgramar && $event->dependencia) {
+                                                                $dependenciaAprobada = $estudiante->inscripciones()->where('curso_id', $event->dependencia)->where('estado', 'Aprobado')->exists();
+                                                                if (!$dependenciaAprobada) {
+                                                                    $puedeProgramar = false;
+                                                                }
+                                                            }
+                                                        @endphp
                                                             @if($haProgramadoCurso = $estudiante->inscripciones->contains('curso_id', $event->id))
                                                                 <a class="programar-link btn" wire:click='desprogramarCurso({{ $event->id }})' data-bs-dismiss='modal'>
                                                                     <span class="badge bg-danger">Desprogramar</span>

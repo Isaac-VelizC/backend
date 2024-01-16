@@ -49,24 +49,31 @@ class CursoController extends Controller
         $curso = Curso::updateOrCreate(['id' => $id], ['estado' => true]);
         return back()->with('success', 'La materia '. $curso->nombre .' se dio de alta con éxito.');
     }
-    public function actualizarCurso(Request $request, $id)
-    {
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'semestre' => 'required|numeric',
-            'descripcion' => 'nullable|string|max:255',
-            'dependencia' => 'nullable|numeric'
-        ]);
-        $curso = Curso::findOrFail($id);
-        $curso->update([
-            'nombre' => $request->nombre,
-            'semestre_id' => $request->semestre,
-            'color' => $request->color,
-            'descripcion' => $request->descripcion,
-            'dependencia' => $request->dependencia,
-        ]);
-        return redirect()->route('admin.cursos')->with('success', 'La información se ha actualizado con éxito.');
+    public function actualizarCurso(Request $request, $id) {
+        try {
+            $request->validate([
+                'nombre' => 'required|string|max:255',
+                'semestre' => 'required|numeric',
+                'descripcion' => 'nullable|string|max:255',
+                'dependencia' => 'nullable|numeric'
+            ]);
+
+            $curso = Curso::findOrFail($id);
+            $curso->update([
+                'nombre' => $request->nombre,
+                'semestre_id' => $request->semestre,
+                'color' => $request->color,
+                'descripcion' => $request->descripcion,
+                'dependencia' => $request->dependencia,
+            ]);
+
+            return redirect()->route('admin.cursos')->with('success', 'La información se ha actualizado con éxito.');
+        } catch (\Exception $e) {
+            // Manejo de la excepción
+            return back()->with('error', 'Error al actualizar el curso: ' . $e->getMessage());
+        }
     }
+
     public function asignarCurso($id) {
         $docentes = Docente::where('estado', true)->get();
         $aulas = Aula::where('estado', true)->get();

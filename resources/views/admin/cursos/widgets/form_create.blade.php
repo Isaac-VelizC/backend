@@ -81,6 +81,7 @@
 </div>
 <script>
     document.getElementById('modulo_select').addEventListener('change', function() {
+        console.log('hola');
         var selectedSemestreId = this.value;
         axios.get('/ruta/al/servidor/para/obtener/cursos', {
             params: {

@@ -48,14 +48,15 @@
                                     <div class="form-group">
                                         <label class="form-label" for="dependencia_select">Seleccionar Dependencia (Opcional)</label>
                                         <select class="form-select" id="dependencia_select" name="dependencia">
-                                          <option value="" disabled selected>Seleccionar Curso</option>
-                                          @if ($cursos->count() > 0)
+                                          <option value="0" disabled selected>Seleccionar Curso</option>
+                                          <option value="0">Ninguno</option>
+                                          <@if ($cursos->count() > 0)
                                               @foreach ($cursos as $curso)
-                                                  <option value="{{ $curso->id }}">{{ $curso->nombre }}</option>
+                                                  <option value="{{ $curso->id }}" @if ($curso->id == $item->dependencia) selected @endif>{{ $curso->nombre }}</option>
                                               @endforeach
                                           @else
                                               <option value="">No Hay Cursos</option>
-                                          @endif
+                                          @endif>
                                         </select>
                                         @error('dependencia')
                                             <div class="alert alert-danger">{{ $message }}</div>
