@@ -201,21 +201,39 @@ class CursoController extends Controller
           return redirect()->back()->with('error', 'Error al exportar los datos: ' . $e->getMessage());
         }
     }
-    /*public function exportarCurso() {
-        try {
-            $users = User::get();
-  
-        $data = [
-            'title' => 'Welcome to ItSolutionStuff.com',
-            'date' => date('m/d/Y'),
-            'users' => $users
-        ]; 
-            
-        $pdf = PDF::loadView('myPDF', $data);
-     
-        return $pdf->download('itsolutionstuff.pdf');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error al exportar los datos: ' . $e->getMessage());
-        }
-    }*/
+    
+    public function obtenerDisponibilidad(Request $request)
+    {
+        $horario = $request->input('horario');
+
+        // Lógica para obtener docentes disponibles en el horario seleccionado
+        $docentesDisponibles = Docente::whereNotIn('id', function ($query) use ($horario) {
+            $query->select('docente_id')
+                ->from('curso_habilitados')
+                ->where('horario_id', $horario)
+                ->where('estado', true)
+                ->where('fecha_fin', '>=', now());
+        })->get();
+        $docentes = $docentesDisponibles->map(function ($event) {
+            return [
+                'id' => $event->id,
+                'nombre' => $event->persona->nombre,
+                'ap_paterno' => $event->persona->ap_paterno,
+                'ap_materno' => $event->persona->ap_materno
+            ];
+        });
+        // Lógica para obtener aulas disponibles en el horario seleccionado
+        $aulasDisponibles = Aula::whereNotIn('id', function ($query) use ($horario) {
+            $query->select('aula_id')
+                ->from('curso_habilitados')
+                ->where('horario_id', $horario)
+                ->where('estado', true)
+                ->where('fecha_fin', '>=', now());
+        })->get();
+
+        return response()->json([
+            'docentes' => $docentes,
+            'aulas' => $aulasDisponibles,
+        ]);
+    }
 }

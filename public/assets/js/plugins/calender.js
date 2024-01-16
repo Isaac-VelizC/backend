@@ -8,7 +8,6 @@ if (document.querySelectorAll('#calendar1').length) {
     let formulario = document.querySelector("#formEventos");
     let calendarEl = document.getElementById('calendar1');
     let calendar1 = new FullCalendar.Calendar(calendarEl, {
-      selectable: true,
       plugins: ["timeGrid", "dayGrid", "list", "interaction"],
       timeZone: "UTC",
       defaultView: "dayGridMonth",
@@ -18,6 +17,7 @@ if (document.querySelectorAll('#calendar1').length) {
       eventLimit: true,
       droppable: true,
       dayMaxEvents: 4,
+      eventOverlap: false,
       header: {
           left: "prev,next today",
           center: "title",

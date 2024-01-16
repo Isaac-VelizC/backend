@@ -54,13 +54,13 @@
                                             <label class="form-label" for="docenteSelect">Docentes: *</label>
                                             <select name="docente" class="form-select" id="docenteSelect" required>
                                                 <option value="" selected disabled>Seleccionar</option>
-                                                @if ($docentes->count() > 0)
+                                                <!--@if ($docentes->count() > 0)
                                                     @foreach ($docentes as $doc)
                                                         <option value="{{ $doc->id }}" @if ($isEditing && $doc->id == $asignado->docente_id) selected @endif>{{ $doc->persona->nombre }} {{ $doc->persona->ap_paterno }} {{ $doc->persona->ap_materno }}</option>
                                                     @endforeach
                                                 @else
                                                     <option value="">No hay docentes</option>
-                                                @endif
+                                                @endif-->
                                             </select>
                                             @error('docente')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -70,13 +70,13 @@
                                             <label class="form-label" for="aulaSelect">Aulas: *</label>
                                             <select name="aula" class="form-select" id="aulaSelect" required>
                                                 <option value="" selected disabled>Seleccionar</option>
-                                                @if ($aulas->count() > 0)
+                                                <!--@if ($aulas->count() > 0)
                                                     @foreach ($aulas as $doc)
                                                         <option value="{{ $doc->id }}" cupo="{{$doc->capacidad}}" @if ($isEditing && $doc->id == $asignado->aula_id) selected @endif>{{ $doc->nombre }}</option>
                                                     @endforeach
                                                 @else
                                                     <option value="">No hay aulas</option>
-                                                @endif
+                                                @endif-->
                                             </select>
                                             @error('aula')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -128,7 +128,7 @@
                 selectable: true,
                 plugins: ["timeGrid", "dayGrid", "list", "interaction"],
                 timeZone: "UTC",
-                defaultView: "listYear", // Puedes usar "timeGridWeek" o "timeGridDay"
+                defaultView: "dayGridMonth", // Puedes usar "timeGridWeek" o "timeGridDay"
                 locale: 'es',
                 displayEventTime: false,
                 contentHeight: "auto",
@@ -138,7 +138,7 @@
                 header: {
                     left: "prev,next today",
                     center: "title",
-                    right: ""
+                    right: "dayGridMonth,listYear"
                 },
                 events: baseUrl + "/calendar/inicio/fin",
     
@@ -157,6 +157,59 @@
             calendar2.render();
         });
     }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('[name="horario"]').forEach(function(input) {
+            input.addEventListener('change', function() {
+                var selectedHorario = this.value;
+    
+                axios.get('/ruta/del/server/para/obtener/disponibilidad', {
+                    params: {
+                        horario: selectedHorario,
+                    }
+                })
+                .then(function(response) {
+                    if ('docentes' in response.data) {
+                        var docenteSelect = document.getElementById('docenteSelect');
+                        docenteSelect.innerHTML = '<option value="" selected disabled>Seleccionar</option>';
+    
+                        if (Array.isArray(response.data.docentes)) {
+                            response.data.docentes.forEach(function(doc) {
+                                var option = document.createElement('option');
+                                option.value = doc.id;
+                                option.textContent = doc.nombre + ' ' + doc.ap_paterno + ' ' + doc.ap_materno;
+                                docenteSelect.appendChild(option);
+                            });
+                        } else {
+                            console.error('Error: La propiedad "docentes" no es un array en la respuesta del servidor.');
+                            document.getElementById('docenteError').style.display = 'block';
+                        }
+                    } else {
+                        console.error('Error: La propiedad "docentes" no está presente en la respuesta del servidor.');
+                        document.getElementById('docenteError').style.display = 'block';
+                    }
+    
+                    var aulaSelect = document.getElementById('aulaSelect');
+                    aulaSelect.innerHTML = '<option value="" selected disabled>Seleccionar</option>';
+    
+                    response.data.aulas.forEach(function(aula) {
+                        var option = document.createElement('option');
+                        option.value = aula.id;
+                        option.textContent = aula.nombre;
+                        option.setAttribute('cupo', aula.capacidad);
+                        aulaSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error) {
+                    console.error(error);
+                    document.getElementById('docenteError').style.display = 'block';
+                    document.getElementById('aulaError').style.display = 'block';
+                });
+            });
+        });
+    });
     </script>
     
 @endsection

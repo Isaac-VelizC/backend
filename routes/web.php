@@ -96,6 +96,8 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::get('/asignados/cursos/{id}/edit', [CursoController::class, 'editCursoAsignado'])->name('admin.asigando.edit');
     Route::post('/asignados/cambiar/{id}', [CursoController::class, 'gestionarEstadoCurso'])->name('admin.cursos.cambiarEstado');
     Route::get('/borrar/cambiar-estado/{id}', [CursoController::class, 'deleteCursoActivo'])->name('admin.borrar.curso.activo');
+    Route::get('/ruta/del/server/para/obtener/disponibilidad', [CursoController::class, 'obtenerDisponibilidad']);
+
     ///pagos
     Route::get('/admin-pagos-all', [PagosController::class, 'allPagos'])->name('admin.lista.pagos');
     Route::get('/pagos/formulario/hjfse', FormPagos::class)->name('admin.create.pago');
