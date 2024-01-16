@@ -8,7 +8,7 @@
             <div class="modal-body">
                 <div class="row">
                     <p>{{ $curso ? $curso->descripcion : '' }}</p>
-                    @if (count($CursoHabilitado) > 0)
+                    @if (count($CursoHabilitado) > 0 && $idSemestre == $estudiante->grado)
                         @foreach($CursoHabilitado as $event)
                             <div class="row">
                                 <div class="col-md-12">

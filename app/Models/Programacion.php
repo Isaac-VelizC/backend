@@ -10,7 +10,7 @@ class Programacion extends Model
     use HasFactory;
     protected $table = "programacions";
     protected $primaryKey = "id";
-    protected $fillable = ['estudiante_id', 'responsable_id', 'curso_id', 'fecha', 'estado'];
+    protected $fillable = ['estudiante_id', 'responsable_id', 'curso_id', 'fecha', 'estado_materia', 'estado'];
 
     public function estudiante()
     {

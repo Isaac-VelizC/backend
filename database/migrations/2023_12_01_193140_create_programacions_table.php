@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('curso_id')->nullable();
             $table->foreign('curso_id')->references('id')->on('curso_habilitados')->onDelete('restrict');
             $table->datetime('fecha')->default(now());
+            $table->string('estado_materia')->default('En espera');
             $table->boolean('estado')->default(true);
             $table->timestamps();
         });

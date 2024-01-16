@@ -33,22 +33,26 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     if (auth()->check()) {
-        if (auth()->user()->hasRole('Admin')) {
-            return redirect()->route('admin.home');
-        } elseif (auth()->user()->hasRole('Docente')) {
-            return redirect()->route('docente.home');
-        } elseif (auth()->user()->hasRole('Estudiante')) {
-            return redirect()->route('estudiante.home');
+        switch (auth()->user()->role) {
+            case 'Admin':
+            case 'Secretario/a':
+                return redirect()->route('admin.home');
+            case 'Docente':
+                return redirect()->route('docente.home');
+            case 'Estudiante':
+                return redirect()->route('estudiante.home');
+            default:
+                return redirect()->route('home');
         }
-        return redirect()->route('home');
     } else {
         return redirect('login');
     }
 });
+
 Auth::routes();
 
 Route::get('home', [HomeController::class, 'index'])->name('home');
-Route::middleware(['auth', 'role:Admin'])->group(function () {
+Route::middleware(['auth', 'role:Admin,Secretario/a'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.home');
     Route::get('/gestionar/permisos/admin', GestionPermisos::class)->name('admin.gestion.permisos');
     Route::get('/backup', [BackupController::class, 'downloadBackup'])->name('admin.backup.db_igla');

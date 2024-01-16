@@ -18,21 +18,25 @@
                 <div class="row">
                     @if ($materias->count() > 0)
                         @foreach ($materias as $item)
-                        <div class="col-lg-4 col-md-12">
-                            <a class="card" wire:click='showMateria({{ $item->id }})'>
-                                <div class="card-body">
-                                    <div class="d-grid grid-flow-col align-items-center justify-content-between mb-2">
-                                        <div class="d-flex align-items-center text-black">
-                                            <p class="mb-0 h6">{{ $item->nombre }}</p>
-                                        </div>
-                                        <div class="dropdown">
-                                            <p class="h6"><span class="badge bg-light text-dark">0</span></p>
+                            <div class="col-lg-4 col-md-12">
+                                <a class="card" wire:click='showMateria({{ $item->id }})'>
+                                    <div class="card-body">
+                                        <div class="d-grid mb-2">
+                                            <div class="d-flex align-items-center text-black">
+                                                <p class="mb-0 h6">{{ $item->nombre }}</p>
+                                            </div>
+                                            <br>
+                                                @php
+                                                    $programacion = $estudiante->programados->firstWhere('cursoDocente.curso_id', $item->id);
+                                                    $estado = $programacion ? $programacion->estado_materia : 'No programado';
+                                                    $badgeColor = $estado == 'Aprobado' ? 'bg-success' : ($estado == 'Reprobado' ? 'bg-danger' : 'bg-warning');
+                                                @endphp
+                                                <p class="h6 text-center"><span class="badge {{ $badgeColor }} text-white">{{ $estado }}</span></p>
                                         </div>
                                     </div>
-                                </div>
-                            </a>
-                        </div>
-                    @endforeach
+                                </a>
+                            </div>
+                        @endforeach
                     @else
                         <p class="text-center">No hay materias en el periodo, selecciona otro</p>
                     @endif

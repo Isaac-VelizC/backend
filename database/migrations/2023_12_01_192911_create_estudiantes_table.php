@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('direccion')->nullable();
             $table->date('fecha_nacimiento')->nullable();
             $table->boolean('estado')->default(true);
-            $table->boolean('graduado')->default(false);
+            $table->integer('grado')->default(1);
+            $table->integer('graduado')->default(false);
             $table->string('titulo')->nullable();
             $table->timestamps();
         });

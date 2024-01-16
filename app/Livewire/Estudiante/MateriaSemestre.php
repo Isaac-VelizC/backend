@@ -16,7 +16,7 @@ class MateriaSemestre extends Component
     public $semestres, $materias, $idEst;
     public Estudiante $estudiante;
     public $semestreActivo;
-    public $CursoHabilitado = [], $curso;
+    public $CursoHabilitado = [], $curso, $idSemestre = 1;
     public function mount($id) {
         $this->idEst = $id;
         $this->estudiante = Estudiante::find($id);
@@ -25,14 +25,17 @@ class MateriaSemestre extends Component
         $this->semestreActivo = $primerSemetre->id;
         $this->materias = Curso::where('semestre_id', $primerSemetre->id)->get();
     }
+    
     public function render()
     {
         return view('livewire.estudiante.materia-semestre');
     }
     public function cursosSemestre($id) {
+        $this->idSemestre = $id;
         $this->materias = Curso::where('semestre_id', $id)->get();
         $this->semestreActivo = $id;
     }
+
     public function showMateria($id) {
         try {
             $this->curso = Curso::find($id);

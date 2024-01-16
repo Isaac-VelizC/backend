@@ -29,9 +29,9 @@ class EstudianteReportes extends Component
             $query->when($this->horario, function ($query, $horario) {
                 $query->where('turno_id', $horario);
             });
-            /*$query->when($this->semestre, function ($query, $semestre) {
-                $query->where('semestre_id', $semestre);
-            });*/
+            $query->when($this->semestre, function ($query, $semestre) {
+                $query->where('grado', $semestre);
+            });
             if ($this->estado === false || $this->estado === '0') {
                 $query->where('estado', false);
             } elseif (!is_null($this->estado)) {
