@@ -65,8 +65,6 @@ return [
                 'dump_binary_path' => 'D:\xampp\mysql\bin', // only the path, so without `mysqldump` or `pg_dump`
                 'use_single_transaction',
                 'timeout' => 60 * 5,
-                //'exclude_tables' => ['table1', 'table2'],
-                //'add_extra_option' => '--optionname=0', // for example '--column-statistics=0'
             ]
         ],
 
