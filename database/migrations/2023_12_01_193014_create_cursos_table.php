@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreign('semestre_id')->references('id')->on('semestres')->onDelete('restrict');
             $table->string('color')->nullable();
             $table->boolean('estado')->default(true);
+            $table->integer('dependencia')->default(0);
             $table->text('descripcion')->nullable();
             $table->timestamps();
         });

@@ -23,7 +23,7 @@
                                       </div>
                                       <div class="form-group">
                                         <label class="form-label" for="descrip">Descripción</label>
-                                        <textarea class="form-control" id="descrip" name="descripcion" rows="3">{{ old('descripcion', $item->descripcion) }}</textarea>
+                                        <textarea class="form-control" id="descrip" name="descripcion" rows="5">{{ old('descripcion', $item->descripcion) }}</textarea>
                                       </div>
                                     </div>
                                 </div>
@@ -46,7 +46,23 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label" for="exampleInputcolorSelect">Color del Curso (Menú desplegable)</label>
+                                        <label class="form-label" for="dependencia_select">Seleccionar Dependencia (Opcional)</label>
+                                        <select class="form-select" id="dependencia_select" name="dependencia">
+                                          <option value="" disabled selected>Seleccionar Curso</option>
+                                          @if ($cursos->count() > 0)
+                                              @foreach ($cursos as $curso)
+                                                  <option value="{{ $curso->id }}">{{ $curso->nombre }}</option>
+                                              @endforeach
+                                          @else
+                                              <option value="">No Hay Cursos</option>
+                                          @endif
+                                        </select>
+                                        @error('dependencia')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="exampleInputcolorSelect">Color del Curso</label>
                                         <select class="form-select" id="exampleInputcolorSelect" name="color" required>
                                             <option value="#0000FF" {{ $item->color == '#0000FF' ? 'selected' : '' }}>🔵 Azul</option>
                                             <option value="#800080" {{ $item->color == '#800080' ? 'selected' : '' }}>🟣 Morado</option>

@@ -22,7 +22,7 @@
                                       </div>
                                       <div class="form-group">
                                         <label class="form-label" for="descrip">Descripción</label>
-                                        <textarea class="form-control" id="descrip" name="descripcion" rows="3"></textarea>
+                                        <textarea class="form-control" id="descrip" name="descripcion" rows="5"></textarea>
                                       </div>
                                     </div>
                                 </div>
@@ -45,6 +45,15 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
+                                        <label class="form-label" for="dependencia_select">Seleccionar Dependencia (Opcional)</label>
+                                        <select class="form-select" id="dependencia_select" name="dependencia">
+                                          <option value="" disabled selected>Seleccionar</option>
+                                        </select>
+                                        @error('dependencia')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
                                         <label class="form-label" for="exampleInputcolor">Color del Curso</label>
                                         <select class="form-select" id="exampleInputcolor" name="color" required>
                                             <option value="#0000FF" selected>🔵 Azul</option>
@@ -54,7 +63,7 @@
                                             <option value="#008000">🟢 Verde</option>
                                             <option value="#FFFF00">🟡 Amarillo</option>
                                             <option value="#A52A2A">🟤 Marrón</option>
-                                          </select>
+                                        </select>
                                     </div>
                                   </div>
                               </div>
@@ -70,3 +79,27 @@
         </div>
     </div>
 </div>
+<script>
+    document.getElementById('modulo_select').addEventListener('change', function() {
+        var selectedSemestreId = this.value;
+        axios.get('/ruta/al/servidor/para/obtener/cursos', {
+            params: {
+                semestreId: selectedSemestreId,
+            }
+        })
+        .then(function(response) {
+            var dependenciaSelect = document.getElementById('dependencia_select');
+            dependenciaSelect.innerHTML = '<option value="" disabled selected>Seleccionar</option>';
+            
+            response.data.cursos.forEach(function(curso) {
+                var option = document.createElement('option');
+                option.value = curso.id;
+                option.textContent = curso.nombre;
+                dependenciaSelect.appendChild(option);
+            });
+        })
+        .catch(function(error) {
+            console.error(error);
+        });
+    });
+</script>

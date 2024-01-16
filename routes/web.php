@@ -101,6 +101,7 @@ Route::middleware(['auth', 'role:Admin,Secretario/a'])->group(function () {
     Route::post('/asignados/cambiar/{id}', [CursoController::class, 'gestionarEstadoCurso'])->name('admin.cursos.cambiarEstado');
     Route::get('/borrar/cambiar-estado/{id}', [CursoController::class, 'deleteCursoActivo'])->name('admin.borrar.curso.activo');
     Route::get('/ruta/del/server/para/obtener/disponibilidad', [CursoController::class, 'obtenerDisponibilidad']);
+    Route::get('/ruta/al/servidor/para/obtener/cursos', [CursoController::class, 'obtenerCursosAnteriores']);
 
     ///pagos
     Route::get('/admin-pagos-all', [PagosController::class, 'allPagos'])->name('admin.lista.pagos');

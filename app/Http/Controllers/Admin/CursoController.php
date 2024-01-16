@@ -10,8 +10,6 @@ use App\Models\CursoHabilitado;
 use App\Models\Docente;
 use App\Models\Horario;
 use App\Models\Semestre;
-use App\Models\User;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -27,12 +25,15 @@ class CursoController extends Controller
             'nombre' => 'required|string|max:255',
             'semestre' => 'required|numeric',
             'descripcion' => 'nullable|string|max:255',
+            'dependencia' => 'nullable|numeric'
         ]);
+        dd($request->dependencia);
         $curso = new Curso();
         $curso->nombre = $request->nombre;
         $curso->semestre_id = $request->semestre;
         $curso->color = $request->color;
         $curso->descripcion = $request->descripcion;
+        $curso->dependencia = $request->dependencia;
         $curso->save();
         return back()->with('success', 'La materia ' . $curso->nombre . ' se registro con éxito.');
     }
@@ -54,6 +55,7 @@ class CursoController extends Controller
             'nombre' => 'required|string|max:255',
             'semestre' => 'required|numeric',
             'descripcion' => 'nullable|string|max:255',
+            'dependencia' => 'nullable|numeric'
         ]);
         $curso = Curso::findOrFail($id);
         $curso->update([
@@ -61,6 +63,7 @@ class CursoController extends Controller
             'semestre_id' => $request->semestre,
             'color' => $request->color,
             'descripcion' => $request->descripcion,
+            'dependencia' => $request->dependencia,
         ]);
         return redirect()->route('admin.cursos')->with('success', 'La información se ha actualizado con éxito.');
     }
@@ -235,5 +238,10 @@ class CursoController extends Controller
             'docentes' => $docentes,
             'aulas' => $aulasDisponibles,
         ]);
+    }
+    public function obtenerCursosAnteriores(Request $request) {
+        $semestreId = $request->input('semestreId');
+        $cursos = Curso::where('semestre_id', '<=', $semestreId)->get();
+        return response()->json(['cursos' => $cursos]);
     }
 }
