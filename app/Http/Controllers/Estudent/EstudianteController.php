@@ -34,9 +34,13 @@ class EstudianteController extends Controller
                     $fechaInicio = new DateTime($event->cursoDocente->fecha_ini);
                     $fechaFin = new DateTime($event->cursoDocente->fecha_fin);
                     $fechaActual = new DateTime();
-                    $diferenciaTotal = $fechaFin->diff($fechaInicio)->days;
-                    $diferenciaActual = $fechaActual->diff($fechaInicio)->days;
-                    $porcentaje = ($diferenciaActual / $diferenciaTotal) * 100;
+                    if ($fechaActual >= $fechaInicio) {
+                        $diferenciaTotal = $fechaFin->diff($fechaInicio)->days;
+                        $diferenciaActual = $fechaActual->diff($fechaInicio)->days;
+                        $porcentaje = ($diferenciaActual / $diferenciaTotal) * 100;
+                    } else {
+                        $porcentaje = 0;
+                    }
                 } catch (\Exception $e) {
                     $porcentaje = 0;
                 }

@@ -12,16 +12,14 @@ use Livewire\Component;
 
 class Trabajos extends Component
 {
-    public $tema, $idCurso, $idTarea, $idFiles, $temasCurso, $tipoTrabajo, $tareas, $comentario = '';
-    public $AD3 = false, $temaEditando = null;
+    public $tema, $idCurso, $temasCurso, $tareas, $comentario = '';
+    public $AD3 = false;
     public CursoHabilitado $materia;
-    public $temaEditado = '', $comentariosCurso;
-    public $files = [], $filesTarea, $temasEditados = [];
+    public $comentariosCurso;
     public function mount($id) {
         $this->idCurso = $id;
         $this->materia = CursoHabilitado::findOrFail($id);
         $this->temasCurso = Tema::where('curso_id', $id)->get();
-        $this->temasEditados = $this->temasCurso->pluck('tema', 'id')->toArray();
         $allTareas = Trabajo::where('curso_id', $id)->where('estado', '!=', 'Borrador')->get();
         $this->tareas = collect($allTareas)->groupBy('tema_id');
         $this->loadComentarios();
@@ -41,22 +39,6 @@ class Trabajos extends Component
     public function resetearForm() {
         $this->AD3 = false;
         $this->mount($this->idCurso);
-        $this->idTarea = null;
-        $this->idFiles = null;
-        $this->files = [];
-        $this->filesTarea = collect([]);
-    }
-    public function editarTema($itemId) {
-        $this->temaEditando = $itemId;
-        $this->temaEditado = Tema::find($itemId)->tema;
-    }
-    public function actualizarTema($itemId) {
-        $tema = Tema::find($itemId);
-        if ($tema) {
-            $tema->tema = $this->temasEditados[$itemId];
-            $tema->update();
-        }
-        $this->temaEditando = null;
     }
     public function borrarTema($id) {
         Tema::find($id)->delete();

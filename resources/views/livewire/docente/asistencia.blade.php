@@ -21,7 +21,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center">ESTUDIANTE</th>
-                                    <th class="text-center">PPRESENTE</th>
+                                    <th class="text-center">PRESENTE</th>
                                     <th class="text-center">FALTA</th>
                                     <th class="text-center">LICENCIA</th>
                                 </tr>

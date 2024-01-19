@@ -11,14 +11,9 @@ class Tema extends Model
     public $timestamps = false;
     protected $table = "temas";
     protected $primaryKey = "id";
-    protected $fillable = ['tema', 'curso_id', 'estado'];
+    protected $fillable = ['tema', 'curso_id', 'descripcion', 'estado'];
     public function curso()
     {
         return $this->belongsTo(Curso::class, 'curso_id');
-    }
-
-    public function preguntas()
-    {
-        return $this->hasMany(Pregunta::class, 'tema_id');
     }
 }

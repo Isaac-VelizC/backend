@@ -52,7 +52,6 @@ class CursoController extends Controller
             'recetas' => 'exists:recetas,id',
             'files.*' => 'file'
         ]);
-
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
@@ -91,7 +90,6 @@ class CursoController extends Controller
                     ]);
                 }
             }
-            //$ruta = route('show.tarea', $tarea->id);
             $message = "Titulo: " . $tarea->titulo . ", Fecha de entrega " . $tarea->fin . ".";
             InfoController::notificacionTrabajoPublicado($request->curso, $message);
             return redirect()->route('cursos.curso', $request->curso)->with('success', 'Trabajo publicado con éxito');

@@ -53,7 +53,7 @@
                </div>
                <form method="POST" action="{{ route('guardar.planificacion', [$curso->id]) }}">
                   @csrf
-                  <textarea name="planificacion" id="editorCurso" cols="30" rows="10">{!! $curso->descripcion !!}</textarea>
+                  <textarea name="planificacion" id="editorCurso" cols="30">{!! $curso->descripcion !!}</textarea>
                   <div class="text-center">
                      <button type="submit" class="btn btn-secondary">Guardar</button>
                   </div>

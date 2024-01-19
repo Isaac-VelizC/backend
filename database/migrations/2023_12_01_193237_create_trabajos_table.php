@@ -14,8 +14,18 @@ return new class extends Migration
         Schema::create('temas', function (Blueprint $table) {
             $table->id();
             $table->string('tema');
+            $table->text('descripcion')->nullable();
             $table->unsignedBigInteger('curso_id');
             $table->foreign('curso_id')->references('id')->on('curso_habilitados')->onDelete('restrict');
+            $table->timestamps();
+        });
+
+        Schema::create('doc_temas', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre');
+            $table->text('url');
+            $table->unsignedBigInteger('tema_id');
+            $table->foreign('tema_id')->references('id')->on('temas')->onDelete('restrict');
             $table->timestamps();
         });
 

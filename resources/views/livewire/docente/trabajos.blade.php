@@ -138,21 +138,18 @@
             @endforeach
         </div>
         @foreach ($temasCurso as $item)
-            <div class="d-flex align-items-center justify-content-between flex-wrap">        
-                @if (auth()->user()->hasRole('Docente'))
-                    <textarea id="dynamicInput"
-                        class="inputEdit" 
-                        wire:model="temasEditados.{{ $item->id }}"
-                        wire:blur="actualizarTema({{ $item->id }})"
-                        @if($temaEditando !== $item->id) disabled @endif>
-                    </textarea>
-                    <div class="d-flex align-items-center flex-wrap">
-                        <i wire:click='editarTema({{$item->id}})' class="bi bi-pencil"></i> 
-                        <i wire:click='borrarTema({{$item->id}})' class="bi bi-trash cursoMano"></i>
-                    </div>
-                @elseif(auth()->user()->hasRole('Estudiante'))
+            <div class="d-flex align-items-center justify-content-between flex-wrap">
                 <h4 class="mb-3">{{ $item->tema }}</h4>
-                @endif
+                @role('Docente')
+                    <div>
+                        <a type="button" class="btn btn-light" href="{{ route('docente.edit.tema', $item->id) }}">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <button type="button" class="btn btn-danger" wire:click='borrarTema({{$item->id}})'>
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                @endrole
             </div>
             @foreach ($tareas[$item->id] ?? [] as $tarea)
                 @include('docente.cursos.widgets.tareas')
