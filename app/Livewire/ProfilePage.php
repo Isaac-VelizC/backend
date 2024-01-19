@@ -19,7 +19,7 @@ class ProfilePage extends Component
         $this->rolUser();
         $this->info = Persona::where('user_id', auth()->user()->id)->first();
         $estudiante = Estudiante::where('persona_id', $this->info->id)->first();
-        if ($estudiante) {
+        if ($estudiante->contacto) {
             $pers = $estudiante->contacto;
             $this->famil = Persona::find($pers->persona_id);
         }

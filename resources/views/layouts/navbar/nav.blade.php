@@ -1,3 +1,18 @@
+<style>
+  .notification-count {
+    position: absolute;
+    text-align: center;
+    z-index: 1;
+    top: -1px;
+    right: -1px;
+    width: 20px;
+    height: 20px;
+    font-size: 15px;
+    border-radius: 50%;
+    background-color: #ff4927;
+    color: #fff;
+  }
+</style>
 <nav class="nav navbar navbar-expand-lg navbar-light iq-navbar"z>
       <div class="container-fluid navbar-inner">
         <a href="{{ url('/') }}" class="navbar-brand">
@@ -27,67 +42,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="mb-2 navbar-nav ms-auto align-items-center navbar-list mb-lg-0">
-            <!--li class="nav-item dropdown">
-              <a href="#"  class="nav-link" id="notification-drop" data-bs-toggle="dropdown" >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                  <path d="M15.137 3.945c-.644-.374-1.042-1.07-1.041-1.82v-.003c.001-1.172-.938-2.122-2.096-2.122s-2.097.95-2.097 2.122v.003c.001.751-.396 1.446-1.041 1.82-4.667 2.712-1.985 11.715-6.862 13.306v1.749h20v-1.749c-4.877-1.591-2.195-10.594-6.863-13.306zm-3.137-2.945c.552 0 1 .449 1 1 0 .552-.448 1-1 1s-1-.448-1-1c0-.551.448-1 1-1zm3 20c0 1.598-1.392 3-2.971 3s-3.029-1.402-3.029-3h6z"/>
-                </svg>
-                <span class="bg-danger dots"></span>
-              </a>
-              <div class="p-0 sub-drop dropdown-menu dropdown-menu-end" aria-labelledby="notification-drop">
-                  <div class="m-0 shadow-none card">
-                    <div class="py-3 card-header d-flex justify-content-between bg-primary">
-                        <div class="header-title">
-                          <h5 class="mb-0 text-white">Todas las Notificaciones</h5>
-                        </div>
-                    </div>
-                    <div class="p-0 card-body">
-                        <a href="#" class="iq-sub-card">
-                          <div class="d-flex align-items-center">
-                              <img class="p-1 avatar-40 rounded-pill bg-soft-primary" src="" alt="">
-                              <div class="ms-3 w-100">
-                                <h6 class="mb-0 ">Emma Watson Bni</h6>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <p class="mb-0">95 MB</p>
-                                    <small class="float-end font-size-12">Just Now</small>
-                                </div>
-                              </div>
-                          </div>
-                        </a>
-                    </div>
-                  </div>
-              </div>
-            </li>
-            <li class="nav-item dropdown">
-              <a href="#" class="nav-link" id="mail-drop" data-bs-toggle="dropdown"  aria-haspopup="true" aria-expanded="false">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                  <path d="M0 3v18h24v-18h-24zm22 16l-6.526-6.618-3.445 3.483-3.418-3.525-6.611 6.66 5.051-8-5.051-6 10.029 7.446 9.971-7.446-4.998 6.01 4.998 7.99z"/>
-                </svg>
-                <span class="bg-primary count-mail"></span>
-              </a>
-              <div class="p-0 sub-drop dropdown-menu dropdown-menu-end" aria-labelledby="mail-drop">
-                  <div class="m-0 shadow-none card">
-                    <div class="py-3 card-header d-flex justify-content-between bg-primary">
-                        <div class="header-title">
-                          <h5 class="mb-0 text-white">Todos los Mensajes</h5>
-                        </div>
-                    </div>
-                    <div class="p-0 card-body ">
-                        <a href="#" class="iq-sub-card">
-                          <div class="d-flex align-items-center">
-                              <div class="">
-                                <img class="p-1 avatar-40 rounded-pill bg-soft-primary" src="" alt="">
-                              </div>
-                              <div class="ms-3">
-                                <h6 class="mb-0 ">Bni Emma Watson</h6>
-                                <small class="float-start font-size-12">13 Jun</small>
-                              </div>
-                          </div>
-                        </a>
-                    </div>
-                  </div>
-              </div>
-            </li-->
             <li class="nav-item dropdown">
               <a class="py-0 nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="{{ asset(Auth::user()->persona->photo != 'user.jpg' ? 'storage/' . Auth::user()->persona->photo : 'img/user.jpg') }}" alt="User-Profile" class="theme-color-default-img img-fluid avatar avatar-50 avatar-rounded">

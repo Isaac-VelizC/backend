@@ -1,6 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    .notification-count {
+      position: absolute;
+      text-align: center;
+      z-index: 1;
+      top: -1px;
+      right: -1px;
+      width: 20px;
+      height: 20px;
+      font-size: 15px;
+      border-radius: 50%;
+      background-color: #ff4927;
+      color: #fff;
+    }
+</style>
     <div class="position-relative iq-banner">
         <div class="iq-navbar-header" style="height: 215px;">
             <div class="container-fluid iq-container">
@@ -36,37 +51,47 @@
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link active" id="trabajo-tab" data-bs-toggle="tab" data-bs-target="#pills-trabajo1" type="button" role="tab" aria-controls="trabajo" aria-selected="true">Trabajos</button>
                                 </li>
-                                @if ($role->name == 'Docente')
+                                @role('Docente')
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link" id="asistencia-tab" data-bs-toggle="tab" data-bs-target="#pills-asistencia1" type="button" role="tab" aria-controls="asistencia" aria-selected="false">Asistencia</button>
                                     </li>
-                                @endif
+                                @endrole
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="calificacion-tab" data-bs-toggle="tab" data-bs-target="#pills-calificacion1" type="button" role="tab" aria-controls="calificacion" aria-selected="false">Calificaciones</button>
                                 </li>
-                                @if ($role->name == 'Docente')
+                                @role('Docente')
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link" id="config-tab" data-bs-toggle="tab" data-bs-target="#pills-config1" type="button" role="tab" aria-controls="config" aria-selected="false">Configuración</button>
                                     </li>
-                                @endif
+                                @endrole
+                                @role('Estudiante')
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="evaluacionDocente-tab" data-bs-toggle="tab" data-bs-target="#pills-evaluacionDocente1" type="button" role="tab" aria-controls="evaluacionDocente" aria-selected="false">Evaluación Docente</button>
+                                    </li>
+                                @endrole
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-trabajo1" role="tabpanel" aria-labelledby="pills-trabajo-tab1">
                                     @livewire('docente.trabajos', ['id' => $curso->id])
                                 </div>
-                                @if ($role->name == 'Docente')
+                                @role('Docente')
                                     <div class="tab-pane fade" id="pills-asistencia1" role="tabpanel" aria-labelledby="pills-asistencia-tab1">
                                         @livewire('docente.asistencia', ['id' => $curso->id])
                                     </div>
-                                @endif
+                                @endrole
                                 <div class="tab-pane fade" id="pills-calificacion1" role="tabpanel" aria-labelledby="pills-calificacion-tab1">
                                     @livewire('docente.calificaciones', ['id' => $curso->id])
                                 </div>
-                                @if ($role->name == 'Docente')
+                                @role('Docente')
                                     <div class="tab-pane fade" id="pills-config1" role="tabpanel" aria-labelledby="pills-config-tab1">
                                         @include('docente.cursos.widgets.configuracion')
                                     </div>
-                                @endif
+                                @endrole
+                                @role('Estudiante')
+                                    <div class="tab-pane fade" id="pills-evaluacionDocente1" role="tabpanel" aria-labelledby="pills-evaluacionDocente-tab1">
+                                        @livewire('estudiante.evaluacion-docente', ['id' => $curso->id])
+                                    </div>
+                                @endrole
                             </div>
                         </div>
                     </div>

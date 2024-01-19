@@ -71,4 +71,8 @@ class CursoHabilitado extends Model
     {
         return $this->hasMany(Calificacion::class, 'curso_id');
     }
+    public function evaluacionDocente()
+    {
+        return $this->belongsTo(EvaluacionHabilitada::class);
+    }
 }

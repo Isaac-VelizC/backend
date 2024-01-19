@@ -114,8 +114,10 @@ class CalendarioController extends Controller
         try {
             $estudianteId = auth()->user()->persona->estudiante->id;
             $programado = Programacion::where('estudiante_id', $estudianteId)->with('cursoDocente')->get();
-            $trabajos = Trabajo::where('curso_id', $programado->pluck('cursoDocente.id'))->where('estado', '!=','Borrador')
-                ->get();
+            $trabajos = Trabajo::whereIn('curso_id', $programado->pluck('cursoDocente.id')->toArray())
+                 ->where('estado', '!=', 'Borrador')
+                 ->get();
+
             $events = $trabajos->map(function ($trabajo) {
                 return [
                     'id' => $trabajo->id,
@@ -129,7 +131,7 @@ class CalendarioController extends Controller
             });
             return response()->json($events);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => 'Ocurrio un error '.$e->getMessage()], 500);
         }
     }
 
