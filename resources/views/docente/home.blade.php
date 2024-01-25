@@ -25,30 +25,19 @@
                      </a>
                   </li>
                   <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="1100">
-                     <div class="card-body">
-                        <div class="progress-widget">
-                              <div class="rounded p-3 bg-soft-dack">
-                                 <i class="fa fa-users"></i>
+                     <a href="{{ route('admin.ingredientes') }}">
+                        <div class="card-body">
+                           <div class="progress-widget">
+                                 <div class="rounded p-3 bg-soft-dark">
+                                    <i class="fa fa-users"></i>
+                                 </div>
+                              <div class="progress-detail">
+                                 <p  class="mb-2">Recetas</p>
+                                 <h4 class="counter">$150K</h4>
                               </div>
-                           <div class="progress-detail">
-                              <p  class="mb-2">Recetas</p>
-                              <h4 class="counter">$150K</h4>
                            </div>
                         </div>
-                     </div>
-                  </li>
-                  <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="1200">
-                     <div class="card-body">
-                        <div class="progress-widget">
-                              <div class="rounded p-3 bg-soft-warning">
-                                 <i class="fa fa-users"></i>
-                              </div>
-                           <div class="progress-detail">
-                              <p  class="mb-2">Eventos</p>
-                              <h4 class="counter">$4600</h4>
-                           </div>
-                        </div>
-                     </div>
+                     </a>
                   </li>
                </ul>
                <div class="swiper-button swiper-button-next"></div>

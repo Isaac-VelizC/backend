@@ -18,12 +18,13 @@ class ProfilePage extends Component
         $this->user = User::find(auth()->user()->id);
         $this->rolUser();
         $this->info = Persona::where('user_id', auth()->user()->id)->first();
-        $estudiante = Estudiante::where('persona_id', $this->info->id)->first();
-        if ($estudiante->contacto) {
-            $pers = $estudiante->contacto;
-            $this->famil = Persona::find($pers->persona_id);
+        if ($this->Rolestudiante) {
+            $estudiante = Estudiante::where('persona_id', $this->info->id)->first();
+            if ($estudiante->contacto) {
+                $pers = $estudiante->contacto;
+                $this->famil = Persona::find($pers->persona_id);
+            }
         }
-
     }
     public function render()
     {
