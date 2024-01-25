@@ -82,7 +82,7 @@
                                                                      $fechaInicio = new DateTime($cursoProgramado->fecha_ini);
                                                                      $fechaFin = new DateTime($cursoProgramado->fecha_fin);
                                                                      $fechaActual = new DateTime();
-                                                                     if ($fechaActual >= $fechaInicio) {
+                                                                     if ($fechaActual >= $fechaInicio && $fechaActual <= $fechaFin) {
                                                                         $diferenciaTotal = $fechaFin->diff($fechaInicio)->days;
                                                                         $diferenciaActual = $fechaActual->diff($fechaInicio)->days;
                                                                         $porcentajeProgreso = ($diferenciaActual / $diferenciaTotal) * 100;

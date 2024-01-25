@@ -8,10 +8,19 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
+            @if(session('message'))
+                <div id="myAlert" class="alert alert-left alert-success alert-dismissible fade show mb-3 alert-fade" role="alert">
+                    <span>{{ session('message') }}</span>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <div class="card">
                 <div class="header-title d-flex align-items-center justify-content-between flex-wrap">    
                     <h4 class="card-title mb-0">Calificaciones</h4>
                     @if (auth()->user()->hasRole('Docente'))
+                        <div class="d-flex align-items-center flex-wrap">
+                            <button class="btn btn-secondary" type="button" wire:click='calcularNotas'>Calcular Notas</button>
+                        </div>
                         <div class="d-flex align-items-center flex-wrap">
                             <a class="btn btn-primary" href="{{ route('docente.tareas.criterios', $idCurso) }}">Criterios</a>
                         </div>
@@ -64,6 +73,13 @@
                                 </tbody>
                             </table>
                         @endif
+                        @role('Docente')
+                            <div class="col-sm-12">
+                                <div class="d-flex justify-content-center mt-4">
+                                <button type="button" class="btn btn-link" wire:click='descargarNotasFinales'>Descargar Notas</button>
+                                </div>
+                            </div>
+                        @endrole
                     </div>
                 </div>
             </div>

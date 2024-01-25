@@ -3,6 +3,9 @@
 namespace App\Livewire\Docente;
 
 use App\Models\Calificacion;
+use App\Models\CatCritTrabajo;
+use App\Models\CategoriaCriterio;
+use App\Models\Criterio;
 use App\Models\CursoHabilitado;
 use App\Models\Trabajo;
 use App\Models\TrabajoEstudiante;
@@ -45,5 +48,144 @@ class Calificaciones extends Component
     {
         return view('livewire.docente.calificaciones');
     }
+    public function calcularNotas() {
+        try {
+            foreach ($this->estudiantes as $value) {
+                $this->calcularNotaTotal($value->id, $this->idCurso);
+            }
+            $this->cargarNotas();
+            session()->flash('message', 'Calculo de notas Terminada correctamente');
+        } catch (\Throwable $th) {
+            session()->flash('error', 'Ocurrio un error: '.$th->getMessage());
+        }
+    }
+    public function calcularNotaTotal($idEst, $idCurso) {
+        $tareasEstudiante = TrabajoEstudiante::where('estudiante_id', $idEst)
+            ->whereHas('trabajo', function ($query) use ($idCurso) {
+                $query->where('curso_id', $idCurso);
+            })->get();
+        $todasLasTareas = [];
+        if($tareasEstudiante) {
+            foreach ($tareasEstudiante as $tareaEstudiante) {
+                $tarea = $tareaEstudiante->trabajo;
+                $relacionesCategorias = CatCritTrabajo::where('tarea_id', $tarea->id)->get();
+                if ($relacionesCategorias->isEmpty()) {
+                    $todasLasTareas[] = [
+                        'id' => $tarea->id,
+                        'criterio' => $tarea->criterio_id ?: null,
+                        'porcentajeCriterio' => $tarea->criterio ? $tarea->criterio->porcentaje : null,
+                        'categoria' => null,
+                        'porcentajeCategoria' => null,
+                        'nota' => $tareaEstudiante->nota,
+                    ];
+                } else {
+                    foreach ($relacionesCategorias as $relacionCategoria) {
+                        $todasLasTareas[] = [
+                            'id' => $tarea->id,
+                            'criterio' => $tarea->criterio_id,
+                            'porcentajeCriterio' => $tarea->criterio->porcentaje,
+                            'categoria' => $relacionCategoria->cat_id,
+                            'porcentajeCategoria' => $relacionCategoria->categoriaCriterio->porcentaje,
+                            'nota' => $tareaEstudiante->nota,
+                        ];
+                    }
+                }
+            }
+            $notasPorCategoria = [];
+            $notasPorCriterio = [];
+
+            foreach ($todasLasTareas as $tarea) {
+                $categoriaId = $tarea['categoria'];
+                $criterioId = $tarea['criterio'];
+                $nota = $tarea['nota'];
+                if ($categoriaId !== null) {
+                    if (!isset($notasPorCategoria[$categoriaId]['suma'])) {
+                        $notasPorCategoria[$categoriaId]['suma'] = 0;
+                        $notasPorCategoria[$categoriaId]['porcentaje'] = $tarea['porcentajeCategoria'];
+                    }
+                    $notasPorCategoria[$categoriaId]['suma'] += $nota;
+                } elseif ($criterioId !== null) {
+                    if (!isset($notasPorCriterio[$criterioId]['suma'])) {
+                        $notasPorCriterio[$criterioId]['suma'] = 0;
+                        $notasPorCriterio[$criterioId]['porcentaje'] = $tarea['porcentajeCriterio'];
+                    }
+                    $notasPorCriterio[$criterioId]['suma'] += $nota;
+                }
+            }
+            foreach ($notasPorCategoria as $categoriaId => $data) {
+                $porcentajeCategoria = $data['porcentaje'];
+                $totalTrabajosCat = $this->obtenerTotalTrabajosPorCategoria($categoriaId);
+                $notasPorCategoria[$categoriaId]['notaFinal'] = ($data['suma'] / $totalTrabajosCat) * ($porcentajeCategoria / 100);
+            }
+            foreach ($notasPorCriterio as $criterioId => $data) {
+                $porcentajeCriterio = $data['porcentaje'];
+                $totalTrabajosCrit = $this->obtenerTotalTrabajosPorCriterio($criterioId);
+                $notasPorCriterio[$criterioId]['notaFinal'] = ($data['suma'] / $totalTrabajosCrit) * ($porcentajeCriterio / 100);
+            }
+            $notasFinalesPorCriterio = [];
+            foreach ($notasPorCategoria as $categoriaId => $data) {
+                $criterioId = $this->obtenerCriterioParaCategoria($categoriaId);
+                if (!isset($notasFinalesPorCriterio[$criterioId])) {
+                    $notasFinalesPorCriterio[$criterioId] = ['suma' => 0, 'totalCategorias' => 0];
+                }
+                $notasFinalesPorCriterio[$criterioId]['suma'] += $data['notaFinal'];
+                $notasFinalesPorCriterio[$criterioId]['totalCategorias']++;
+            }
+
+            $sumarTotal = 0;
+
+            foreach ($notasPorCriterio as $criterioId => $dataCriterio) {
+                $sumarTotal += $dataCriterio['notaFinal'];
+            }
+
+            foreach ($notasFinalesPorCriterio as $criterioId => $datosCriterio) {
+                $sumaCriterio = $datosCriterio['suma'];
+                $sumarTotal += $sumaCriterio;
+            }
+            $cantidadEvaluaciones = Trabajo::where('evaluacion', true)->count();
+            $cantidadNoEvaluaciones = Trabajo::where('evaluacion', false)->count();
+            Calificacion::updateOrCreate(
+                ['estudiante_id' => $idEst, 'curso_id' => $idCurso],
+                [
+                    'num_trabajos' => $cantidadNoEvaluaciones,
+                    'num_evaluaciones' => $cantidadEvaluaciones,
+                    'calificacion' => $sumarTotal,
+                ]
+            );
+        }
+    }
     
+    public function obtenerCriterioParaCategoria($categoriaId) {
+        $categoria = CategoriaCriterio::find($categoriaId);
+    
+        if ($categoria) {
+            return $categoria->criterio_id;
+        }
+    
+        return null;
+    }
+
+    function obtenerTotalTrabajosPorCategoria($categoriaId) {
+        $categoria = CategoriaCriterio::find($categoriaId);
+        if ($categoria) {
+            $trabajos = $categoria->catCritTrabajos;
+            return $trabajos->count();
+        }    
+        return 0;
+    }
+    function obtenerTotalTrabajosPorCriterio($criterioId) {
+        $criterio = Criterio::find($criterioId);
+        if ($criterio) {
+            $trabajos = $criterio->trabajos;
+            return $trabajos->count();
+        }
+        return 0;
+    }
+    public function descargarNotasFinales() {
+        try {
+            session()->flash('message', 'Descarga realizada exitosamente');
+        } catch (\Throwable $th) {
+            session()->flash('error', 'Ocurrio un error al realizar la descarga: ' . $th->getMessage());
+        }
+    }
 }

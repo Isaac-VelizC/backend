@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('curso_id')->references('id')->on('curso_habilitados')->onDelete('restrict');
             $table->bigInteger('num_trabajos')->default(0);
             $table->bigInteger('num_evaluaciones')->default(0);
-            $table->decimal('calificacion', 3, 2);
+            $table->decimal('calificacion', 5, 2);
             $table->timestamps();
             $table->softDeletes();
         });
