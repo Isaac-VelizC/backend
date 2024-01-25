@@ -5,7 +5,7 @@
                 <div class="col-md-12">
                     <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
                         <div>
-                          <h4>{{ Breadcrumbs::render($item->rol == 'P' ? 'Docentes.edit' : 'Trabajadores.edit' , $idDocente, $item) }}</h4>
+                          <h4>{{ Breadcrumbs::render($item->rol == 'P' ? 'Trabajadores.edit' : 'Docentes.edit' , $idDocente, $item) }}</h4>
                         </div>
                     </div>
                 </div>
