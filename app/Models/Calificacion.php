@@ -16,4 +16,8 @@ class Calificacion extends Model
     {
         return $this->belongsTo(CursoHabilitado::class, 'curso_id');
     }
+    public function estudiante()
+    {
+        return $this->belongsTo(Estudiante::class, 'estudiante_id');
+    }
 }

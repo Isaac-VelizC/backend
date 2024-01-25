@@ -4,6 +4,8 @@ namespace App\Livewire\Docente;
 
 use App\Models\Asistencia as ModelsAsistencia;
 use App\Models\CursoHabilitado;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Livewire\Component;
 
 class Asistencia extends Component
@@ -65,5 +67,30 @@ class Asistencia extends Component
         }
     
         return $asistenciaPorDefecto;
+    }
+    public function exportAsistenciaPDF() {
+        try {
+            $curso = CursoHabilitado::find($this->idCurso);
+            $asistencias = ModelsAsistencia::where('curso_id', $this->idCurso)->get();
+            Carbon::setLocale('es');
+            $fechaActual = Carbon::now();
+            $fecha = $fechaActual->format('d F Y');
+            $data = [
+                'titulo' => 'REPORTE DE ASISTENCIAS',
+                'fecha' => $fecha,
+                'curso' => $curso,
+                'asistencias' => $asistencias,
+                'i' => 1,
+            ];
+            $pdfContent = Pdf::loadView('pdf.asistencias', $data);
+            return response()->streamDownload(
+                function () use ($pdfContent) {
+                    echo $pdfContent->stream();
+                },
+                'reportAsistenica'. $fecha .'.pdf'
+            );
+        } catch (\Throwable $th) {
+            session()->flash('error', 'Ocurrio un error: '. $th->getMessage());
+        }
     }
 }

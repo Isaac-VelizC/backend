@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Docente;
 
+use App\Exports\CalificacionesExport;
 use App\Models\Calificacion;
 use App\Models\CatCritTrabajo;
 use App\Models\CategoriaCriterio;
@@ -9,7 +10,10 @@ use App\Models\Criterio;
 use App\Models\CursoHabilitado;
 use App\Models\Trabajo;
 use App\Models\TrabajoEstudiante;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Calificaciones extends Component
 {
@@ -181,11 +185,49 @@ class Calificaciones extends Component
         }
         return 0;
     }
-    public function descargarNotasFinales() {
+    public function descargarNotasFinalesEXCEL() {
         try {
-            session()->flash('message', 'Descarga realizada exitosamente');
+            $curso = CursoHabilitado::find($this->idCurso);
+            $notasFinales = Calificacion::where('curso_id', $this->idCurso)->get();
+            Carbon::setLocale('es');
+            $fechaActual = Carbon::now();
+            $data = [
+                'titulo' => 'REPORTE DE CALIFICACIONES',
+                'fecha' => $fechaActual->format('d F Y'),
+                'curso' => $curso,
+                'notas' => $notasFinales,
+                'i' => 1,
+            ];
+            return Excel::download(new CalificacionesExport($data), 'archivo_excel.xlsx');
         } catch (\Throwable $th) {
-            session()->flash('error', 'Ocurrio un error al realizar la descarga: ' . $th->getMessage());
+            session()->flash('error', 'Ocurrió un error al realizar la descarga: ' . $th->getMessage());
         }
     }
+    public function descargarNotasFinalesPDF() {
+        try {
+            $curso = CursoHabilitado::find($this->idCurso);
+            $notasFinales = Calificacion::where('curso_id', $this->idCurso)->get();
+            Carbon::setLocale('es');
+            $fechaActual = Carbon::now();
+            $data = [
+                'titulo' => 'REPORTE DE CALIFICACIONES',
+                'fecha' => $fechaActual->format('d F Y'),
+                'curso' => $curso,
+                'notas' => $notasFinales,
+                'i' => 1,
+            ];
+    
+            $pdfContent = Pdf::loadView('pdf.calificaciones', $data);
+    
+            return response()->streamDownload(
+                function () use ($pdfContent) {
+                    echo $pdfContent->stream();
+                },
+                'archivo_pdf.pdf'
+            );
+    
+        } catch (\Throwable $th) {
+            session()->flash('error', 'Ocurrió un error al realizar la descarga: ' . $th->getMessage());
+        }
+    }    
 }

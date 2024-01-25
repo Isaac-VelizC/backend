@@ -6,12 +6,23 @@
                 <div class="d-flex align-items-center justify-content-between flex-wrap">
                     <h4 class="card-title mb-0">Control de Asistencia</h4>
                     <div class="d-flex align-items-center flex-wrap">
+                        <button class="btn btn-link" class="button" wire:click='exportAsistenciaPDF'>
+                            <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
+                                <path d="M23 0v20h-8v-2h6v-16h-18v16h6v2h-8v-20h22zm-12 13h-4l5-6 5 6h-4v11h-2v-11z"/>
+                            </svg>
+                        </button>
                         <div class="dropdown me-3">{{ strftime('%A, %e de %B de %Y', strtotime($fechaAsistencia)) }}</div>
                     </div>
                 </div>
                 @if(session('message'))
                     <div id="myAlert" class="alert alert-left alert-success alert-dismissible fade show mb-3 alert-fade" role="alert">
                     <span>{{ session('message') }}</span>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                @if(session('error'))
+                    <div id="myAlert" class="alert alert-left alert-danger alert-dismissible fade show mb-3 alert-fade" role="alert">
+                    <span>{{ session('error') }}</span>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif

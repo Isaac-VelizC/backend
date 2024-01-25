@@ -76,7 +76,14 @@
                         @role('Docente')
                             <div class="col-sm-12">
                                 <div class="d-flex justify-content-center mt-4">
-                                <button type="button" class="btn btn-link" wire:click='descargarNotasFinales'>Descargar Notas</button>
+                                <button type="button" class="btn btn-link" wire:click='descargarNotasFinalesEXCEL'>
+                                    <i class="bi bi-file-earmark-excel"></i>
+                                    Exportar Excel
+                                </button>
+                                <button type="button" class="btn btn-link" wire:click='descargarNotasFinalesPDF'>
+                                    <i class="bi bi-filetype-pdf"></i>
+                                    Descargar PDF
+                                </button>
                                 </div>
                             </div>
                         @endrole
