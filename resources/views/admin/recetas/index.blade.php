@@ -28,29 +28,47 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card"> 
+                @if(session('success'))
+                    <div id="myAlert" class="alert alert-left alert-success alert-dismissible fade show mb-3 alert-fade" role="alert">
+                        <span>{{ session('success') }}</span>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                @if(session('error'))
+                    <div id="myAlert" class="alert alert-left alert-success alert-dismissible fade show mb-3 alert-fade" role="alert">
+                        <span>{{ session('error') }}</span>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                 <div class="card-header text-center">
                     <div class="header-title">
                         <h4 class="card-title">Generar Receta</h4>
                     </div>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="">
+                    <form method="POST" action="{{ route('new.receta.generation') }}">
+                        @csrf
                         <div class="row">
                             <div class="mb-3">
-                                <p>Tipo de receta</p>
                                 <div class="form-check">
-                                    <input type="radio" name="radios" class="form-check-input" id="disabledRadio1">
+                                    <input type="radio" name="tipoPlato" value="Platos" class="form-check-input" id="disabledRadio1" checked>
                                     <label class="form-check-label" for="disabledRadio1">Platos</label>
                                 </div>
-                                <div class="mb-3 form-check">
-                                    <input type="radio" name="radios" class="form-check-input" id="disabledRadio2">
+                                <div class="form-check">
+                                    <input type="radio" name="tipoPlato" value="Postres" class="form-check-input" id="disabledRadio2">
                                     <label class="form-check-label" for="disabledRadio2">Postres</label>
                                 </div>
                             </div>
+                            @error('tipoPlato')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                             <div class="mb-3">
                                 <label class="form-label">Ingredientes</label>
                                 <select id="tags" class="form-select" name="tags[]" multiple="multiple"></select>
                             </div>
+                            @error('tags*')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary">Procesar</button>
