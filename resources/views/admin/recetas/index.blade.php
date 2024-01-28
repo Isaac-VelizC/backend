@@ -74,6 +74,8 @@
                             <button type="submit" class="btn btn-primary">Procesar</button>
                         </div>
                     </form>
+                    <hr>
+                    <p>{{ $output ?? 'nada' }}</p>
                 </div>
             </div>
         </div>

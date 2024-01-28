@@ -167,4 +167,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/posts-tareas/{id}', ShowTarea::class)->name('show.tarea');
     //notificaciones
     Route::get('/send-whatsapp', [InfoController::class, 'sendWhatsAppMessage']);
+
+    Route::get('/suma', [CocinaController::class, 'suma']);
+
 });

@@ -8,6 +8,8 @@ use App\Models\Receta;
 use App\Models\TipoIngrediente;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class CocinaController extends Controller
 {
@@ -68,39 +70,33 @@ class CocinaController extends Controller
             return back()->with('error', 'Error al registrar: ' . $th->getMessage());
         }
     }
+    
     public function generarReceta(Request $request) {
         $this->validate($request, [
             'tipoPlato' => 'required|string|max:255',
             'tags*' => 'required|numeric',
         ]);
-        try {
-            $ingredientesIds = $request->input('tags');
 
+        try {
+            // Ruta al script Python
+            $scriptPath = base_path('public/python/suma.py');
+            $ingredientesIds = $request->input('tags');
             // Consultar la base de datos para obtener los nombres de los ingredientes
             $ingredientesNombres = Ingrediente::whereIn('id', $ingredientesIds)->pluck('nombre')->toArray();
             $data = [
                 'tipoPlato' => $request->tipoPlato,
                 'tags' => $ingredientesNombres,
             ];
-            //$pythonScriptPath = 'D:\borrar\python\receta.py';
-            $jsonData = json_encode($data);
+            // Construir el comando con parámetros
+            $ingredientesJson = str_replace('"', '\"', json_encode($ingredientesNombres)); // Escapar comillas
+            $command = sprintf('python "%s" "%s" "%s"', $scriptPath, $ingredientesJson, $request->tipoPlato);
 
-            // Ejecutar el script de Python y pasarle los datos como argumentos
-            $output = [];
-            $returnValue = 0;
-
-            // Ajusta la ruta al script de Python según tu estructura de carpetas
-            $pythonScriptPath = 'D:\borrar\python\receta.py';
-            $command = "python $pythonScriptPath '$jsonData'";
-            // Ejecutar el comando y obtener la salida
-            exec($command, $output, $returnValue);
-
-            // Procesar la salida del script de Python (puede ser un JSON u otro formato)
-            $result = json_decode(implode('', $output), true);
-            dd($result);            
-            return back()->with('success', 'Recetas generadas correctamente.');
+            $output = shell_exec($command);
+            dd($output);
+            return back()->with('success', 'Recetas generadas correctamente ' . $output, compact('output'));
         } catch (\Throwable $th) {
             return back()->with('error', 'Error al generar: ' . $th->getMessage());
         }
     }
+
 }
