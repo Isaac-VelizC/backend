@@ -19,16 +19,6 @@ return new class extends Migration
             $table->foreign('curso_id')->references('id')->on('curso_habilitados')->onDelete('restrict');
             $table->timestamps();
         });
-
-        Schema::create('doc_temas', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre');
-            $table->text('url');
-            $table->unsignedBigInteger('tema_id');
-            $table->foreign('tema_id')->references('id')->on('temas')->onDelete('restrict');
-            $table->timestamps();
-        });
-
         Schema::create('trabajos', function (Blueprint $table) {
             $table->id();
             $table->string('tipo')->nullable();

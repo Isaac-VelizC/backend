@@ -134,7 +134,6 @@ Breadcrumbs::for('criterios.gestion', function (BreadcrumbTrail $trail, $curso) 
     $trail->parent('Materia.show', $curso);
     $trail->push('Gestionar Criterios', route('docente.tareas.criterios', $curso->id));
 });
-
 // Pagos
 Breadcrumbs::for('Pagos.list', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
@@ -143,4 +142,17 @@ Breadcrumbs::for('Pagos.list', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('Pagos.create', function (BreadcrumbTrail $trail) {
     $trail->parent('Pagos.list');
     $trail->push('Registrar nuevo Pago', route('admin.create.pago'));
+});
+// Inventario
+Breadcrumbs::for('Inventario.list', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Inventario de Ingredientes', route('admin.gestion.inventario'));
+});
+Breadcrumbs::for('Inventario.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('Inventario.list');
+    $trail->push('Registrar', route('admin.gestion.inventario.form'));
+});
+Breadcrumbs::for('Inventario.edit', function (BreadcrumbTrail $trail) {
+    $trail->parent('Inventario.list');
+    $trail->push('Editar');
 });

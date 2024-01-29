@@ -18,7 +18,7 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="type_select">Seleccionar Semestre</label>
+                                <label class="form-label" for="type_select">Seleccionar Tipo</label>
                                 <select class="form-select" id="type_select" name="tipo" required>
                                   <option value="{{ old('tipo') }}" disabled selected>Seleccionar</option>
                                   @if ($types->count() > 0)

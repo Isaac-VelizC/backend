@@ -21,6 +21,7 @@ use App\Livewire\Admin\Informe\AsistenciaReportes;
 use App\Livewire\Admin\Informe\EstudianteReportes;
 use App\Livewire\Admin\Informe\MateriaReportes;
 use App\Livewire\Admin\Informe\PagosReportes;
+use App\Livewire\Admin\InventarioForm;
 use App\Livewire\Admin\MateriaEvaluacionDocente;
 use App\Livewire\Docente\CriteriosTrabajos;
 use App\Livewire\Docente\NewReceta;
@@ -68,7 +69,6 @@ Route::middleware(['auth', 'role:Admin,Secretario/a'])->group(function () {
     Route::post('/create-docentes-store', [UsersController::class, 'store'])->name('store.docentes');
     //Se usa para ambos
     //Route::post('/cambio/{id}/rol', [AdminController::class, 'cambiarRol'])->name('cambio.rol');
-
     Route::get('/show/{id}/docente', Show::class)->name('admin.D.show');
     Route::delete('admin/personal/{id}/{accion}', [UsersController::class, 'gestionarEstadoPersonal'])->name('admin.P.gestionarEstado');
     Route::delete('admin/docente/{id}/{accion}', [UsersController::class, 'gestionarEstadoDocente'])->name('admin.D.gestionarEstado');
@@ -103,7 +103,6 @@ Route::middleware(['auth', 'role:Admin,Secretario/a'])->group(function () {
     Route::get('/borrar/cambiar-estado/{id}', [CursoController::class, 'deleteCursoActivo'])->name('admin.borrar.curso.activo');
     Route::get('/ruta/del/server/para/obtener/disponibilidad', [CursoController::class, 'obtenerDisponibilidad']);
     Route::get('/ruta/al/servidor/para/obtener/cursos', [CursoController::class, 'obtenerCursosAnteriores']);
-
     ///pagos
     Route::get('/admin-pagos-all', [PagosController::class, 'allPagos'])->name('admin.lista.pagos');
     Route::get('/pagos/formulario/hjfse', FormPagos::class)->name('admin.create.pago');
@@ -124,6 +123,14 @@ Route::middleware(['auth', 'role:Admin,Secretario/a'])->group(function () {
     Route::get('/asistencias/reporte/export', AsistenciaReportes::class)->name('admin.asistencias.informe');
     Route::get('/materias/reporte/export', MateriaReportes::class)->name('admin.materias.informe');
     Route::get('/pagos/reporte/export', PagosReportes::class)->name('admin.pagos.informe');
+    ///Gestion Inventario
+    Route::get('/lista/inventario/ingredientes', [CocinaController::class, 'inventarioIndex'])->name('admin.gestion.inventario');
+    Route::get('/inventario/ingrediente/form', [CocinaController::class, 'createForm'])->name('admin.gestion.inventario.form');
+    Route::get('/inventario/ingrediente/edit/{id}', [CocinaController::class, 'editForm'])->name('admin.gestion.inventario.edit');
+    Route::post('/inventario/store/form', [CocinaController::class, 'guardarInventario'])->name('admin.gestion.inventario.store');
+    Route::put('/inventario/update/form/{id}', [CocinaController::class, 'updateInventario'])->name('admin.gestion.inventario.update');
+    Route::delete('/inventario/deba/{id}', [CocinaController::class, 'darBajaInvetario'])->name('admin.gestion.inventario.estado');
+    Route::get('/inventario/borrar/{id}', [CocinaController::class, 'eliminarInvetario'])->name('admin.gestion.inventario.borrar');
 });
 
 Route::middleware(['auth', 'role:Docente'])->group(function () {
@@ -159,7 +166,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/agregar-receta/nueva', NewReceta::class)->name('recetas.add');
     Route::get('/profile', ProfilePage::class)->name('users.profile');
     Route::post('/new-type/ingrediente', [CocinaController::class, 'guardarIngrediente'])->name('new.ingrediente.db');
-    Route::post('/new/recipe/generate', [CocinaController::class, 'generarReceta'])->name('new.receta.generation');
+    Route::post('/new/recipe/generate', [CocinaController::class, 'generarRecetaOpenAI'])->name('new.receta.generation');
     //Cursos
     Route::get('/cursos', [DocenteCursoController::class, 'index'])->name('chef.cursos');
     Route::get('/curso/{id}/materia', [DocenteCursoController::class, 'curso'])->name('cursos.curso');

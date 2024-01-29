@@ -31,6 +31,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'EvaluacionDocente']);
         Permission::create(['name' => 'ProgramacionCurso']);
         Permission::create(['name' => 'GestionPagos']);
+        Permission::create(['name' => 'GestionInventario']);
 
         // Asignar permisos a roles
         $adminRole = Role::findByName('Admin');
@@ -44,7 +45,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'GestionRecetas',
             'EvaluacionDocente',
             'ProgramacionCurso',
-            'GestionPagos'
+            'GestionPagos',
+            'GestionInventario'
         ]);
         $secretaryRole = Role::findByName('Secretario/a');
         $secretaryRole->givePermissionTo([
@@ -55,7 +57,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'GestionRecetas',
             'EvaluacionDocente',
             'ProgramacionCurso',
-            'GestionPagos'
+            'GestionPagos',
+            'GestionInventario'
         ]);
         // Asignar roles a usuarios
         $userAdmin = User::find(1);

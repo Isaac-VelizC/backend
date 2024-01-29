@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ingrediente;
+use App\Models\Inventario;
 use App\Models\Receta;
 use App\Models\TipoIngrediente;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use OpenAI\Laravel\Facades\OpenAI;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -70,7 +73,6 @@ class CocinaController extends Controller
             return back()->with('error', 'Error al registrar: ' . $th->getMessage());
         }
     }
-    
     public function generarReceta(Request $request) {
         $this->validate($request, [
             'tipoPlato' => 'required|string|max:255',
@@ -79,7 +81,7 @@ class CocinaController extends Controller
 
         try {
             // Ruta al script Python
-            $scriptPath = base_path('public/python/suma.py');
+            $scriptPath = 'D:/borrar/python/flor.py';//base_path('public/python/suma.py');
             $ingredientesIds = $request->input('tags');
             // Consultar la base de datos para obtener los nombres de los ingredientes
             $ingredientesNombres = Ingrediente::whereIn('id', $ingredientesIds)->pluck('nombre')->toArray();
@@ -89,8 +91,13 @@ class CocinaController extends Controller
             ];
             // Construir el comando con parámetros
             $ingredientesJson = str_replace('"', '\"', json_encode($ingredientesNombres)); // Escapar comillas
-            $command = sprintf('python "%s" "%s" "%s"', $scriptPath, $ingredientesJson, $request->tipoPlato);
 
+            // Activate virtual environment
+            $virtualEnvPath = 'D:/borrar/python/venv';
+            $activateScript = $virtualEnvPath . '/Scripts/activate';
+            shell_exec("$activateScript");
+
+            $command = sprintf('python "%s" "%s" "%s"', $scriptPath, $ingredientesJson, $request->tipoPlato);
             $output = shell_exec($command);
             dd($output);
             return back()->with('success', 'Recetas generadas correctamente ' . $output, compact('output'));
@@ -98,5 +105,104 @@ class CocinaController extends Controller
             return back()->with('error', 'Error al generar: ' . $th->getMessage());
         }
     }
+    public function generarRecetaOpenAI(Request $request) {
+        $this->validate($request, [
+            'tipoPlato' => 'required|string|max:255',
+            'tags*' => 'required|numeric',
+        ]);
 
+        try {
+            $question = 'Quien es Teagan Croft?';
+    
+            $response = OpenAI::chat()->create([
+                'model' => 'gpt-3.5-turbo-0301',
+                'messages' => [
+                    ['role' => 'user', 'content' => $question],
+                ],
+            ]);
+    
+            $answer = trim($response['choices'][0]['message']['content']);
+
+            dd($answer);
+    
+            return response()->json(['question' => $question, 'answer' => $answer]);
+
+            //return back()->with('success', 'Recetas generadas correctamente ' . $output, compact('output'));
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Error al generar: ' . $th->getMessage());
+        }
+    }
+    public function inventarioIndex() {
+        $ingredientes = Inventario::all();
+        return view('admin.inventario.index', compact('ingredientes'));
+    }
+    public function createForm() {
+        $types = TipoIngrediente::all();
+        $isEditing = false;
+        return view('admin.inventario.create', compact('types', 'isEditing'));
+    }
+    public function editForm($id) {
+        $types = TipoIngrediente::all();
+        $invetario = Inventario::find($id);
+        $isEditing = true;
+        return view('admin.inventario.create', compact('types', 'invetario', 'isEditing'));
+    }
+    public function guardarInventario(Request $request) {
+        $this->validate($request, [
+            'ingredientes' => 'required|numeric',
+            'cantidad' => 'required|numeric|min:1',
+            'unidad' => 'required|string',
+        ]);
+        try {
+            Inventario::create([
+                'ingrediente_id' => $request->ingredientes,
+                'cantidad' => $request->cantidad,
+                'unidad_media' => $request->unidad,
+                'fecha_modificacion' => Carbon::now()
+            ]);
+            return redirect()->route('admin.gestion.inventario')->with('success', 'Se registro correctamente');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Ocurrio un error: ' . $th->getMessage());
+        }
+    }
+    public function updateInventario(Request $request, $id) {
+        $this->validate($request, [
+            'ingredientes' => 'numeric',
+            'cantidad' => 'required|numeric|min:1',
+            'unidad' => 'required|string',
+        ]);
+        try {
+            Inventario::find($id)->update([
+                'ingrediente_id' => $request->ingredientes ?? $request->default,
+                'cantidad' => $request->cantidad,
+                'unidad_media' => $request->unidad,
+                'fecha_modificacion' => Carbon::now()
+            ]);
+            return redirect()->route('admin.gestion.inventario')->with('success', 'Se actualizo correctamente');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Ocurrio un error: ' . $th->getMessage());
+        }
+    }
+    public function darBajaInvetario($id) {
+        try {
+            $item = Inventario::find($id);
+            if ($item->estado == 'No disponible') {
+                $item->estado = 'Disponible';
+            } else if ($item->estado == 'Disponible') {
+                $item->estado = 'No disponible';
+            }
+            $item->update();
+            return back()->with('success', 'Se aplico con exito');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Ocurrio un error: ' . $th->getMessage());
+        }
+    }
+    public function eliminarInvetario($id) {
+        try {
+            Inventario::find($id)->delete();
+            return back()->with('success', 'El inventario se elimino');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Ocurrio un error: ' . $th->getMessage());
+        }
+    }
 }

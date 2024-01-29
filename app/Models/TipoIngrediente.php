@@ -14,4 +14,9 @@ class TipoIngrediente extends Model
     protected $primaryKey = "id";
     protected $fillable = ['nombre'];
 
+    public function ingredientes()
+    {
+        return $this->hasMany(Ingrediente::class, 'tipo_id','id');
+    }
+
 }
