@@ -15,6 +15,7 @@ use App\Http\Controllers\InfoController;
 use App\Livewire\Admin\AdminInfo;
 use App\Livewire\Admin\EvaluacionDocente;
 use App\Livewire\Admin\GestionPermisos;
+use App\Livewire\Admin\HistorialEvaluacionDocente;
 use App\Livewire\Admin\HistorialInventario;
 use App\Livewire\Admin\Informe\AsistenciaReportes;
 use App\Livewire\Admin\Informe\EstudianteReportes;
@@ -115,6 +116,7 @@ Route::middleware(['auth', 'role:Admin,Secretario/a'])->group(function () {
     //Evaluacion docente
     Route::get('/evaluacion/add/docente', EvaluacionDocente::class)->name('evaluacion.docente');
     Route::get('/evaluacion/listado/docente', MateriaEvaluacionDocente::class)->name('materia.evaluacion.docente');
+    Route::get('/evaluacion/historial/docente', HistorialEvaluacionDocente::class)->name('historial.evaluacion.docente');
     //Rutas para exportar
     Route::get('/cursos/exp/pdf', [CursoController::class, 'exportarCurso'])->name('export.cursos');
     //Rutasp para reportes

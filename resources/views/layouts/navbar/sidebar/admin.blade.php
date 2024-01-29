@@ -181,7 +181,7 @@
                     @can('EvaluacionDocente')
                         <li class="nav-item">
                             <a class="nav-link {{ Route::is('materia.evaluacion.docente') ? 'active' : '' }}" href="{{ route('materia.evaluacion.docente') }}">
-                                <i class="bi bi-person-exclamation"></i>
+                                <i class="bi bi-list-task"></i>
                                 <span class="item-name">Evaluación Docente</span>
                             </a>
                         </li>

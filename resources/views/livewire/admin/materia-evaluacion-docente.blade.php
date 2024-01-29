@@ -6,10 +6,16 @@
                     <div class="col-md-12">
                         <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
                             <h5>{{ Breadcrumbs::render('listado.evaluacion') }}</h5>
-                            <a class="btn btn-light" href="{{ route('evaluacion.docente') }}">
-                                <i class="bi bi-question"></i>
-                                <span class="item-name">Gestionar Preguntas</span>
-                            </a>
+                            <div>
+                                <a class="btn btn-outline-info" href="{{ route('historial.evaluacion.docente') }}">
+                                    <i class="bi bi-clock-history"></i>
+                                    <span class="item-name">Historial</span>
+                                </a>
+                                <a class="btn btn-outline-light" href="{{ route('evaluacion.docente') }}">
+                                    <i class="bi bi-question"></i>
+                                    <span class="item-name">Gestionar Preguntas</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
