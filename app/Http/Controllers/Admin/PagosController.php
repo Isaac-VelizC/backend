@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Console\Commands\GenerarRegistrosMensuales;
 use App\Http\Controllers\Controller;
 use App\Models\FormaPago;
 use App\Models\Pagos;
