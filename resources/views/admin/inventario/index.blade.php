@@ -10,7 +10,7 @@
                         <h4>{{ Breadcrumbs::render('Inventario.list') }}</h4>
                     </div>
                     <div>
-                        <a class="btn btn-link" href="" >
+                        <a class="btn btn-link" href="{{ route('admin.inventario.historial') }}">
                             <i class="bi bi-list-columns"></i> Historial
                         </a>
                         <a class="btn btn-warning" href="{{ route('admin.gestion.inventario.form') }}" >

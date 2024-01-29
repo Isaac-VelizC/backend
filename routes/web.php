@@ -17,6 +17,7 @@ use App\Livewire\Admin\EditTema;
 use App\Livewire\Admin\EvaluacionDocente;
 use App\Livewire\Admin\FormPagos;
 use App\Livewire\Admin\GestionPermisos;
+use App\Livewire\Admin\HistorialInventario;
 use App\Livewire\Admin\Informe\AsistenciaReportes;
 use App\Livewire\Admin\Informe\EstudianteReportes;
 use App\Livewire\Admin\Informe\MateriaReportes;
@@ -131,6 +132,7 @@ Route::middleware(['auth', 'role:Admin,Secretario/a'])->group(function () {
     Route::put('/inventario/update/form/{id}', [CocinaController::class, 'updateInventario'])->name('admin.gestion.inventario.update');
     Route::delete('/inventario/deba/{id}', [CocinaController::class, 'darBajaInvetario'])->name('admin.gestion.inventario.estado');
     Route::get('/inventario/borrar/{id}', [CocinaController::class, 'eliminarInvetario'])->name('admin.gestion.inventario.borrar');
+    Route::get('/historial/inventario', HistorialInventario::class)->name('admin.inventario.historial');
 });
 
 Route::middleware(['auth', 'role:Docente'])->group(function () {

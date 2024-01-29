@@ -156,3 +156,7 @@ Breadcrumbs::for('Inventario.edit', function (BreadcrumbTrail $trail) {
     $trail->parent('Inventario.list');
     $trail->push('Editar');
 });
+Breadcrumbs::for('Inventario.historial', function (BreadcrumbTrail $trail) {
+    $trail->parent('Inventario.list');
+    $trail->push('Historial', route('admin.inventario.historial'));
+});
