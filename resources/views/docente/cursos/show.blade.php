@@ -61,6 +61,9 @@
                                 </li>
                                 @role('Docente')
                                     <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="inventario-tab" data-bs-toggle="tab" data-bs-target="#pills-inventario1" type="button" role="tab" aria-controls="inventario" aria-selected="false">Ingredientes</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
                                         <button class="nav-link" id="config-tab" data-bs-toggle="tab" data-bs-target="#pills-config1" type="button" role="tab" aria-controls="config" aria-selected="false">Configuración</button>
                                     </li>
                                 @endrole
@@ -83,6 +86,9 @@
                                     @livewire('docente.calificaciones', ['id' => $curso->id])
                                 </div>
                                 @role('Docente')
+                                    <div class="tab-pane fade" id="pills-inventario1" role="tabpanel" aria-labelledby="pills-inventario-tab1">
+                                        @livewire('docente.tag-ingredientes', ['id' => $curso->id])
+                                    </div>
                                     <div class="tab-pane fade" id="pills-config1" role="tabpanel" aria-labelledby="pills-config-tab1">
                                         @include('docente.cursos.widgets.configuracion')
                                     </div>

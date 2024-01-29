@@ -16,4 +16,12 @@ class Inventario extends Model
     {
         return $this->belongsTo(Ingrediente::class, 'ingrediente_id');
     }
+    public function historiales()
+    {
+        return $this->hasMany(HistorialInventario::class, 'inventario_id');
+    }
+    public function materiasIngredientes()
+    {
+        return $this->hasMany(IngredientesCurso::class, 'inventario_id');
+    }
 }
