@@ -60,7 +60,13 @@
                        @foreach ($pagos as $item)
                           <tr>
                              <td>{{ $item->estudiante->persona->nombre }} {{ $item->estudiante->persona->ap_paterno }} {{ $item->estudiante->persona->ap_materno }}</td>
-                             <td>{{ \Carbon\Carbon::create()->month($item->pagoMensual->mes)->locale('es_ES')->monthName }} {{ $item->pagoMensual->anio }}</td>
+                             <td>
+                                 @if ($item->pagoMensual)
+                                    {{ \Carbon\Carbon::create()->month($item->pagoMensual->mes)->locale('es_ES')->monthName }}
+                                 @else
+                                    {{ \Carbon\Carbon::parse($item->fecha)->locale('es_ES')->isoFormat('MMMM') }}
+                                 @endif
+                             </td>
                              <td>{{ \Carbon\Carbon::parse($item->fecha)->locale('es_ES')->isoFormat('LL') }}</td>
                              <td>{{ $item->monto }}Bs.</td>
                              <td>

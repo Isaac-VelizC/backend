@@ -27,3 +27,36 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="addCantidad{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar Cantidad de {{ $item->ingrediente->nombre }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form class="needs-validation" novalidate method="POST" action="{{ route('admin.inventario.update.cantidad', $item->id) }}">
+                @csrf
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-12">
+                            <p>La cantidad actual es de <b>{{ $item->cantidad }}</b></p>
+                            <div class="form-group">
+                                <label class="form-label"><span class="text-danger">*</span> Cantidad:</label>
+                                <input type="number" class="form-control" name="cantidad" required>
+                                @error('cantidad')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

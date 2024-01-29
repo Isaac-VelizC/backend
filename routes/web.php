@@ -106,7 +106,8 @@ Route::middleware(['auth', 'role:Admin,Secretario/a'])->group(function () {
     Route::get('/ruta/al/servidor/para/obtener/cursos', [CursoController::class, 'obtenerCursosAnteriores']);
     ///pagos
     Route::get('/admin-pagos-all', [PagosController::class, 'allPagos'])->name('admin.lista.pagos');
-    Route::get('/pagos/formulario/hjfse', FormPagos::class)->name('admin.create.pago');
+    Route::get('/pagos/formulario/hjfse', [PagosController::class, 'formPagos'])->name('admin.create.pago');
+    Route::post('/pagos/store', [PagosController::class, 'storePagosSimples'])->name('admin.store.pago');
     Route::get('/pagos/guadar/imprimir/{id}', [PagosController::class, 'guardarImprimirPago'])->name('admin.pago.guardar.imprimir');
     Route::get('/pagos/habilitar/mes', [PagosController::class, 'habilitarPagosMes'])->name('admin.habiltar.pagos.mes');
     //Cocina
@@ -132,6 +133,7 @@ Route::middleware(['auth', 'role:Admin,Secretario/a'])->group(function () {
     Route::put('/inventario/update/form/{id}', [CocinaController::class, 'updateInventario'])->name('admin.gestion.inventario.update');
     Route::delete('/inventario/deba/{id}', [CocinaController::class, 'darBajaInvetario'])->name('admin.gestion.inventario.estado');
     Route::get('/inventario/borrar/{id}', [CocinaController::class, 'eliminarInvetario'])->name('admin.gestion.inventario.borrar');
+    Route::post('/cantidad/update/{id}', [CocinaController::class, 'updateCantidad'])->name('admin.inventario.update.cantidad');
     Route::get('/historial/inventario', HistorialInventario::class)->name('admin.inventario.historial');
 });
 

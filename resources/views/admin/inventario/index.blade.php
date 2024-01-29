@@ -65,6 +65,9 @@
                                         <td>{{ $item->estado }}</td>
                                         <td>
                                             <div class="flex align-items-center list-user-action">
+                                                <a class="btn btn-sm btn-icon btn-light" data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#addCantidad{{ $item->id }}">
+                                                    <i class="bi bi-plus-circle-dotted"></i>
+                                                </a>
                                                 <a class="btn btn-sm btn-icon btn-primary" data-bs-placement="top" href="{{ route('admin.gestion.inventario.edit', $item->id) }}">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>

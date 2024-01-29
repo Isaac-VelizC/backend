@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\HistorialInventario;
 use App\Models\Ingrediente;
 use App\Models\Inventario;
 use App\Models\Receta;
@@ -201,6 +202,28 @@ class CocinaController extends Controller
         try {
             Inventario::find($id)->delete();
             return back()->with('success', 'El inventario se elimino');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Ocurrio un error: ' . $th->getMessage());
+        }
+    }
+    public function updateCantidad(Request $request, $id) {
+        $this->validate($request, [
+            'cantidad' => 'required|numeric|min:1',
+        ]);
+        try {
+            $item = Inventario::find($id);
+            $item->cantidad = $item->cantidad + $request->cantidad;
+            $item->save();
+            $mensage = 'Se agrego una cantidad de '. $request->cantidad .' sobre ' . $item->ingrediente->nombre;
+            HistorialInventario::create([
+                'cantidad' => $request->cantidad,
+                'user_id' => auth()->user()->id,
+                'inventario_id' => $item->id,
+                'descripcion' => $mensage,
+                'fecha' => Carbon::now(),
+                'estado' => 0
+            ]);
+            return back()->with('success', 'Se Agrego correctamente');
         } catch (\Throwable $th) {
             return back()->with('error', 'Ocurrio un error: ' . $th->getMessage());
         }
