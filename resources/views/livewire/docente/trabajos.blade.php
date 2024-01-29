@@ -151,6 +151,12 @@
                     </div>
                 @endrole
             </div>
+            <p>{!! $item->descripcion !!}</p>
+            @if ($item->files && count($item->files) > 0)
+                @foreach ($item->files as $file)
+                <a href="{{ asset($file->url) }}" download="{{ $file->nombre }}">{{ $file->nombre }}</a><br>
+                @endforeach
+            @endif
             @foreach ($tareas[$item->id] ?? [] as $tarea)
                 @include('docente.cursos.widgets.tareas')
             @endforeach

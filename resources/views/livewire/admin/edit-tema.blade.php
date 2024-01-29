@@ -1,84 +1,54 @@
 <div>
-    <div class="iq-navbar-header" style="height: 150px;">
-        <div class="container-fluid iq-container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
-                        <div>
-                          <h4>hldsa</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-      </div> 
-    <div class="conatiner-fluid content-inner mt-n5 py-0">
-        @if(session('error'))
-            <div id="myAlert" class="alert alert-left alert-danger alert-dismissible fade show mb-3 alert-fade" role="alert">
-                <span>{{ session('error') }}</span>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+    <div class="card">
         <div class="row">
-                <div class="card">
-                    <div class="card-body">
-                        <form class="needs-validation" novalidate wire:submit.prevent='actualizarTema'>
-                            @csrf
-                            <div class="modal-body text-black">
-                                <div class="row">
-                                    <div class="col-sm-12 col-lg-12">
-                                        <div class="row">
-                                            <div class="form-group">
-                                                <label class="form-label"><span class="text-danger">*</span> Titulo:</label>
-                                                <input type="text" wire:model="editar.nombre" placeholder="Ingrese el titulo del tema" class="form-control" required>
-                                                @error('editar.nombre')
-                                                    <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label"> Files:</label>
-                                                <input type="file" class="form-control" wire:model="editar.file">
-                                                @error('fecha')
-                                                    <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">Descripción: (Opcional) </label>
-                                                <textarea class="form-control" wire:model.lazy="editar.descripcion" id="descripcionId"></textarea>
-                                                @error('editar.descripcion')
-                                                    <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
+            <div class="col-xl-12 col-lg-12">
+                <div class="card-body">
+                    <form wire:submit.prevent='updatedFiles' enctype="multipart/form-data">
+                        <div
+                            x-data="{ uploading: false, progress: 0 }"
+                            x-on:livewire-upload-start="uploading = true"
+                            x-on:livewire-upload-finish="uploading = false"
+                            x-on:livewire-upload-error="uploading = false"
+                            x-on:livewire-upload-progress="progress = $event.detail.progress"
+                        >
+                            <label class="upload-files">
+                                <input class="file-upload" type="file" wire:model='files' multiple>
+                                <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
+                                    <path d="M10.409 0c4.857 0 3.335 8 3.335 8 3.009-.745 8.256-.419 8.256 3v11.515l-4.801-4.801c.507-.782.801-1.714.801-2.714 0-2.76-2.24-5-5-5s-5 2.24-5 5 2.24 5 5 5c1.037 
+                                            0 2-.316 2.799-.858l4.858 4.858h-18.657v-24h8.409zm2.591 12c1.656 0 3 1.344 3 3s-1.344 3-3 3-3-1.344-3-3 1.344-3 3-3zm1.568-11.925c2.201 1.174 5.938 4.884 
+                                            7.432 6.882-1.286-.9-4.044-1.657-6.091-1.18.222-1.468-.186-4.534-1.341-5.702z"/>
+                                </svg>
+                            </label>Subir Archivos
+                            <!-- Progress Bar -->
+                            <div x-show="uploading">
+                                <progress max="100" x-bind:value="progress"></progress>
+                            </div>
+                            @error('files.*') <span class="error">{{ $message }}</span> @enderror
+                        </div>
+                    </form>
+                    <hr>
+                    @if (count($filestema) > 0)
+                        @foreach ($filestema as $file)
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <a href="{{ asset($file->url) }}">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold">{{ $file->nombre }}</div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <a type="button" class="btn btn-secondary" href="{{ route('cursos.curso', $tema->curso_id) }}">Volver</a>
-                                <button class="btn btn-danger" type="submit">Guardar</button>
-                            </div>
-                        </form>
-                    </div>
+                                </a>
+                                <span class="badge rounded-pill bg-light text-dark cursoMano" wire:click='eliminarFile({{$file->id}})'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path d="M9 13v6c0 .552-.448 1-1 1s-1-.448-1-1v-6c0-.552.448-1 1-1s1 .448 1 1zm7-1c-.552 0-1 .448-1 1v6c0 .552.448 1 1 1s1-.448 1-1v-6c0-.552-.448-1-1-1zm-4 0c-.552 0-1 .448-1 1v6c0 .552.448 1 1 1s1-.448 1-1v-6c0-.552-.448-1-1-1zm4.333-8.623c-.882-.184-1.373-1.409-1.189-2.291l-5.203-1.086c-.184.883-1.123 1.81-2.004 1.625l-5.528-1.099-.409 1.958 19.591 4.099.409-1.958-5.667-1.248zm4.667 4.623v16h-18v-16h18zm-2 14v-12h-14v12h14z"/>
+                                    </svg>
+                                </span>
+                            </li>
+                        @endforeach
+                    @else
+                        <div class="text-center">
+                            <p>No hay archivos publicados aun</p>
+                        </div>
+                    @endif
                 </div>
+            </div>
         </div>
-    </div>    
-    @section('scripts')
-        <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/ckeditor.js"></script>
-        <script>
-            document.addEventListener('livewire:load', function () {
-                ClassicEditor
-                    .create(document.querySelector('#descripcionId'))
-                    .then(editor => {
-                        editor.setData(@json($editar['descripcion']));
-                        editor.model.document.on('change', () => {
-                            @this.set('editar.descripcion', editor.getData());
-                        });
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
-            });
-        </script>
-        
-    @endsection
+    </div>
 </div>

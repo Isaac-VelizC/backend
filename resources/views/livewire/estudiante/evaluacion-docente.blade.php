@@ -20,48 +20,54 @@
                             <p>descripcion</p>
                         </div>
                         <hr>
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                @if (count($preguntas) > 0)
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th class="text-center">MAL</th>
-                                        <th class="text-center">REGULAR</th>
-                                        <th class="text-center">BUENO</th>
-                                        <th class="text-center">MUY BUENO</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($preguntas as $pregunta)
+                        <form method="POST" action="">
+                            @csrf
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    @if (count($preguntas) > 0)
+                                    <thead>
                                         <tr>
-                                            <td style="white-space: pre-wrap;">{{ $pregunta->numero }} - {{ $pregunta->texto }}</td>
-                                            <td class="text-center">
-                                                <input type="radio" class="form-check-input">
-                                            </td>
-                                            <td class="text-center">
-                                                <input type="radio" class="form-check-input">
-                                            </td>
-                                            <td class="text-center">
-                                                <input type="radio" class="form-check-input">
-                                            </td>
-                                            <td class="text-center">
-                                                <input type="radio" class="form-check-input">
+                                            <th></th>
+                                            <th class="text-center">MAL</th>
+                                            <th class="text-center">REGULAR</th>
+                                            <th class="text-center">BUENO</th>
+                                            <th class="text-center">MUY BUENO</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($preguntas as $pregunta)
+                                            <tr>
+                                                <td style="white-space: pre-wrap;">{{ $pregunta->numero }} - {{ $pregunta->texto }}</td>
+                                                <td class="text-center">
+                                                    <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Mal" class="form-check-input" required>
+                                                </td>
+                                                <td class="text-center">
+                                                    <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Regular" class="form-check-input" required>
+                                                </td>
+                                                <td class="text-center">
+                                                    <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Bueno" class="form-check-input" required>
+                                                </td>
+                                                <td class="text-center">
+                                                    <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Muy Bueno" class="form-check-input" required>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        <tr>
+                                            <td style="white-space: pre-wrap;">Comentario (Opcional)</td>
+                                            <td colspan="4">
+                                                <textarea class="form-control"></textarea>
                                             </td>
                                         </tr>
-                                    @endforeach
-                                    <tr>
-                                        <td style="white-space: pre-wrap;">Comentario (Opcional)</td>
-                                        <td colspan="4">
-                                            <textarea class="form-control"></textarea>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                @else
-                                    <p class="text-black text-center">No hay preguntas</p>
-                                @endif
-                            </table>
-                        </div>
+                                    </tbody>
+                                    @else
+                                        <p class="text-black text-center">No hay preguntas</p>
+                                    @endif
+                                </table>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-secondary">Enviar</button>
+                                </div>
+                            </div>
+                        </form>
                     @else
                         <br>
                         <p class="text-center">No esta habilitado</p>

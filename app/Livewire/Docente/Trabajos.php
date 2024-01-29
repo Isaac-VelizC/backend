@@ -4,6 +4,7 @@ namespace App\Livewire\Docente;
 
 use App\Models\ComentarioCurso;
 use App\Models\CursoHabilitado;
+use App\Models\DocTema;
 use App\Models\DocumentoDocente;
 use App\Models\Tema;
 use App\Models\Trabajo;
@@ -41,9 +42,25 @@ class Trabajos extends Component
         $this->mount($this->idCurso);
     }
     public function borrarTema($id) {
-        Tema::find($id)->delete();
-        $this->mount($this->idCurso);
+        try {
+            $item = Tema::find($id);
+            if (!$item) {
+                throw new \Exception('Tema no encontrado');
+            }
+            $files = DocTema::where('tema_id', $item->id)->get();
+            if (count($files) > 0) {
+                foreach ($files as $file) {
+                    $file->delete();
+                }
+            }
+            $item->delete();
+            $this->mount($this->idCurso);
+            session()->flash('message', 'Tema y archivos asociados eliminados correctamente.');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error al intentar borrar el tema: ' . $e->getMessage());
+        }
     }
+        
     public function render()
     {
         return view('livewire.docente.trabajos');

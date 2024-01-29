@@ -129,10 +129,13 @@ Breadcrumbs::for('trabajo.show', function (BreadcrumbTrail $trail, $curso, $tare
     $trail->parent('Materia.show', $curso);
     $trail->push($tarea->titulo, route('show.tarea', $tarea->id));
 });
-
 Breadcrumbs::for('criterios.gestion', function (BreadcrumbTrail $trail, $curso) {
     $trail->parent('Materia.show', $curso);
     $trail->push('Gestionar Criterios', route('docente.tareas.criterios', $curso->id));
+});
+Breadcrumbs::for('materias.tema', function (BreadcrumbTrail $trail, $tema) {
+    $trail->parent('materias.inicio');
+    $trail->push($tema->tema, route('docente.edit.tema', $tema->id));
 });
 // Pagos
 Breadcrumbs::for('Pagos.list', function (BreadcrumbTrail $trail) {

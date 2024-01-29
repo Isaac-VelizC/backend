@@ -16,4 +16,8 @@ class Tema extends Model
     {
         return $this->belongsTo(Curso::class, 'curso_id');
     }
+    public function files()
+    {
+        return $this->hasMany(DocTema::class, 'tema_id');
+    }
 }

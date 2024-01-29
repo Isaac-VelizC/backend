@@ -97,4 +97,26 @@ class CursoController extends Controller
             return back()->with(['error' => 'Error al crear el evento', 'error' => $th->getMessage()], 500);
         }
     }
+    public function viewTemeEdit($id) {
+        $tema = Tema::find($id);
+        return view('docente.cursos.edit_tema', compact('tema'));
+    }
+    public function updateTema(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'nullable|string|max:255'
+        ]);
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+        try {
+            $item = Tema::find($id)->update([
+                'tema' => $request->nombre,
+                'descripcion' => $request->descripcion
+            ]);
+            return redirect()->route('cursos.curso', $item->curso_id);
+        } catch (\Throwable $th) {
+            return back()->with(['error' => 'Error al crear el evento', 'error' => $th->getMessage()], 500);
+        }
+    }
 }

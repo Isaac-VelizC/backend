@@ -2,41 +2,45 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\DocTema;
 use App\Models\Tema;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class EditTema extends Component
 {
+    
+    use WithFileUploads;
+    public $files = [], $filestema;
     public Tema $tema;
-    public $editar = ['nombre' => '', 'descripcion' => ''];
 
     public function mount($id) {
         $this->tema = Tema::find($id);
-        $this->editarTema();
-    }
-    public function editarTema() {
-        $this->editar['nombre'] = $this->tema->tema;
-        $this->editar['descripcion'] = $this->tema->descripcion;
-    }
-    public function actualizarTema() {
-        try {
-            dd($this->editar['descripcion']);
-            $name = $this->editar['nombre'];
-            if ($name != '') {
-                $this->tema->update([
-                    'tema' => $name,
-                    'descripcion' => $this->editar['descripcion'],
-                ]);
-                return redirect()->route('cursos.curso', $this->tema->curso_id);
-            } else {
-                session()->flash('error', 'Debe de ingresar un Titulo');
-            }
-        } catch (\Throwable $th) {
-            session()->flash('error', 'Hubo un error al procesar la solicitud: ' . $th->getMessage());
-        }
+        $this->archivosCurso();
     }
     public function render()
     {
-        return view('livewire.admin.edit-tema')->extends('layouts.app')->section('content');
+        return view('livewire.admin.edit-tema');
+    }
+    public function updatedFiles() {
+        foreach ($this->files as $file) {
+            $originalName = $file->getClientOriginalName();
+            $filePath = $file->storeAs('public/files/tema', $originalName);
+            $url = 'storage/' . $filePath;
+            DocTema::create([
+                'nombre' => $originalName,
+                'url' => $url,
+                'tema_id' => $this->tema->id
+            ]);
+        }
+        $this->files = [];
+        $this->archivosCurso();
+    }
+    public function eliminarFile($id) {
+        DocTema::find($id)->delete();
+        $this->archivosCurso();
+    }
+    public function archivosCurso() {
+        $this->filestema = DocTema::where('tema_id', $this->tema->id)->get();
     }
 }

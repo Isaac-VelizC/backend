@@ -142,7 +142,9 @@ Route::middleware(['auth', 'role:Docente'])->group(function () {
     //Route::get('/trabajo/nueva/post/{id}', NewTarea::class)->name('nueva.tarea.docente');
     Route::get('/trabajo/nueva/post/{id}', [DocenteCursoController::class, 'createTareaNew'])->name('nueva.tarea.docente');
     Route::post('/trabajo/tarea/new', [DocenteCursoController::class, 'crearTarea'])->name('guardar.tarea.new');
-    Route::get('/editar/tema/{id}', EditTema::class)->name('docente.edit.tema');
+    Route::get('/editar/tema/{id}', [DocenteCursoController::class, 'viewTemeEdit'])->name('docente.edit.tema');
+    Route::put('/editar/tema/{id}/update', [DocenteCursoController::class, 'updateTema'])->name('docente.update.tema');
+
     Route::get('/calificando/tarea/{id}', CalificarTarea::class)->name('calificar.tarea.estudiante');
     Route::post('/planificacion/curso/{id}', [DocenteController::class, 'planificacion'])->name('guardar.planificacion');
     Route::get('/criterios/tareas/{id}/eval', CriteriosTrabajos::class)->name('docente.tareas.criterios');
