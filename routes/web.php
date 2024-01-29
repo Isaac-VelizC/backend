@@ -13,16 +13,13 @@ use App\Http\Controllers\Admin\PagosController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\InfoController;
 use App\Livewire\Admin\AdminInfo;
-use App\Livewire\Admin\EditTema;
 use App\Livewire\Admin\EvaluacionDocente;
-use App\Livewire\Admin\FormPagos;
 use App\Livewire\Admin\GestionPermisos;
 use App\Livewire\Admin\HistorialInventario;
 use App\Livewire\Admin\Informe\AsistenciaReportes;
 use App\Livewire\Admin\Informe\EstudianteReportes;
 use App\Livewire\Admin\Informe\MateriaReportes;
 use App\Livewire\Admin\Informe\PagosReportes;
-use App\Livewire\Admin\InventarioForm;
 use App\Livewire\Admin\MateriaEvaluacionDocente;
 use App\Livewire\Docente\CriteriosTrabajos;
 use App\Livewire\Docente\NewReceta;
@@ -178,6 +175,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/curso/{id}/materia', [DocenteCursoController::class, 'curso'])->name('cursos.curso');
     //Componetes
     Route::get('/posts-tareas/{id}', ShowTarea::class)->name('show.tarea');
+    Route::post('/store/evaluacion/jajaja', [EstudianteController::class, 'evaluacionDocente'])->name('store.evaluacion.docente');
     //notificaciones
     Route::get('/send-whatsapp', [InfoController::class, 'sendWhatsAppMessage']);
 

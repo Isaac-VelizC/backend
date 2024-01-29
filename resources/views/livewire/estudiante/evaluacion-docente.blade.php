@@ -20,52 +20,56 @@
                             <p>descripcion</p>
                         </div>
                         <hr>
-                        <form method="POST" action="">
+                        <form method="POST" action="{{ route('store.evaluacion.docente') }}">
                             @csrf
+                            <input type="hidden" name="idEvaluacion" value="{{ $evalId }}">
+                            <input type="hidden" name="idCurso" value="{{ $curso->id }}">
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     @if (count($preguntas) > 0)
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th class="text-center">MAL</th>
-                                            <th class="text-center">REGULAR</th>
-                                            <th class="text-center">BUENO</th>
-                                            <th class="text-center">MUY BUENO</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($preguntas as $pregunta)
+                                        <thead>
                                             <tr>
-                                                <td style="white-space: pre-wrap;">{{ $pregunta->numero }} - {{ $pregunta->texto }}</td>
-                                                <td class="text-center">
-                                                    <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Mal" class="form-check-input" required>
-                                                </td>
-                                                <td class="text-center">
-                                                    <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Regular" class="form-check-input" required>
-                                                </td>
-                                                <td class="text-center">
-                                                    <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Bueno" class="form-check-input" required>
-                                                </td>
-                                                <td class="text-center">
-                                                    <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Muy Bueno" class="form-check-input" required>
+                                                <th></th>
+                                                <th class="text-center">MAL</th>
+                                                <th class="text-center">REGULAR</th>
+                                                <th class="text-center">BUENO</th>
+                                                <th class="text-center">MUY BUENO</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($preguntas as $pregunta)
+                                                <tr>
+                                                    <td style="white-space: pre-wrap;">{{ $pregunta->numero }} - {{ $pregunta->texto }}</td>
+                                                    <td class="text-center">
+                                                        <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Mal" class="form-check-input" {{ ($respuestasEstudiante[$pregunta->id] ?? '') === 'Mal' ? 'checked' : '' }}>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Regular" class="form-check-input" {{ ($respuestasEstudiante[$pregunta->id] ?? '') === 'Regular' ? 'checked' : '' }}>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Bueno" class="form-check-input" {{ ($respuestasEstudiante[$pregunta->id] ?? '') === 'Bueno' ? 'checked' : '' }}>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Muy Bueno" class="form-check-input" {{ ($respuestasEstudiante[$pregunta->id] ?? '') === 'Muy Bueno' ? 'checked' : '' }}>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            <tr>
+                                                <td style="white-space: pre-wrap;">Comentario (Opcional)</td>
+                                                <td colspan="4">
+                                                    <textarea name="comentario" class="form-control">{{ $comentario ?? '' }}</textarea>
                                                 </td>
                                             </tr>
-                                        @endforeach
-                                        <tr>
-                                            <td style="white-space: pre-wrap;">Comentario (Opcional)</td>
-                                            <td colspan="4">
-                                                <textarea class="form-control"></textarea>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                        </tbody>
                                     @else
                                         <p class="text-black text-center">No hay preguntas</p>
                                     @endif
                                 </table>
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-secondary">Enviar</button>
-                                </div>
+                                @if (!$stadoEvaluacion)
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-secondary">Enviar</button>
+                                    </div>
+                                @endif
                             </div>
                         </form>
                     @else
