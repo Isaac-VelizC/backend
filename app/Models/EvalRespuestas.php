@@ -25,6 +25,6 @@ class EvalRespuestas extends Model
 
     public function respuestaEstudiante()
     {
-        return $this->belongsTo(RespuestaEstudiante::class, 'est_respt_id', 'id');
+        return $this->belongsTo(RespuestaEstudiante::class, 'est_respt_id');
     }
 }

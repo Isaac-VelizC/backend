@@ -112,6 +112,10 @@ Breadcrumbs::for('gestion.evaluacion', function (BreadcrumbTrail $trail) {
     $trail->parent('listado.evaluacion');
     $trail->push('Gestionar Preguntas', route('evaluacion.docente'));
 });
+Breadcrumbs::for('historial.evaluacion', function (BreadcrumbTrail $trail) {
+    $trail->parent('listado.evaluacion');
+    $trail->push('Historial Evaluacion Docente', route('historial.evaluacion.docente'));
+});
 // Home Docente
 Breadcrumbs::for('homeDocente', function (BreadcrumbTrail $trail) {
     $trail->push('Inicio', route(auth()->user()->hasRole('Estudiante') ? 'estudiante.home' : 'docente.home'));

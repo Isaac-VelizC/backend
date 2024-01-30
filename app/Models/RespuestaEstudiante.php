@@ -24,6 +24,6 @@ class RespuestaEstudiante extends Model
 
     public function evalRespuestas()
     {
-        return $this->hasMany(EvalRespuestas::class, 'est_respt_id', 'id');
+        return $this->hasMany(EvalRespuestas::class, 'est_respt_id');
     }
 }
