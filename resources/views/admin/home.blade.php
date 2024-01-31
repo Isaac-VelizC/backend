@@ -8,23 +8,25 @@
         <div class="row row-cols-1">
            <div class="overflow-hidden d-slider1 ">
               <ul  class="p-0 m-0 mb-2 swiper-wrapper list-inline">
-                 <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="700">
-                     <a href="{{ route('admin.users') }}">
-                        <div class="card-body">
-                           <div class="progress-widget">
-                                 <div class="rounded p-3 bg-soft-primary">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                       <path d="M10.644 17.08c2.866-.662 4.539-1.241 3.246-3.682-3.932-7.427-1.042-11.398 3.111-11.398 4.235 0 7.054 4.124 3.11 11.398-1.332 2.455.437 3.034 3.242 3.682 2.483.574 2.647 1.787 2.647 3.889v1.031h-18c0-2.745-.22-4.258 2.644-4.92zm-12.644 4.92h7.809c-.035-8.177 3.436-5.313 3.436-11.127 0-2.511-1.639-3.873-3.748-3.873-3.115 0-5.282 2.979-2.333 8.549.969 1.83-1.031 2.265-3.181 2.761-1.862.43-1.983 1.34-1.983 2.917v.773z"/>
-                                    </svg>
-                                 </div>
-                                 <div class="progress-detail">
-                                    <p  class="mb-2">Total de Usuarios</p>
-                                    <h4 class="counter">{{ count($users) }}</h4>
-                                 </div>
+                  @role('Admin')
+                     <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="700">
+                        <a href="{{ route('admin.users') }}">
+                           <div class="card-body">
+                              <div class="progress-widget">
+                                    <div class="rounded p-3 bg-soft-primary">
+                                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                          <path d="M10.644 17.08c2.866-.662 4.539-1.241 3.246-3.682-3.932-7.427-1.042-11.398 3.111-11.398 4.235 0 7.054 4.124 3.11 11.398-1.332 2.455.437 3.034 3.242 3.682 2.483.574 2.647 1.787 2.647 3.889v1.031h-18c0-2.745-.22-4.258 2.644-4.92zm-12.644 4.92h7.809c-.035-8.177 3.436-5.313 3.436-11.127 0-2.511-1.639-3.873-3.748-3.873-3.115 0-5.282 2.979-2.333 8.549.969 1.83-1.031 2.265-3.181 2.761-1.862.43-1.983 1.34-1.983 2.917v.773z"/>
+                                       </svg>
+                                    </div>
+                                    <div class="progress-detail">
+                                       <p  class="mb-2">Total de Usuarios</p>
+                                       <h4 class="counter">{{ count($users) }}</h4>
+                                    </div>
+                              </div>
                            </div>
-                        </div>
-                     </a>
-                 </li>
+                        </a>
+                     </li>
+                 @endrole
                  <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="800">
                      <a href="{{ route('admin.estudinte') }}">
                         <div class="card-body">
@@ -75,23 +77,25 @@
                         </div>
                      </a>
                  </li>
-                 <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="1100">
-                    <div class="card-body">
-                       <div class="progress-widget">
-                           <div class="rounded p-3 bg-soft-primary">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                 <path d="M24 7v-2c0-2.761-2.238-5-5-5h-14c-2.761 0-5 2.239-5 5v2h10v2h-10v6h4v2h-4v2c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-2h-8v-2h8v-6h-5v-2h5zm-16 11c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4zm3 0c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4zm3 0c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4zm0-8c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4zm3 0c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4z"/>
-                              </svg>
-                           </div>
-                           <a href="{{ route('admin.cursos') }}">
-                              <div class="progress-detail">
-                                 <p  class="mb-2">Materias</p>
-                              <h4 class="counter">{{ count($materias) }}</h4>
-                           </div>
-                           </a>
-                       </div>
-                    </div>
-                 </li>
+                 @role('Admin')
+                  <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="1100">
+                     <div class="card-body">
+                        <div class="progress-widget">
+                              <div class="rounded p-3 bg-soft-primary">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M24 7v-2c0-2.761-2.238-5-5-5h-14c-2.761 0-5 2.239-5 5v2h10v2h-10v6h4v2h-4v2c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-2h-8v-2h8v-6h-5v-2h5zm-16 11c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4zm3 0c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4zm3 0c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4zm0-8c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4zm3 0c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4z"/>
+                                 </svg>
+                              </div>
+                              <a href="{{ route('admin.cursos') }}">
+                                 <div class="progress-detail">
+                                    <p  class="mb-2">Materias</p>
+                                 <h4 class="counter">{{ count($materias) }}</h4>
+                              </div>
+                              </a>
+                        </div>
+                     </div>
+                  </li>
+                 @endrole
               </ul>
               <div class="swiper-button swiper-button-next"></div>
               <div class="swiper-button swiper-button-prev"></div>

@@ -53,7 +53,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('home', [HomeController::class, 'index'])->name('home');
-Route::middleware(['auth', 'role:Admin,Secretario/a'])->group(function () {
+Route::middleware(['auth', 'role:Admin|Secretario/a'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.home');
     Route::get('/gestionar/permisos/admin', GestionPermisos::class)->name('admin.gestion.permisos');
     Route::get('/backup', [BackupController::class, 'downloadBackup'])->name('admin.backup.db_igla');
@@ -135,6 +135,7 @@ Route::middleware(['auth', 'role:Admin,Secretario/a'])->group(function () {
     Route::post('/cantidad/update/{id}', [CocinaController::class, 'updateCantidad'])->name('admin.inventario.update.cantidad');
     Route::get('/historial/inventario', HistorialInventario::class)->name('admin.inventario.historial');
 });
+
 
 Route::middleware(['auth', 'role:Docente'])->group(function () {
     Route::get('/chef-dashboard', [DocenteController::class, 'index'])->name('docente.home');
