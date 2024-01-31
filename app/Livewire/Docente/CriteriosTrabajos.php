@@ -69,7 +69,7 @@ class CriteriosTrabajos extends Component
     }
     public function categoriaAdd() {
         $rules = [
-            "cat.criterio" => 'required|numeric',
+            "cat.criterio" => 'required|numeric|exists:criterios,id',
             "cat.nombre" => 'required|string',
             "cat.porcentaje" => 'required|numeric|min:2|max:'.$this->totalCatOriginal,
             "totalPocentCategoria" => 'required|numeric|max:100',

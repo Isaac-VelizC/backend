@@ -51,32 +51,20 @@
                                             @endif
                                         </div>
                                         <div class="form-group">
-                                            <label class="form-label" for="docenteSelect">Docentes: *</label>
-                                            <select name="docente" class="form-select" id="docenteSelect" required>
-                                                <option value="" selected disabled>Seleccionar</option>
-                                                <!--@if ($docentes->count() > 0)
-                                                    @foreach ($docentes as $doc)
-                                                        <option value="{{ $doc->id }}" @if ($isEditing && $doc->id == $asignado->docente_id) selected @endif>{{ $doc->persona->nombre }} {{ $doc->persona->ap_paterno }} {{ $doc->persona->ap_materno }}</option>
-                                                    @endforeach
-                                                @else
-                                                    <option value="">No hay docentes</option>
-                                                @endif-->
+                                            <label class="form-label" for="docenteSelect">{{ $isEditing ? 'Cambiar docente (Opcional)' : 'Docentes: *' }}</label>
+                                            <select name="docente" class="form-select" id="docenteSelect" {{ $isEditing ? '' : 'required' }}>
+                                                <option value="" selected disabled>
+                                                    {{ $isEditing ? $asignado->docente->persona->nombre .' '. $asignado->docente->persona->ap_paterno.' '. $asignado->docente->persona->ap_materno : 'Seleccionar' }}
+                                                </option>
                                             </select>
                                             @error('docente')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                             @enderror
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label class="form-label" for="aulaSelect">Aulas: *</label>
-                                            <select name="aula" class="form-select" id="aulaSelect" required>
-                                                <option value="" selected disabled>Seleccionar</option>
-                                                <!--@if ($aulas->count() > 0)
-                                                    @foreach ($aulas as $doc)
-                                                        <option value="{{ $doc->id }}" cupo="{{$doc->capacidad}}" @if ($isEditing && $doc->id == $asignado->aula_id) selected @endif>{{ $doc->nombre }}</option>
-                                                    @endforeach
-                                                @else
-                                                    <option value="">No hay aulas</option>
-                                                @endif-->
+                                            <label class="form-label" for="aulaSelect">{{ $isEditing ? 'Aula (Opcional)' : 'Aulas: *' }}</label>
+                                            <select name="aula" class="form-select" id="aulaSelect" {{ $isEditing ? '' : 'required' }}>
+                                                <option value="" selected disabled>{{ $isEditing ? $asignado->curso->nombre : 'Seleccionar' }}</option>
                                             </select>
                                             @error('aula')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -210,6 +198,6 @@
             });
         });
     });
-    </script>
+</script>
     
 @endsection

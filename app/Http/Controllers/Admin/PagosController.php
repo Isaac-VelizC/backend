@@ -35,8 +35,8 @@ class PagosController extends Controller
     }
     public function storePagosSimples(Request $request) {
         $rules = [
-            'forma' => 'required|numeric',
-            'estudiante' => 'required|numeric',
+            'forma' => 'required|numeric|exists:formas_pagos,id',
+            'estudiante' => 'required|numeric|exists:estudiantes,id',
             'fecha' => 'required|date',
             'monto' => 'required|min:1',
             'descripcion' => 'nullable|string',

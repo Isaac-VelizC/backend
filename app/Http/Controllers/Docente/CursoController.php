@@ -45,7 +45,7 @@ class CursoController extends Controller
             'titulo' => 'required|string|max:255',
             'fin' => ['date', 'after_or_equal:' . now()->toDateString()],
             'tipo_trabajo' => 'required|string|max:255',
-            'tema' => 'nullable|numeric',
+            'tema' => 'nullable|numeric|exists:temas,id',
             'con_nota' => 'required|boolean',
             'evaluacion' => 'required|boolean',
             'tags.*' => 'exists:ingredientes,id',
@@ -103,7 +103,7 @@ class CursoController extends Controller
     }
     public function updateTema(Request $request, $id) {
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required|string|max:255',
+            'nombre' => 'required|string|max:255|min:5',
             'descripcion' => 'nullable|string|max:255'
         ]);
         if ($validator->fails()) {

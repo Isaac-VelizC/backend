@@ -67,10 +67,10 @@ class PagosProgramacion extends Component
     public function guardarPago() {
         try {
             $this->validate([
-                'pagosEdit.formaPago' => 'required',
+                'pagosEdit.formaPago' => 'required|integer|exists:formas_pagos,id',
                 'idMetodo' => 'required|numeric',
                 'pagosEdit.fecha' => 'required|date',
-                'pagosEdit.monto' => 'required|numeric',
+                'pagosEdit.monto' => 'required|numeric|min:10',
                 'pagosEdit.descripcion' => 'nullable|string',
             ]);
             

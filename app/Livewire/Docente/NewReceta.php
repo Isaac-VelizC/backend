@@ -114,8 +114,8 @@ class NewReceta extends Component
     public function guardarReceta() {
         try {
             $this->validate([
-                'recetaEdit.titulo' => 'required|string|max:255',
-                'recetaEdit.descripcion' => 'nullable|string',
+                'recetaEdit.titulo' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
+                'recetaEdit.descripcion' => 'nullable|string|max:255',
                 'imagen' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
                 'porcion' => 'required|numeric',
                 'tiempo' => 'nullable|numeric',

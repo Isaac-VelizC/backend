@@ -30,7 +30,7 @@ class Trabajos extends Component
         $this->AD3 = true;
     }
     public function formTema() {
-        $this->validate(['tema' => 'required|string|max:255']);
+        $this->validate(['tema' => 'required|string|min:5|max:255']);
         Tema::create(['tema' => $this->tema, 'curso_id' => $this->idCurso,]);
         session()->flash('message', 'El Tema se creo con éxito');
         $this->tema = '';

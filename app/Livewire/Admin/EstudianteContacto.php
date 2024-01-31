@@ -50,10 +50,10 @@ class EstudianteContacto extends Component
 
     public function update() {
         $rules = [
-            'contactoEdit.nombre' => 'required|string',
-            'contactoEdit.paterno' => 'string',
-            'contactoEdit.materno' => 'string',
-            'contactoEdit.cedula' => 'required|string|unique:personas,ci,' . $this->persona->id,
+            'contactoEdit.nombre' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
+            'contactoEdit.paterno' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
+            'contactoEdit.materno' => 'nullable|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
+            'contactoEdit.cedula' => 'required|string|regex:/^\d{7}(?:-[0-9A-Z]{1,2})?$/|min:7|unique:personas,ci,' . $this->persona->id,
             'contactoEdit.genero' => 'required|in:Mujer,Hombre,Otro',
             'contactoEdit.email' => 'nullable|email|unique:personas,email,' . $this->persona->id,
         ];
@@ -76,10 +76,10 @@ class EstudianteContacto extends Component
     public function store() {
         try {
             $rules = [
-                'contactoEdit.nombre' => 'required|string',
-                'contactoEdit.paterno' => 'string',
-                'contactoEdit.materno' => 'string',
-                'contactoEdit.cedula' => 'required|string|unique:personas,ci',
+                'contactoEdit.nombre' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
+                'contactoEdit.paterno' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
+                'contactoEdit.materno' => 'nullable|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
+                'contactoEdit.cedula' => 'required|string|regex:/^\d{7}(?:-[0-9A-Z]{1,2})?$/|min:7|unique:personas,ci',
                 'contactoEdit.genero' => 'required|in:Mujer,Hombre,Otro',
                 'contactoEdit.email' => 'nullable|email|unique:personas,email',
             ];

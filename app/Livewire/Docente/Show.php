@@ -37,7 +37,7 @@ class Show extends Component
         $this->docenteEdit['cedula'] = $this->item->ci;
         $this->docenteEdit['genero'] = $this->item->genero;
         $this->docenteEdit['telefono'] = optional($this->item->numTelefono)->numero ?? '';
-        $this->docenteEdit['email'] = $this->item->email;  
+        $this->docenteEdit['email'] = $this->item->email ?? $this->item->user->email;
     }
     public function render()
     {
@@ -58,12 +58,12 @@ class Show extends Component
     }
     public function update() {
         $rules = [
-            'docenteEdit.nombre' => 'required|string',
-            'docenteEdit.paterno' => 'nullable|string',
-            'docenteEdit.materno' => 'nullable|string',
-            'docenteEdit.cedula' => 'required|string|unique:personas,ci,' . $this->idDocente,
+            'docenteEdit.nombre' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
+            'docenteEdit.paterno' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
+            'docenteEdit.materno' => 'nullable|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
+            'docenteEdit.cedula' => 'required|string|regex:/^\d{7}(?:-[0-9A-Z]{1,2})?$/|min:7|unique:personas,ci,' . $this->idDocente,
             'docenteEdit.genero' => 'required|in:Mujer,Hombre',
-            'docenteEdit.telefono' => 'nullable|string',
+            'docenteEdit.telefono' => 'nullable|string|regex:/^[0-9+()-]{8,15}$/',
             'docenteEdit.email' => 'required|email|unique:personas,email,' . $this->idDocente,
         ];
         $this->validate($rules);

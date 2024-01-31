@@ -21,20 +21,24 @@ class CursoController extends Controller
         return view('admin.cursos.index', compact('cursos', 'modulos'));
     }
     public function guardarCurso(Request $request) {
-        $this->validate($request, [
-            'nombre' => 'required|string|max:255',
-            'semestre' => 'required|numeric',
-            'descripcion' => 'nullable|string|max:255',
-            'dependencia' => 'nullable|numeric'
-        ]);
-        $curso = new Curso();
-        $curso->nombre = $request->nombre;
-        $curso->semestre_id = $request->semestre;
-        $curso->color = $request->color;
-        $curso->descripcion = $request->descripcion;
-        $curso->dependencia = $request->dependencia;
-        $curso->save();
-        return back()->with('success', 'La materia ' . $curso->nombre . ' se registro con éxito.');
+        try {
+            $this->validate($request, [
+                'nombre' => 'required|string|max:255|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
+                'semestre' => 'required|numeric|exists:semestres,id',
+                'descripcion' => 'nullable|string|max:255',
+                'dependencia' => 'nullable|numeric|exists:cursos,id'
+            ]);
+            $curso = new Curso();
+            $curso->nombre = $request->nombre;
+            $curso->semestre_id = $request->semestre;
+            $curso->color = $request->color;
+            $curso->descripcion = $request->descripcion;
+            $curso->dependencia = $request->dependencia ?? 0;
+            $curso->save();
+            return back()->with('success', 'La materia ' . $curso->nombre . ' se registro con éxito.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error al actualizar el curso: ' . $e->getMessage());
+        }
     }
     public function darBajaCurso($id) {
         $curso = Curso::updateOrCreate(['id' => $id], ['estado' => false]);
@@ -51,10 +55,10 @@ class CursoController extends Controller
     public function actualizarCurso(Request $request, $id) {
         try {
             $request->validate([
-                'nombre' => 'required|string|max:255',
-                'semestre' => 'required|numeric',
+                'nombre' => 'required|string|max:255|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
+                'semestre' => 'required|numeric|exists:semestres,id',
                 'descripcion' => 'nullable|string|max:255',
-                'dependencia' => 'nullable|numeric'
+                'dependencia' => 'nullable|numeric|exists:cursos,id'
             ]);
 
             $curso = Curso::findOrFail($id);
@@ -65,10 +69,8 @@ class CursoController extends Controller
                 'descripcion' => $request->descripcion,
                 'dependencia' => $request->dependencia,
             ]);
-
             return redirect()->route('admin.cursos')->with('success', 'La información se ha actualizado con éxito.');
         } catch (\Exception $e) {
-            // Manejo de la excepción
             return back()->with('error', 'Error al actualizar el curso: ' . $e->getMessage());
         }
     }
@@ -83,13 +85,13 @@ class CursoController extends Controller
     }
     public function asignarGuardarCurso(Request $request) {
         $rules = [
-            'docente' => 'required|string|max:255',
-            'curso' => 'required|numeric',
-            'horario' => 'required|numeric',
-            'aula' => 'required|numeric',
+            'docente' => 'required|string|max:255|exists:docentes,id',
+            'curso' => 'required|numeric|exists:cursos,id',
+            'horario' => 'required|numeric|exists:horarios,id',
+            'aula' => 'required|numeric|exists:aulas,id',
             'fechaInicio' => 'required|date',
             'fechaFin' => 'required|date|after:fInico',
-            'cupo' => 'required|min:1'
+            'cupo' => 'required|numeric|min:1'
         ];
         $request->validate($rules);
 
@@ -145,13 +147,13 @@ class CursoController extends Controller
     }
     public function asignarActualizarCurso(Request $request, $id) {
         $this->validate($request, [
-            'docente' => 'required|string|max:255',
-            'curso' => 'required|numeric',
-            'horario' => 'required|numeric',
-            'aula' => 'required|numeric',
+            'docente' => 'string|max:255|exists:docentes,id',
+            'curso' => 'required|numeric|exists:cursos,id',
+            'horario' => 'required|numeric|exists:horarios,id',
+            'aula' => 'numeric|exists:aulas,id',
             'fechaInicio' => 'required|date',
             'fechaFin' => 'required|date|after:fInico',
-            'cupo' => 'required|min:1'
+            'cupo' => 'required|integer|min:1'
         ]);
         $docenteOcupado = CursoHabilitado::where('docente_id', $request->docente)
         ->where('estado', true)
@@ -176,9 +178,9 @@ class CursoController extends Controller
         }
         $curso = CursoHabilitado::find($id);
         $curso->update([
-            'docente_id' => $request->docente,
+            'docente_id' => $request->docente ?? $curso->docente_id,
             'curso_id' => $request->curso,
-            'aula_id' => $request->aula,
+            'aula_id' => $request->aula ?? $curso->aula_id,
             'cupo' => $request->cupo,
             'horario_id' => $request->horario,
             'fecha_ini' => $request->fechaInicio,
@@ -214,7 +216,6 @@ class CursoController extends Controller
     public function obtenerDisponibilidad(Request $request)
     {
         $horario = $request->input('horario');
-
         // Lógica para obtener docentes disponibles en el horario seleccionado
         $docentesDisponibles = Docente::whereNotIn('id', function ($query) use ($horario) {
             $query->select('docente_id')

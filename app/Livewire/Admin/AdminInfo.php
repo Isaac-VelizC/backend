@@ -37,14 +37,14 @@ class AdminInfo extends Component
         try {
             if ($this->idHora != '') {
                 $data = $this->validate([
-                    'horariosEdit.turno' => 'required|string',
+                    'horariosEdit.turno' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
                     'horariosEdit.inicio' => 'required|date_format:H:i:s',
                     'horariosEdit.fin' => 'required|date_format:H:i:s|after:horariosEdit.inicio',
                 ]);
                 DB::table('horarios')->where('id', $this->idHora)->update($data['horariosEdit']);
             } else {
                 $data = $this->validate([
-                    'horariosEdit.turno' => 'required|string',
+                    'horariosEdit.turno' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
                     'horariosEdit.inicio' => 'required|date_format:H:i',
                     'horariosEdit.fin' => 'required|date_format:H:i|after:horariosEdit.inicio',
                 ]);
@@ -58,10 +58,10 @@ class AdminInfo extends Component
     }
     public function formAula() {
         $data = $this->validate([
-            'aulasEdit.nombre' => 'required|string',
+            'aulasEdit.nombre' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
             'aulasEdit.tipo' => 'required|numeric',
             'aulasEdit.codigo' => 'required|unique:aulas,codigo,' . ($this->idAula ?: 'NULL') . ',id',
-            'aulasEdit.capacidad' => 'required|numeric|min:1',
+            'aulasEdit.capacidad' => 'required|numeric|min:5',
         ]);
         try {
             if ($this->idAula != '') {
@@ -77,7 +77,7 @@ class AdminInfo extends Component
     }
     public function formMetodo() {
         $data = $this->validate([
-            'metodoPagoEdit' => 'required|string',
+            'metodoPagoEdit' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
             'metodoMontoEdit' => 'required'
         ]);
         try {

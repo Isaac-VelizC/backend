@@ -37,11 +37,9 @@ class MateriaEvaluacionDocente extends Component
                     'eval_docente_id' => $registro->id,
                 ]);
                 session()->flash('message', 'Evaluación al docente Hailitada en la materia.');
-                //$this->cancelar();
             }
             else {
                 session()->flash('error', 'Ocurrio un ploblema al habilitar la evalución al docente a la materia.');
-                //$this->cancelar();
             }
         } catch (\Exception $e) {
             session()->flash('error', 'Error al realizar la operación: ' . $e->getMessage());

@@ -28,7 +28,7 @@ class Calendario extends Component
     }
     public function update() {
         $this->validate([
-            'eventos.nombre' => 'required|string|max:255',
+            'eventos.nombre' => 'required|string|max:255|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
             'eventos.backgroundColor' => 'required|string|max:255',
         ]);
         $category = TipoEvento::find($this->eventId);
@@ -41,7 +41,7 @@ class Calendario extends Component
     }
     public function store() {
         $this->validate([
-            'eventos.nombre' => 'required|string|max:255',
+            'eventos.nombre' => 'required|string|max:255|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
             'eventos.backgroundColor' => 'required|string|max:255',
         ]);
         TipoEvento::create([

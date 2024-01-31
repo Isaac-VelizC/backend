@@ -42,8 +42,8 @@ class EvaluacionDocente extends Component
     }
 
     public function guardar() {
-        $data = $this->validate([
-            'textPregunta' => 'required|string',
+        $this->validate([
+            'textPregunta' => 'required|string1min:10',
         ]);
     
         try {

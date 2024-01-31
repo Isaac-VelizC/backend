@@ -86,7 +86,7 @@
                                     <div class="form-group col-sm-6">
                                         <label class="form-label">Genero: *</label>
                                         <select name="genero" class="selectpicker form-select" data-style="py-0" value="{{ old('genero') }}" required>
-                                            <option value="" selected>Seleccionar</option>
+                                            <option value="" disabled selected>Seleccionar</option>
                                             <option value="Hombre">Hombre</option>
                                             <option value="Mujer">Mujer</option>
                                             <option value="Otro">Otro</option>
@@ -144,7 +144,6 @@
                                     @error('nombreC')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                    
                                     <div class="form-group col-md-6">
                                         <label class="form-label" for="apePC">Primer Apellido:</label>
                                         <input type="text" class="form-control" id="apPC" name="ap_patC" value="{{ old('ap_patC') }}" placeholder="Paterno">
@@ -152,7 +151,6 @@
                                     @error('ap_patC')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                    
                                     <div class="form-group col-md-6">
                                         <label class="form-label" for="apeMC">Segundo Apellido:</label>
                                         <input type="text" class="form-control" id="apMC" name="ap_matC" value="{{ old('ap_matC') }}" placeholder="Materno">
@@ -178,7 +176,7 @@
                                     <div class="form-group col-sm-6">
                                         <label class="form-label">Genero: *</label>
                                         <select name="generoC" class="selectpicker form-select" value="{{ old('generoC') }}" data-style="py-0">
-                                            <option value="Hombre">Hombre</option>
+                                            <option value="Hombre" selected>Hombre</option>
                                             <option value="Mujer">Mujer</option>
                                             <option value="Otro">Otro</option>
                                         </select>

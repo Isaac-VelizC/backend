@@ -73,7 +73,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label class="form-label">Apellido Paterno:</label>
-                                        <input type="text" class="form-control" wire:model="docenteEdit.paterno" placeholder="Apellido Paterno">
+                                        <input type="text" class="form-control" wire:model="docenteEdit.paterno" placeholder="Apellido Paterno" required>
                                         @error('docenteEdit.paterno') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="form-group col-md-6">
@@ -88,7 +88,7 @@
                                     </div>
                                     <div class="form-group col-sm-6">
                                         <label class="form-label">Genero:</label>
-                                        <select wire:model="docenteEdit.genero" class="selectpicker form-control" data-style="py-0">
+                                        <select wire:model="docenteEdit.genero" class="selectpicker form-control" data-style="py-0" required>
                                             <option value="" disabled>Seleccionar Género</option>
                                             <option value="Hombre" @if($item->genero == 'Hombre') selected @endif>Hombre</option>
                                             <option value="Mujer" @if($item->genero == 'Mujer') selected @endif>Mujer</option>
@@ -96,7 +96,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label class="form-label">Numero Celular:</label>
-                                        <input type="text" class="form-control" wire:model="docenteEdit.telefono" placeholder="Numero de Celular">
+                                        <input type="text" class="form-control" wire:model="docenteEdit.telefono" placeholder="Numero de Celular" required>
                                         @error('docenteEdit.telefono') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="form-group col-md-6">

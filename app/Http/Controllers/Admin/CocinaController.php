@@ -12,8 +12,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use OpenAI\Laravel\Facades\OpenAI;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 
 class CocinaController extends Controller
 {
@@ -62,8 +60,8 @@ class CocinaController extends Controller
     public function guardarIngrediente(Request $request) {
         try {
             $this->validate($request, [
-                'nombre' => 'required|string|max:255|unique:ingredientes,nombre',
-                'tipo' => 'required|numeric',
+                'nombre' => 'required|string|max:255|unique:ingredientes,nombre|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
+                'tipo' => 'required|numeric|exists:tipo_ingrediente,id',
             ]);
             $ingre = new Ingrediente();
             $ingre->nombre = $request->nombre;
@@ -150,7 +148,7 @@ class CocinaController extends Controller
     }
     public function guardarInventario(Request $request) {
         $this->validate($request, [
-            'ingredientes' => 'required|numeric',
+            'ingredientes' => 'required|numeric|exists:ingredientes,id',
             'cantidad' => 'required|numeric|min:1',
             'unidad' => 'required|string',
         ]);
@@ -168,7 +166,7 @@ class CocinaController extends Controller
     }
     public function updateInventario(Request $request, $id) {
         $this->validate($request, [
-            'ingredientes' => 'numeric',
+            'ingredientes' => 'numeric|exists:ingredientes,id',
             'cantidad' => 'required|numeric|min:1',
             'unidad' => 'required|string',
         ]);
