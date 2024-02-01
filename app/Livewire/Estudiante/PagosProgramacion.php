@@ -86,6 +86,11 @@ class PagosProgramacion extends Component
                 'comentario' => $this->pagosEdit['descripcion'],
                 'pagoMes_id' => $this->idMensual,
             ]);
+            $estudiante = Estudiante::find($this->estudiante->id);
+            if ($estudiante->estado == 0 ) {
+                $estudiante->estado = 1;
+                $estudiante->update();
+            }
             $this->resetForm();
             $this->llamadoPrincipal();
             session()->flash('success', 'Pago registrado exitosamente.');
