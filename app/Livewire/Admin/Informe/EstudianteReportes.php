@@ -11,7 +11,7 @@ class EstudianteReportes extends Component
 {
     public $horarios;
     public $semestres;
-    public $resultados, $horario, $semestre, $fecha, $estado;
+    public $resultados, $horario, $semestreId, $fecha, $estado;
 
     public function mount() {
         $this->horarios = Horario::all();
@@ -29,8 +29,8 @@ class EstudianteReportes extends Component
             $query->when($this->horario, function ($query, $horario) {
                 $query->where('turno_id', $horario);
             });
-            $query->when($this->semestre, function ($query, $semestre) {
-                $query->where('grado', $semestre);
+            $query->when($this->semestreId, function ($query, $semestreId) {
+                $query->where('grado', $semestreId);
             });
             if ($this->estado === false || $this->estado === '0') {
                 $query->where('estado', false);
@@ -46,7 +46,7 @@ class EstudianteReportes extends Component
     public function resetForm() {
         $this->resultados = '';
         $this->horario = '';
-        $this->semestre = '';
+        $this->semestreId = '';
         $this->fecha = '';
         $this->estado = '';
     }

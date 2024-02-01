@@ -59,7 +59,7 @@
                                     <tr>
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $item->ingrediente->nombre }}</td>
-                                        <td>{{ $item->cantidad }}</td>
+                                        <td>{{ $item->cantidad }} {{ $item->unidad_media }}</td>
                                         <td>{{ $item->ingrediente->tipo ? $item->ingrediente->tipo->nombre : 'No tiene' }}</td>
                                         <td>{{ $item->fecha_modificacion }}</td>
                                         <td>{{ $item->estado }}</td>

@@ -38,6 +38,7 @@
                                                                 }
                                                             }
                                                         @endphp
+                                                        @if ($estudiante->estado == 1)
                                                             @if($haProgramadoCurso = $estudiante->inscripciones->contains('curso_id', $event->id))
                                                                 <a class="programar-link btn" wire:click='desprogramarCurso({{ $event->id }})' data-bs-dismiss='modal'>
                                                                     <span class="badge bg-danger">Desprogramar</span>
@@ -47,6 +48,7 @@
                                                                     <span class="badge bg-primary">Programar</span>
                                                                 </a>
                                                             @endif
+                                                        @endif
                                                         @else
                                                             <a class="programar-link btn" disabled>
                                                                 <span class="badge bg-secondary">Cupo lleno</span>

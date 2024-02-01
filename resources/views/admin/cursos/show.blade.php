@@ -68,7 +68,7 @@
                                        <th>{{$num++}}</th>
                                        <th scope="row">{{ "{$estud->persona->nombre} {$estud->persona->ap_paterno} {$estud->persona->ap_materno}" }}</th>
                                        <td class="text-center child-cell">
-                                          {{ $nota->calificacion }}
+                                          {{ $nota->calificacion ?? 'Pendiente' }}
                                        </td>
                                     </tr>
                                  @endforeach

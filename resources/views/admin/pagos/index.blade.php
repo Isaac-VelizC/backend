@@ -59,7 +59,9 @@
                       <tbody>
                        @foreach ($pagos as $item)
                           <tr>
-                             <td>{{ $item->estudiante->persona->nombre }} {{ $item->estudiante->persona->ap_paterno }} {{ $item->estudiante->persona->ap_materno }}</td>
+                             <td> <a href="{{ route('admin.E.show', $item->estudiante->persona->id) }}">
+                              {{ $item->estudiante->persona->nombre }} {{ $item->estudiante->persona->ap_paterno }} {{ $item->estudiante->persona->ap_materno }}
+                              </a></td>
                              <td>
                                  @if ($item->pagoMensual)
                                     {{ \Carbon\Carbon::create()->month($item->pagoMensual->mes)->locale('es_ES')->monthName }}

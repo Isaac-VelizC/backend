@@ -13,6 +13,7 @@ use App\Models\Personal;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UsersController extends Controller
 {
@@ -27,8 +28,9 @@ class UsersController extends Controller
     }
     public function allPersonal() {
         $personals = Personal::all();
+        $roles = Role::whereIn('name', ['Admin', 'Secretario/a'])->get();
         $formType = false;
-        return view('admin.usuarios.administrador.index', compact('personals', 'formType'));
+        return view('admin.usuarios.administrador.index', compact('personals', 'formType', 'roles'));
     }
     public function formInscripcion() {
         $horarios = Horario::all();
@@ -209,7 +211,7 @@ class UsersController extends Controller
             $estado = ($accion === 'baja') ? false : true;
             $persona->update(['estado' => $estado]);
             Personal::where('persona_id', $id)->update(['estado' => $estado]);
-            $mensaje = ($accion === 'baja') ? 'Se dio de baja al docente' : 'Se dio de alta al docente';
+            $mensaje = ($accion === 'baja') ? 'Se dio de baja al personal' : 'Se dio de alta al personal';
             return back()->with('success', $mensaje);
         } else {
             return back()->with('error', 'No se encontró la persona');

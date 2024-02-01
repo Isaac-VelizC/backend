@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\InfoController;
 use App\Models\CursoHabilitado;
 use App\Models\DocumentoDocente;
+use App\Models\Ingrediente;
 use App\Models\Receta;
 use App\Models\Tema;
 use App\Models\Trabajo;
@@ -29,8 +30,9 @@ class CursoController extends Controller
         return view('docente.cursos.show', compact('curso', 'role'));
     }
     public function createTareaNew($id) {
+        $isEditing = false;
         $temasCurso = Tema::where('curso_id', $id)->get();
-        return view('docente.cursos.create_tarea', compact('temasCurso', 'id'));
+        return view('docente.cursos.create_tarea', compact('temasCurso', 'id', 'isEditing'));
     }
     public function selectReceta(Request $request) {
         $query = $request->input('name');
@@ -97,6 +99,24 @@ class CursoController extends Controller
             return back()->with(['error' => 'Error al crear el evento', 'error' => $th->getMessage()], 500);
         }
     }
+    public function editarTareaEdit($id) {
+        $trabajo = Trabajo::find($id);
+        $ingredientes = json_decode($trabajo->ingredientes, true);
+    
+        $ingrests = [];
+        if ($ingredientes) {
+            foreach ($ingredientes as $key => $value) {
+                $ingrests[] = Ingrediente::find($value);
+            }
+        }
+    
+        $isEditing = true;
+        $temasCurso = Tema::where('curso_id', $trabajo->curso_id)->get();
+        $files = DocumentoDocente::where('tarea_id', $id)->get();
+        
+        return view('docente.cursos.create_tarea', compact('temasCurso', 'id', 'isEditing', 'files', 'trabajo', 'ingrests'));
+    }
+    
     public function viewTemeEdit($id) {
         $tema = Tema::find($id);
         return view('docente.cursos.edit_tema', compact('tema'));
@@ -110,11 +130,18 @@ class CursoController extends Controller
             return back()->withErrors($validator)->withInput();
         }
         try {
-            $item = Tema::find($id)->update([
-                'tema' => $request->nombre,
-                'descripcion' => $request->descripcion
-            ]);
-            return redirect()->route('cursos.curso', $item->curso_id);
+            $item = Tema::find($id);
+            if ($item) {
+                $item->update([
+                    'tema' => $request->nombre,
+                    'descripcion' => $request->descripcion
+                ]);
+
+                return redirect()->route('cursos.curso', $item->curso_id);
+            } else {
+                // Manejar el caso en que no se encuentre el tema con el ID dado
+                return back()->with('error', 'El tema no fue encontrado.');
+            }
         } catch (\Throwable $th) {
             return back()->with(['error' => 'Error al crear el evento', 'error' => $th->getMessage()], 500);
         }

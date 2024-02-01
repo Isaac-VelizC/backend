@@ -28,7 +28,7 @@ class Persona extends Model
     }
     public function personal()
     {
-        return $this->hasOne(Personal::class, 'pers_id', 'id');
+        return $this->hasOne(Personal::class, 'persona_id', 'id');
     }
     public function estudiante()
     {

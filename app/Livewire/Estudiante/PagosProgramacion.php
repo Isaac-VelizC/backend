@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Estudiante;
 
+use App\Http\Controllers\InfoController;
 use App\Models\Estudiante;
 use App\Models\FormaPago;
 use App\Models\MetodoPago;
@@ -90,6 +91,11 @@ class PagosProgramacion extends Component
             if ($estudiante->estado == 0 ) {
                 $estudiante->estado = 1;
                 $estudiante->update();
+            }
+            $message = 'Su pago de '. $this->pagosEdit['formaPago'] .'bs. fue registrado con exito, querido estudiante: '. $estudiante->persona->nombre;
+            $numeroTelefono = $estudiante->persona->numTelefono->numero;
+            if ($numeroTelefono) {
+                InfoController::notificacionNotaTarea($numeroTelefono, $message);
             }
             $this->resetForm();
             $this->llamadoPrincipal();

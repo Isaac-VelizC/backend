@@ -60,14 +60,13 @@ class CursoController extends Controller
                 'descripcion' => 'nullable|string|max:255',
                 'dependencia' => 'nullable|numeric|exists:cursos,id'
             ]);
-
             $curso = Curso::findOrFail($id);
             $curso->update([
                 'nombre' => $request->nombre,
                 'semestre_id' => $request->semestre,
                 'color' => $request->color,
                 'descripcion' => $request->descripcion,
-                'dependencia' => $request->dependencia,
+                'dependencia' => $request->dependencia ?? 0,
             ]);
             return redirect()->route('admin.cursos')->with('success', 'La información se ha actualizado con éxito.');
         } catch (\Exception $e) {

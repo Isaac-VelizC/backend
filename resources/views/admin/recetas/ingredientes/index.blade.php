@@ -56,7 +56,7 @@
                                 <tr>
                                     <td><p><a href="{{ route('admin.show.receta', [$item->id]) }}">{{ $item->titulo }}</a></p></td>
                                     <td><p>{{ $item->porcion }}</p></td>
-                                    <td><p>{{ $item->tiempo ? $item->tiempo : 'No tiene' }}</p></td>
+                                    <td><p>{{ $item->tiempo ? $item->tiempo.'min' : 'No tiene' }}</p></td>
                                     <td><p>{{ count($item->ingredientes) }}</p></td>
                                     <td>
                                         <div class="flex align-items-center list-user-action">

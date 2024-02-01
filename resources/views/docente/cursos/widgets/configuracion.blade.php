@@ -15,7 +15,7 @@
                             <span>{{ $curso->docente->persona->nombre }} {{$curso->docente->persona->ap_paterno}} {{$curso->docente->persona->ap_materno}}</span>
                          </li>
                          <li class="list-group-item d-flex justify-content-between align-items-start">
-                            <div class="fw-bold">curso</div>
+                            <div class="fw-bold">Materia</div>
                             <span>{{ $curso->curso->nombre }}</span>
                          </li>
                          <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -51,12 +51,19 @@
                <div class="header-title">
                   <h4 class="card-title">Planificar la materia</h4>
                </div>
-               <form method="POST" action="{{ route('guardar.planificacion', [$curso->id]) }}">
+               <form method="POST" action="{{ route('guardar.planificacion', [$curso->id]) }}" enctype="multipart/form-data">
                   @csrf
+                  <div class="form-group">
+                     <label class="form-label"><span class="text-black">Foto</span> (Opcional)</label>
+                     <input type="file" class="form-control" name="imagen">
+                     @error('imagen') <span class="text-danger">{{ $message }}</span> @enderror
+                 </div> 
                   <textarea name="planificacion" id="editorCurso" cols="30">{!! $curso->descripcion !!}</textarea>
+                  <br>
                   <div class="text-center">
                      <button type="submit" class="btn btn-secondary">Guardar</button>
                   </div>
+                  <br>
                </form>
             </div>
           </div>

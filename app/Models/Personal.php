@@ -11,7 +11,7 @@ class Personal extends Model
     public $timestamps = false;
     protected $table = "personals";
     protected $primaryKey = "id";
-    protected $fillable = ['persona_id', 'estado', 'fecha_contratado', 'sueldo', 'rol' ];
+    protected $fillable = ['persona_id', 'estado', 'fecha_contratado', 'sueldo', 'rol'];
 
     public function persona()
     {

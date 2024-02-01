@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="newCursoLabel">Crear un nuevo curso</h5>
+                <h5 class="modal-title" id="newCursoLabel">Registrar uno nuevo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form class="needs-validation" novalidate method="POST" action="{{ route('admin.guardar-curso') }}">
@@ -14,7 +14,7 @@
                                 <div class="col-sm-12 col-lg-6">
                                     <div class="row">
                                       <div class="form-group">
-                                        <label class="form-label" for="fname">Nombre de Curso:</label>
+                                        <label class="form-label" for="fname">Nombre de Materia:</label>
                                         <input type="text" class="form-control" id="fname" name="nombre" placeholder="Nombre" required>
                                           @error('nombre')
                                               <div class="alert alert-danger">{{ $message }}</div>
@@ -22,7 +22,7 @@
                                       </div>
                                       <div class="form-group">
                                         <label class="form-label" for="descrip">Descripción</label>
-                                        <textarea class="form-control" id="descrip" name="descripcion" rows="5"></textarea>
+                                        <textarea class="form-control" id="descrip" name="descripcion" rows="5" placeholder="Descripcion de la materia (Opcional)"></textarea>
                                       </div>
                                     </div>
                                 </div>
@@ -54,7 +54,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label" for="exampleInputcolor">Color del Curso</label>
+                                        <label class="form-label" for="exampleInputcolor">Color de la materia</label>
                                         <select class="form-select" id="exampleInputcolor" name="color" required>
                                             <option value="#0000FF" selected>🔵 Azul</option>
                                             <option value="#800080">🟣 Morado</option>

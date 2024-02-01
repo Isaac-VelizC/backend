@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\InfoController;
+use App\Models\Estudiante;
 use App\Models\FormaPago;
 use App\Models\Pagos;
 use Carbon\Carbon;
@@ -52,6 +54,12 @@ class PagosController extends Controller
                 'monto' => $request->monto,
                 'comentario' => $request->descripcion
             ]);
+            $estudi = Estudiante::find($request->estudiante);
+            $numeroTelefono = $estudi->persona->numTelefono->numero;
+            if ($numeroTelefono) {
+                $message = 'Su pago de '. $request->monto .'bs. fue registrado con exito, querido estudiante: '. $estudi->persona->nombre;
+                InfoController::notificacionNotaTarea($numeroTelefono, $message);
+            }
             return redirect()->route('admin.lista.pagos')->with('success', 'Pago registrado exitosamente.');
         } catch (\Throwable $th) {
             return back()->with('error', 'Ocurrio un errror: ' . $th->getMessage());

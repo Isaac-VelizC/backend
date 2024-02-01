@@ -74,7 +74,34 @@
                                             </div>
                                             <div class="form-group col-lg-6">
                                                 <label class="form-label"><span class="text-danger">*</span> Unidad medida:</label>
-                                                <input type="text" class="form-control" name="unidad" value="{{ $isEditing ? $invetario->unidad_media : '' }}" placeholder="Unidad Media" required>
+                                                <!--input type="text" class="form-control" name="unidad" value="{{ $isEditing ? $invetario->unidad_media : '' }}" placeholder="Unidad Media" required-->
+                                                <select class="form-select" id="unidadMedida" name="unidad">
+                                                    
+                                                    <!-- Volumen -->
+                                                    <optgroup label="Volumen">
+                                                        <option value="metroCubico">Metro cúbico (m³)</option>
+                                                        <option value="litro">Litro (L)</option>
+                                                        <option value="mililitro">Mililitro (ml)</option>
+                                                        <option value="centimetroCubico">Centímetro cúbico (cm³)</option>
+                                                    </optgroup>
+                                                
+                                                    <!-- Peso/Masa -->
+                                                    <optgroup label="Peso/Masa">
+                                                        <option value="kilogramo">Kilogramo (kg)</option>
+                                                        <option value="gramo">Gramo (g)</option>
+                                                        <option value="miligramo">Miligramo (mg)</option>
+                                                        <option value="toneladaMetrica">Tonelada métrica (t)</option>
+                                                    </optgroup>
+                            
+                                                    <!-- Volumen (Cocina) -->
+                                                    <optgroup label="Volumen (Cocina)">
+                                                        <option value="taza">Taza</option>
+                                                        <option value="cucharada">Cucharada</option>
+                                                        <option value="cucharadita">Cucharadita</option>
+                                                        <option value="litroCocina">Litro (L)</option>
+                                                        <option value="mililitroCocina">Mililitro (ml)</option>
+                                                    </optgroup>
+                                                </select>
                                                 @error('unidad')
                                                     <div class="alert alert-danger">{{ $message }}</div>
                                                 @enderror

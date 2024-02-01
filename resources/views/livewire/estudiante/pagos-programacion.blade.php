@@ -52,13 +52,17 @@
                                     {{ \Carbon\Carbon::parse($pago->fecha)->locale('es_ES')->isoFormat('LL') }}
                                  </th>
                                  <td class="text-center">
-                                    <p>{{ \Carbon\Carbon::create()->month($pago->pagoMensual->mes)->locale('es_ES')->monthName }} {{ $pago->pagoMensual->anio }}</p>
-                                 </td>
+                                    @if ($pago->pagoMensual)
+                                       <p>{{ \Carbon\Carbon::create()->month($pago->pagoMensual->mes)->locale('es_ES')->monthName }} {{ $pago->pagoMensual->anio }}</p>
+                                    @else
+                                       <p>{{ \Carbon\Carbon::parse($pago->fecha)->locale('es_ES')->isoFormat('MMMM') }}</p>
+                                    @endif
+                                </td>
                                  <td class="text-center">
                                     <p>{{ $pago->monto }}bs.</p>
                                  </td>
                                  <td class="text-center">
-                                    <a href="#">
+                                    <a href="{{ route('admin.pago.guardar.imprimir', [$pago->id]) }}">
                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                           <path d="M20 5v-4h-16v4h-4v14h2.764l2.001-4h14.472l2 4h2.763v-14h-4zm-14-2h12v2h-12v-2zm16 13.055l-1.527-3.055h-16.944l-1.529 3.056v-9.056h20v9.055zm-4 
                                           .945l3 6h-18l3-6h2.203l-1.968 4h11.528l-1.956-4h2.193zm3-8.5c0 .276-.224.5-.5.5s-.5-.224-.5-.5.224-.5.5-.5.5.224.5.5z"/>

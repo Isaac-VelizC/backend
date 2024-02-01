@@ -67,7 +67,12 @@
                                 @if (!$formType)                    
                                     <div class="form-group col-md-12">
                                         <label class="form-label" for="rol">Rol: *</label>
-                                        <input type="number" class="form-control" id="rol" name="rol" value="{{ old('rol') }}" placeholder="Seleccionar Rol" required>
+                                        <select class="form-select" name="rol"  id="rol" required>
+                                            <option value="" selected disabled>Seleccionar Rol</option>
+                                            @foreach ($roles as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
                                         @error('rol')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror

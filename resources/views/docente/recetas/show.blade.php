@@ -23,9 +23,9 @@
                         <div class="card-body">
                             <h4>{{ $receta->titulo }}</h4>
                             <p class="mt-2">{{ $receta->descripcion }}</p>
-                            <div class="mb-5 pt-2">
-                                <p class="line-around text-gray mb-0"><span class="line-around-1">Nombre del Creador</span></p>
-                            </div>
+                            <!--div class="mb-5 pt-2">
+                                <p class="line-around text-gray mb-0"><span class="line-around-1">Por: </span></p>
+                            </div-->
                             <div class="row">
                                 <div class="d-flex justify-content-between mt-3 text-center">
                                     <div>

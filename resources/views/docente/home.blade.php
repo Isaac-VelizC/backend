@@ -33,7 +33,7 @@
                                  </div>
                               <div class="progress-detail">
                                  <p  class="mb-2">Recetas</p>
-                                 <h4 class="counter">1</h4>
+                                 <h4 class="counter">{{ count($recetas) }}</h4>
                               </div>
                            </div>
                         </div>
