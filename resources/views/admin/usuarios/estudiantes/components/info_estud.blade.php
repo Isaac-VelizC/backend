@@ -43,6 +43,7 @@
                         <option>Seleccionar</option>
                         <option value="Hombre" {{ old('genero', $estudiante->genero == 'Hombre' ? 'selected' : '') }}>Hombre</option>
                         <option value="Mujer" {{ old('genero', $estudiante->genero == 'Mujer' ? 'selected' : '') }}>Mujer</option>
+                        <option value="Otro" {{ old('genero', $estudiante->genero == 'Otro' ? 'selected' : '') }}>Otro</option>
                     </select>
                 </div>
                 @error('genero')

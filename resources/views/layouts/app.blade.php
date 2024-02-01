@@ -6,6 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ 'IGLA' }}</title>
+    <!-- Agrega los enlaces para los íconos -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/icon.jpg') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/icon.jpg') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('img/icon.jpg') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/core/libs.min.css')}}" />
     <link rel="stylesheet" href="{{ asset('assets/css/hope-ui.css')}}" />
     <link rel="stylesheet" href="{{ asset('assets/css/select2.min.css')}}"/>

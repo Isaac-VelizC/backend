@@ -224,34 +224,42 @@ class UsersController extends Controller
     }
     public function update(Request $request, $id) {
         $estud = Estudiante::find($id);
-        $rules = [
-            'nombre' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
-            'ap_pat' => 'nullable|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
-            'ap_mat' => 'nullable|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
-            'ci' => 'required|string|regex:/^\d{7}(?:-[0-9A-Z]{1,2})?$/|min:7|unique:personas,ci,' . $estud->persona->id,
-            'genero' => 'required|in:Mujer,Hombre,Otro',
-            'email' => 'required|email|unique:personas,email,' . $estud->persona->id,
-            'direccion' => 'required|string',
-            'telefono' => 'nullable|string|regex:/^[0-9+()-]{8,15}$/|unique:num_telefonos,numero,' . $estud->persona->numTelefono->id,
-            'fNac' => 'required|date|before_or_equal:-5 years',
-            'horario' => 'required|numeric|exists:horarios,id',
-        ];
-        $request->validate($rules);
-        $estud->direccion = $request->direccion;
-        $estud->fecha_nacimiento = $request->fnac;
-        $estud->turno_id = $request->horario;
-        $estud->update();
-        $pers = Persona::find($estud->persona->id);
-        $pers->nombre = $request->nombre;
-        $pers->ap_paterno = $request->ap_pat;
-        $pers->ap_materno = $request->ap_mat;
-        $pers->ci = $request->ci;
-        $pers->genero = $request->genero;
-        $pers->email = $request->email;
-        $pers->update();
-        NumTelefono::where('id_persona', $pers->id)->update(['numero' => $request->telefono]);
-
-        return back()->with('success', 'La informacion se actualizo con éxito.');
+            if ($estud) {
+                $rules = [
+                    'nombre' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
+                    'ap_pat' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
+                    'ap_mat' => 'nullable|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
+                    'ci' => 'required|string|regex:/^\d{7}(?:-[0-9A-Z]{1,2})?$/|min:7|unique:personas,ci,' . $estud->persona->id,
+                    'genero' => 'required|in:Mujer,Hombre,Otro',
+                    'email' => 'required|email|unique:personas,email,' . $estud->persona->id,
+                    'direccion' => 'required|string',
+                    'telefono' => 'nullable|string|regex:/^[0-9+()-]{8,15}$/|unique:num_telefonos,numero,' . $estud->persona->numTelefono->id,
+                    'fnac' => 'required|date|before:-5 years',
+                    'horario' => 'required|numeric|exists:horarios,id',
+                ];
+                $request->validate($rules);
+            } else {
+                return back()->with('error', 'Estudiante no encontrado');
+            }
+        try {
+            $estud->direccion = $request->direccion;
+            $estud->fecha_nacimiento = $request->fnac;
+            $estud->turno_id = $request->horario;
+            $estud->update();
+            $pers = Persona::find($estud->persona->id);
+            $pers->nombre = $request->nombre;
+            $pers->ap_paterno = $request->ap_pat;
+            $pers->ap_materno = $request->ap_mat;
+            $pers->ci = $request->ci;
+            $pers->genero = $request->genero;
+            $pers->email = $request->email;
+            $pers->update();
+            NumTelefono::where('id_persona', $pers->id)->update(['numero' => $request->telefono]);
+    
+            return back()->with('success', 'La informacion se actualizo con éxito.');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Ocurrio un error: '.$th->getMessage());
+        }
     }
     public function selectEstudiante(Request $request) {
         $query = $request->input('name');
