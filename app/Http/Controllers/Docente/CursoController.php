@@ -109,14 +109,71 @@ class CursoController extends Controller
                 $ingrests[] = Ingrediente::find($value);
             }
         }
-    
         $isEditing = true;
         $temasCurso = Tema::where('curso_id', $trabajo->curso_id)->get();
         $files = DocumentoDocente::where('tarea_id', $id)->get();
         
-        return view('docente.cursos.create_tarea', compact('temasCurso', 'id', 'isEditing', 'files', 'trabajo', 'ingrests'));
+        return view('docente.cursos.create_tarea', compact('temasCurso', 'isEditing', 'files', 'trabajo', 'ingrests'));
     }
     
+    public function updateTrabajo(Request $request, $id) {
+        $validator = Validator::make($request->all(), [
+            'titulo' => 'required|string|max:255',
+            'fin' => ['date', 'after_or_equal:' . now()->toDateString()],
+            'tipo_trabajo' => 'required|string|max:255',
+            'tema' => 'nullable|numeric|exists:temas,id',
+            'con_nota' => 'required|boolean',
+            'evaluacion' => 'required|boolean',
+            'tags.*' => 'exists:ingredientes,id',
+            'recetas' => 'exists:recetas,id',
+            'files.*' => 'file'
+        ]);
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+        try {
+            $tarea = Trabajo::find($id)->update([
+                'tipo' => $request->tipo_trabajo,
+                'tema_id' => $request->tema ?: null,
+                'ingredientes' => json_encode($request->tags) ?: null,
+                'receta_id' => $request->recetas ?: null,
+                'evaluacion' => $request->evaluacion,
+                'titulo' => $request->titulo,
+                'descripcion' => $request->descripcion,
+                'inico' => now(),
+                'fin' => $request->fin,
+                'con_nota' => $request->con_nota,
+            ]);
+            $files = $request->file('files');
+            if ($files) {
+                foreach ($files as $file) {
+                    $originalName = $file->getClientOriginalName();
+                    $filePath = $file->storeAs('public/files', $originalName);
+                    $url = str_replace('public/', '', $filePath);
+                    DocumentoDocente::create([
+                        'nombre' => $originalName,
+                        'url' => 'storage/'.$url,
+                        'fecha' => now(),
+                        'materia_id' => $request->curso,
+                        'user_id' => auth()->user()->id,
+                        'tarea_id' => $tarea->id
+                    ]);
+                }
+            }
+            return redirect()->route('cursos.curso', $request->curso)->with('success', 'Trabajo actualizado con éxito');
+        } catch (\Throwable $th) {
+            return back()->with(['error' => 'Error al actualizar el trabajo', 'error' => $th->getMessage()], 500);
+        }
+    }
+    public function borrarFile($id) {
+        try {
+            DocumentoDocente::find($id)->delete();
+            return back();
+        } catch (\Throwable $th) {
+            return back()->with(['error' => 'Error al borrar el archivo', 'error' => $th->getMessage()], 500);
+        }
+    }
+
     public function viewTemeEdit($id) {
         $tema = Tema::find($id);
         return view('docente.cursos.edit_tema', compact('tema'));

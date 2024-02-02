@@ -75,6 +75,7 @@
                         </a>
                      </ol>
                   @endforeach
+                  <p>{{ $textTarea ?? '' }}</p>
                @else
                   <div class="text-center">
                      <p>No envio la tarea</p>

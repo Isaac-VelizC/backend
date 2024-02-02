@@ -16,6 +16,10 @@
                                     <div class="row">
                                         <div class="col-xl-12 col-lg-12">
                                             <div class="card-body">
+                                                <div class="form-group">
+                                                    <textarea class="form-control" wire:model='descripcion' placeholder="Descripción (Opcional)" rows="5">Editar</textarea>
+                                                </div>
+
                                                 <div
                                                     x-data="{ uploading: false, progress: 0 }"
                                                     x-on:livewire-upload-start="uploading = true"

@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Exports\CursosExport;
 use App\Http\Controllers\Controller;
 use App\Models\Aula;
+use App\Models\Calificacion;
 use App\Models\Curso;
 use App\Models\CursoHabilitado;
 use App\Models\Docente;
 use App\Models\Horario;
+use App\Models\Programacion;
 use App\Models\Semestre;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -189,8 +191,29 @@ class CursoController extends Controller
     }
     public function gestionarEstadoCurso(Request $request, $id) {
         $curso = CursoHabilitado::updateOrCreate(['id' => $id], ['estado' => $request->estado]);
+        $calificaciones = Calificacion::where('curso_id', $id)->get();
+        // Iterar sobre cada calificación
+        foreach ($calificaciones as $calificacion) {
+            // Obtener el modelo Programacion relacionado con esta calificación
+            $programacion = Programacion::where('estudiante_id', $calificacion->estudiante_id)
+                ->where('curso_id', $id)
+                ->first();
+            // Actualizar el estado de la materia según la calificación
+            if ($calificacion->calificacion > 51) {
+                $programacion->estado_materia = 'Aprobado';
+            } else {
+                $programacion->estado_materia = 'Reprobado';
+            }
+            // Guardar los cambios
+            $programacion->save();
+        }
         $action = $request->estado ? 'alta' : 'baja';
         return back()->with('success', "La materia {$curso->nombre} se dio de {$action} con éxito.");
+    }
+    private function verificarSemestre($idSemestre) {
+        $cursos = Curso::where('semestre_id', $idSemestre)->get();
+        CursoHabilitado::all();
+        Programacion::where();
     }
     public function deleteCursoActivo($id) {
         CursoHabilitado::where('id', $id)->delete();

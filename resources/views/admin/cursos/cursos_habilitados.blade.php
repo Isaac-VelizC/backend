@@ -66,7 +66,7 @@
                               @if ($item->estado == true)
                                  <td><p> <span class="badge rounded-pill bg-info text-white">Activo</span></p></td>
                               @else
-                                 <td><p> <span class="badge rounded-pill bg-danger text-white">Inactivo</span></p></td>
+                                 <td><p> <span class="badge rounded-pill bg-danger text-white">Materia Cerrada</span></p></td>
                               @endif
                            <td>
                               <div class="flex align-items-center list-user-action">

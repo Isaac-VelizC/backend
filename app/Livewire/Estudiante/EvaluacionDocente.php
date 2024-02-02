@@ -3,9 +3,7 @@
 namespace App\Livewire\Estudiante;
 
 use App\Models\CursoHabilitado;
-use App\Models\EvalRespuestas;
 use App\Models\EvaluacionHabilitada;
-use App\Models\Persona;
 use App\Models\RespuestaEstudiante;
 use Livewire\Component;
 

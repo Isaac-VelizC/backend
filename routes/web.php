@@ -143,6 +143,10 @@ Route::middleware(['auth', 'role:Docente'])->group(function () {
     Route::get('/trabajo/nueva/post/{id}', [DocenteCursoController::class, 'createTareaNew'])->name('nueva.tarea.docente');
     Route::get('/trabajo/editar/post/{id}', [DocenteCursoController::class, 'editarTareaEdit'])->name('editra.trabajo.docente');
     Route::post('/trabajo/tarea/new', [DocenteCursoController::class, 'crearTarea'])->name('guardar.tarea.new');
+    
+    Route::get('/trabajo/file/delete/{id}/file', [DocenteCursoController::class, 'borrarFile'])->name('docente.borrar.file');
+
+    Route::put('/trabajo/tarea/edit/{id}', [DocenteCursoController::class, 'updateTrabajo'])->name('docente.update.trabajo');
     Route::get('/editar/tema/{id}', [DocenteCursoController::class, 'viewTemeEdit'])->name('docente.edit.tema');
     Route::put('/editar/tema/{id}/update', [DocenteCursoController::class, 'updateTema'])->name('docente.update.tema');
 

@@ -18,7 +18,7 @@ class ShowTarea extends Component
 {
     public $tareaId, $num = 1, $fechaActual, $estudiantesConTareas, $trabajosSubidosCali, $tareaDelEstudiante = '';
     public Trabajo $tarea;
-    public $ingredientesTarea;
+    public $ingredientesTarea, $textTarea = '';
     public $entregas, $calificadas, $estudiantes, $filesTarea;
     public $filesSubidos, $trabajoSubido = [];
     public function mount($id) {
@@ -105,6 +105,7 @@ class ShowTarea extends Component
         ])->first();
         if ($subidoPararRevisar) {
             $this->trabajosSubidosCali = DocumentoEstudiante::where('entrega_id', $subidoPararRevisar->id)->get();
+            $this->textTarea = $subidoPararRevisar->descripcion;
         } else {
             session()->flash('error', 'No subio ningun trabajo él/la estudiante '.$this->tareaDelEstudiante);
             $this->trabajosSubidosCali = '';
@@ -124,7 +125,7 @@ class ShowTarea extends Component
                 ])->first();
                 if ($notaGuardar) {
                     $notaGuardar->update(['nota' => $notaEstudiante, 'estado' => 'Calificado']);
-                    ///$this->notificar($id, $notaGuardar->trabajo->titulo, $notaEstudiante); /// Necesita la habilitacion
+                    $this->notificar($id, $notaGuardar->trabajo->titulo, $notaEstudiante); /// Necesita la habilitacion
                 }
             }
         } catch (\Throwable $th) {

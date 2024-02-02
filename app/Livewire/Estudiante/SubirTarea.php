@@ -37,6 +37,7 @@ class SubirTarea extends Component
     public function editarTarea($id) {
         $tarea = TrabajoEstudiante::find($id);
         $this->idTareaEstudiante = $tarea->id;
+        $this->descripcion = $tarea->descripcion;
         $this->archivosTarea();
     }
     public function updatedFiles() {
@@ -71,7 +72,7 @@ class SubirTarea extends Component
             $this->crearNuevo();
         }
         TrabajoEstudiante::find($this->idTareaEstudiante)->update([
-            //'descripcion' => $this->descripcion,
+            'descripcion' => $this->descripcion,
             'estado' => 'Entregado',
         ]);
         return redirect()->route('show.tarea', ['id' => $this->idTarea]);
