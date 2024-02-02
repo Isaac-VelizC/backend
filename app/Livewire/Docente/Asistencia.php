@@ -15,6 +15,7 @@ class Asistencia extends Component
     public $asistencia;
 
     public function mount($id) {
+        $this->materia = CursoHabilitado::find($id);
         $this->idCurso = $id;
         $curso = CursoHabilitado::with('inscripciones.estudiante')->find($id);
         $this->estudiantes = $curso->inscripciones->pluck('estudiante');

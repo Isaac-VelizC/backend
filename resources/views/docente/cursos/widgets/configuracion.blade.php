@@ -60,9 +60,11 @@
                  </div> 
                   <textarea name="planificacion" id="editorCurso" cols="30">{!! $curso->descripcion !!}</textarea>
                   <br>
-                  <div class="text-center">
-                     <button type="submit" class="btn btn-secondary">Guardar</button>
-                  </div>
+                  @if ($curso->estado == 1)
+                     <div class="text-center">
+                        <button type="submit" class="btn btn-secondary">Guardar</button>
+                     </div>
+                  @endif
                   <br>
                </form>
             </div>

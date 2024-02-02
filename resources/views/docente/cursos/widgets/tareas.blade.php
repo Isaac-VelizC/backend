@@ -2,7 +2,12 @@
     <div class="card">
         <div class="card-body text-black">
             <div class="d-grid grid-flow-col align-items-center justify-content-between mb-2">
-                <a class="btn btn-sm btn-ligth" href="{{ route('show.tarea', $tarea->id) }}">
+                <a class="btn btn-sm btn-ligth" 
+                    @if ($materia->estado == 1)
+                        href="{{ route('show.tarea', $tarea->id) }}"
+                    @else
+                        href="#"
+                    @endif>
                     <div class="d-flex align-items-center">
                         <p class="mb-0">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -17,7 +22,7 @@
                         <p class="mb-0">{{ \Carbon\Carbon::parse($tarea->inico)->format('Y-m-d') }} a {{ \Carbon\Carbon::parse($tarea->fin)->format('Y-m-d') }}</p>
                     </div>
                 </a>
-                @if (auth()->user()->hasRole('Docente'))
+                @if (auth()->user()->hasRole('Docente') && $materia->estado == 1)
                     <div class="dropdown">
                         <span class="h5" id="dropdownMenuButton15" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <svg class="icon-24" xmlns="http://www.w3.org/2000/svg" width="24"  viewBox="0 0 24 24" fill="none">

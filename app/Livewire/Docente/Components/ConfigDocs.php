@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Docente\Components;
 
+use App\Models\CursoHabilitado;
 use App\Models\DocumentoCurso;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -12,8 +13,10 @@ class ConfigDocs extends Component
     use WithFileUploads;
     #[Validate(['files.*' => 'file|max:1024'])]
     public $idCurso, $files = [], $filesCurso;
+    public CursoHabilitado $materia;
     public function mount($id) {
         $this->idCurso = $id;
+        $this->materia = CursoHabilitado::find($id);
         $this->archivosCurso();
     }
     public function render()

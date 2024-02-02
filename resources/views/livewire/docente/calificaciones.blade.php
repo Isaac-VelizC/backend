@@ -17,7 +17,7 @@
             <div class="card">
                 <div class="header-title d-flex align-items-center justify-content-between flex-wrap">    
                     <h4 class="card-title mb-0">Calificaciones</h4>
-                    @if (auth()->user()->hasRole('Docente'))
+                    @if (auth()->user()->hasRole('Docente') && $materia->estado == 1)
                         <div class="d-flex align-items-center flex-wrap">
                             <button class="btn btn-secondary" type="button" wire:click='calcularNotas'>Calcular Notas</button>
                         </div>
@@ -34,7 +34,13 @@
                                     <tr>
                                         <th></th>
                                         @foreach ($trabajos as $tra)
-                                            <th class="text-center"><a href="{{ route('show.tarea', $tra->id )}}">{{ $tra->titulo }}</a></th>
+                                            <th class="text-center">
+                                                @if ($materia->estado == 1)
+                                                    <a href="{{ route('show.tarea', $tra->id )}}">{{ $tra->titulo }}</a>
+                                                @else
+                                                    {{ $tra->titulo }}
+                                                @endif
+                                            </th>
                                         @endforeach
                                         <th class="text-center">Total</th>
                                     </tr>

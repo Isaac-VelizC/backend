@@ -39,7 +39,10 @@
                    <div class="form-group">
                       <ul class="list-group list-group-flush">
                         @foreach ($ingredientes as $item)
-                            <li class="list-group-item d-flex justify-content-between align-items-start" wire:click='seleccionarIngrediente({{ $item->id }})'>
+                            <li class="list-group-item d-flex justify-content-between align-items-start"
+                            @if ($curso->estado == 1)
+                                wire:click='seleccionarIngrediente({{ $item->id }})'
+                            @endif>
                                 <div class="fw-bold">{{ $item->ingrediente->nombre }}</div>
                                 <span>{{ $item->cantidad }}</span>
                             </li>
@@ -131,10 +134,12 @@
                                             </div>
                                             <div>
                                                 <span class="badge bg-primary rounded-pill">{{ $uso->fecha }}</span>
-                                                <a href="#" wire:click='borrarIngrediente({{ $uso->id }})' 
-                                                    {{ now()->diffInHours($uso->fecha) >= 2 ? 'disabled' : '' }}>
-                                                    <i class="bi bi-trash"></i>
-                                                 </a>
+                                                @if ($curso->estado == 1)
+                                                    <a href="#" wire:click='borrarIngrediente({{ $uso->id }})' 
+                                                        {{ now()->diffInHours($uso->fecha) >= 2 ? 'disabled' : '' }}>
+                                                        <i class="bi bi-trash"></i>
+                                                    </a>
+                                                @endif
                                             </div>
                                         </li>
                                     @endforeach

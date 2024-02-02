@@ -73,6 +73,7 @@
                                     </li>
                                 @endrole
                             </ul>
+
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-trabajo1" role="tabpanel" aria-labelledby="pills-trabajo-tab1">
                                     @livewire('docente.trabajos', ['id' => $curso->id])

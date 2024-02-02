@@ -22,6 +22,7 @@ class Calificaciones extends Component
     public $trabajos, $notas;
     public function mount($id) {
         $this->idCurso = $id;
+        $this->materia = CursoHabilitado::find($id);
         $curso = CursoHabilitado::with('inscripciones.estudiante')->find($id);
         $this->estudiantes = $curso->inscripciones->pluck('estudiante');
         $this->trabajos = Trabajo::where('curso_id', $curso->id)->where('estado', '!=', 'Borrador')->get();

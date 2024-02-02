@@ -6,7 +6,7 @@
                     <div class="d-flex align-items-center justify-content-between flex-wrap">
                         <p></p>
                         <div class="d-flex align-items-center flex-wrap">
-                            @if (auth()->user()->hasRole('Docente'))
+                            @if (auth()->user()->hasRole('Docente') && $materia->estado == 1)
                                 <div class="dropdown me-3">
                                     <span class="dropdown-toggle align-items-center d-flex" id="dropdownMenuButton04" role="button" data-bs-toggle="dropdown">
                                         <svg class="icon-20" xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" fill="none">
@@ -53,7 +53,7 @@
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
-                @if (auth()->user()->hasRole('Docente'))
+                @if (auth()->user()->hasRole('Docente') && $materia->estado == 1)
                     <div class="accordion-item">
                         <div id="collapseThree" class="accordion-collapse collapse {{ $AD3 ? 'show' : '' }}" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
@@ -140,16 +140,18 @@
         @foreach ($temasCurso as $item)
             <div class="d-flex align-items-center justify-content-between flex-wrap">
                 <h4 class="mb-3">{{ $item->tema }}</h4>
-                @role('Docente')
-                    <div>
-                        <a type="button" class="btn btn-light" href="{{ route('docente.edit.tema', $item->id) }}">
-                            <i class="bi bi-pencil"></i>
-                        </a>
-                        <button type="button" class="btn btn-danger" wire:click='borrarTema({{$item->id}})'>
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </div>
-                @endrole
+                @if ($materia->estado == 1)
+                    @role('Docente')
+                        <div>
+                            <a type="button" class="btn btn-light" href="{{ route('docente.edit.tema', $item->id) }}">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <button type="button" class="btn btn-danger" wire:click='borrarTema({{$item->id}})'>
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    @endrole
+                @endif
             </div>
             <p>{!! $item->descripcion !!}</p>
             @if ($item->files && count($item->files) > 0)
