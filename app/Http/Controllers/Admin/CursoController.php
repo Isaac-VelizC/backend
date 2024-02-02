@@ -9,6 +9,7 @@ use App\Models\Calificacion;
 use App\Models\Curso;
 use App\Models\CursoHabilitado;
 use App\Models\Docente;
+use App\Models\Estudiante;
 use App\Models\Horario;
 use App\Models\Programacion;
 use App\Models\Semestre;
@@ -190,31 +191,61 @@ class CursoController extends Controller
         return redirect()->route('admin.cursos.activos')->with('success', 'El curso se actualizo con éxito.');
     }
     public function gestionarEstadoCurso(Request $request, $id) {
-        $curso = CursoHabilitado::updateOrCreate(['id' => $id], ['estado' => $request->estado]);
-        $calificaciones = Calificacion::where('curso_id', $id)->get();
-        // Iterar sobre cada calificación
-        foreach ($calificaciones as $calificacion) {
-            // Obtener el modelo Programacion relacionado con esta calificación
-            $programacion = Programacion::where('estudiante_id', $calificacion->estudiante_id)
-                ->where('curso_id', $id)
-                ->first();
-            // Actualizar el estado de la materia según la calificación
-            if ($calificacion->calificacion > 51) {
-                $programacion->estado_materia = 'Aprobado';
-            } else {
-                $programacion->estado_materia = 'Reprobado';
+        try {
+            $curso = CursoHabilitado::updateOrCreate(['id' => $id], ['estado' => $request->estado]);
+            $calificaciones = Calificacion::where('curso_id', $id)->get();
+    
+            foreach ($calificaciones as $calificacion) {
+                $programacion = Programacion::where('estudiante_id', $calificacion->estudiante_id)
+                    ->where('curso_id', $id)
+                    ->first();
+    
+                if ($programacion) {
+                    if ($calificacion->calificacion > 51) {
+                        $programacion->estado_materia = 'Aprobado';
+                    } else {
+                        $programacion->estado_materia = 'Reprobado';
+                    }
+    
+                    $programacion->save();
+    
+                    $estadoAprobado = $this->verificarSemestre($curso->curso->semestre_id, $calificacion->estudiante_id);
+    
+                    if ($estadoAprobado) {
+                        Estudiante::find($calificacion->estudiante_id)->increment('grado');
+                    }
+                }
             }
-            // Guardar los cambios
-            $programacion->save();
+    
+            $action = $request->estado ? 'alta' : 'baja';
+            return back()->with('success', "La materia {$curso->nombre} se dio de {$action} con éxito.");
+        } catch (\Exception $e) {
+            return back()->with('error', 'Ocurrió un error al gestionar el estado del curso: ' . $e->getMessage());
         }
-        $action = $request->estado ? 'alta' : 'baja';
-        return back()->with('success', "La materia {$curso->nombre} se dio de {$action} con éxito.");
     }
-    private function verificarSemestre($idSemestre) {
-        $cursos = Curso::where('semestre_id', $idSemestre)->get();
-        CursoHabilitado::all();
-        Programacion::where();
+    
+    public function verificarSemestre($idSemestre, $idEstudiante) {
+        try {
+            $cursos = Curso::where('semestre_id', $idSemestre)->get();
+    
+            $calificaciones = Programacion::whereIn('curso_id', $cursos->pluck('id'))
+                ->where('estudiante_id', $idEstudiante)
+                ->where('estado_materia', 'Aprobado')
+                ->get();
+    
+            foreach ($cursos as $curso) {
+                $calificacion = $calificaciones->where('curso_id', $curso->id)->first();
+    
+                if (!$calificacion) {
+                    return false;
+                }
+            }
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
+    
     public function deleteCursoActivo($id) {
         CursoHabilitado::where('id', $id)->delete();
         return back()->with('success', 'La materia se eliminó con éxito.');
