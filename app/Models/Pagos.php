@@ -34,6 +34,6 @@ class Pagos extends Model
     }
     public function pagoMensual()
     {
-        return $this->belongsTo(PagoMensual::class, 'pagoMes_id');
+        return $this->belongsTo(PagoMensual::class, 'pagoMes_id', 'id');
     }
 }

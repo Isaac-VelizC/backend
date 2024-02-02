@@ -5,7 +5,7 @@
                 <div class="col-md-12">
                     <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
                         <div>
-                            <h1>Reporte de Estudiantes</h1>
+                            <h1>Reporte de Pagos</h1>
                         </div>
                     </div>
                 </div>
@@ -33,14 +33,6 @@
                                                     <option value="" selected>Seleccionar Estudiante</option>
                                                     @foreach ($estudiantes as $est)
                                                         <option value="{{ $est->id }}">{{ $est->persona->nombre }} {{ $est->persona->ap_paterno }} {{ $est->persona->ap_materno }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col">
-                                                <select wire:model='selectForma' class="form-select">
-                                                    <option value="" selected>Seleccionar Tipo</option>
-                                                    @foreach ($formasPago as $item)
-                                                        <option value="{{ $item->id }}">{{ $item->nombre }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -74,7 +66,7 @@
                                         <hr>
                                         <div class="row">
                                             <div class="text-center">
-                                                <button type="button" class="btn btn-primary btn-sm">Cancelar</button>
+                                                <button type="button" class="btn btn-primary btn-sm" wire:click='resetForm'>Cancelar</button>
                                                 <button type="submit" class="btn btn-secondary btn-sm">Buscar</button>
                                             </div>
                                         </div>
@@ -100,9 +92,13 @@
                                             @foreach ($resultados as $item)
                                                 <tr>
                                                     <td>{{ $item->estudiante->persona->nombre }} {{ $item->estudiante->persona->ap_paterno }} {{ $item->estudiante->persona->ap_materno }}</td>
-                                                    <td>{{ $item->monto }}Bs.</td>
-                                                    <td>{{ \Carbon\Carbon::create()->month($item->pagoMensual->mes)->locale('es_ES')->monthName }} {{ $item->pagoMensual->anio }}</td>
-                                                    <td>{{ $item->pagoMensual->anio }}</td>
+                                                    @if ($item->pago)
+                                                        <td>{{ $item->pago->monto }}Bs.</td>
+                                                    @else
+                                                        <td>No pago</td>
+                                                    @endif
+                                                    <td>{{ \Carbon\Carbon::create()->month($item->mes)->locale('es_ES')->monthName }}</td>
+                                                    <td>{{ $item->anio }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($item->fecha)->locale('es_ES')->isoFormat('LL') }}</td>
                                                 </tr>
                                             @endforeach

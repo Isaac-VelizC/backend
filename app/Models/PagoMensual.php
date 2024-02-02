@@ -17,4 +17,10 @@ class PagoMensual extends Model
     {
         return $this->belongsTo(Estudiante::class);
     }
+    
+    public function pago()
+    {
+        return $this->belongsTo(Pagos::class, 'id', 'pagoMes_id');
+    }
+
 }

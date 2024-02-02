@@ -24,4 +24,5 @@ class Programacion extends Model
     {
         return $this->belongsTo(CursoHabilitado::class, 'curso_id');
     }
+    
 }
