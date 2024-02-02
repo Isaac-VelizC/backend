@@ -11,6 +11,7 @@ use App\Http\Controllers\Estudent\EstudianteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\PagosController;
 use App\Http\Controllers\BackupController;
+use App\Http\Controllers\Docente\RecetaController;
 use App\Http\Controllers\InfoController;
 use App\Livewire\Admin\AdminInfo;
 use App\Livewire\Admin\EvaluacionDocente;
@@ -188,5 +189,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/send-whatsapp', [InfoController::class, 'sendWhatsAppMessage']);
 
     Route::get('/suma', [CocinaController::class, 'suma']);
+
+    Route::get('/generar-receta/add', [RecetaController::class, 'listRecetasGeneradas'])->name('receta.generadas.list');
 
 });

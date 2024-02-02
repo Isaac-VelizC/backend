@@ -10,6 +10,7 @@
                     <div class="d-flex align-items-center justify-content-between flex-wrap text-black">
                         <h4>{{ Breadcrumbs::render('recetas.all') }}</h4>
                         <div class="d-flex align-items-center flex-wrap">
+                            <a class="btn btn-sm btn-icon btn-light" href="{{ route('receta.generadas.list') }}">Recetas Generadas</a>
                             <a class="btn btn-sm btn-icon btn-light" href="{{ route('recetas.add') }}">
                                 <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
                                     <path d="M8.742 2.397c.82-.861 1.977-1.397 3.258-1.397 1.282 0 2.439.536 3.258 1.397.699-.257 1.454-.397 2.242-.397 3.587
@@ -51,12 +52,12 @@
                         <div class="row">
                             <div class="mb-3">
                                 <div class="form-check">
-                                    <input type="radio" name="tipoPlato" value="Platos" class="form-check-input" id="disabledRadio1" checked>
+                                    <input type="radio" name="tipoPlato" value="cena" class="form-check-input" id="disabledRadio1" checked>
                                     <label class="form-check-label" for="disabledRadio1">Platos</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="radio" name="tipoPlato" value="Postres" class="form-check-input" id="disabledRadio2">
-                                    <label class="form-check-label" for="disabledRadio2">Postres</label>
+                                    <input type="radio" name="tipoPlato" value="Postre" class="form-check-input" id="disabledRadio2">
+                                    <label class="form-check-label" for="disabledRadio2">Postre</label>
                                 </div>
                             </div>
                             @error('tipoPlato')
@@ -75,7 +76,23 @@
                         </div>
                     </form>
                     <hr>
-                    <p>{{ $output ?? 'nada' }}</p>
+                    @if ($recetas)
+                        @foreach ($recetas as $receta)
+                            <div class="receta">
+                                <h4>{{ $receta['titulo'] }}</h4> {{-- Título de la receta --}}
+                                <ul>
+                                    @foreach ($receta['ingredientes'] as $ingrediente)
+                                        <li>{{ $ingrediente }}</li> {{-- Ingredientes --}}
+                                    @endforeach
+                                </ul>
+                                <ol>
+                                    @foreach ($receta['pasos'] as $paso)
+                                        <li>{{ $paso }}</li> {{-- Pasos de preparación --}}
+                                    @endforeach
+                                </ol>
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>
