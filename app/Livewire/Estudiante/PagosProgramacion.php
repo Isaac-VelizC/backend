@@ -34,7 +34,7 @@ class PagosProgramacion extends Component
         try {
             setlocale(LC_TIME, 'es_ES.UTF-8', 'Spanish_Spain.1252');
             $pagosPendientes = PagoMensual::where('estudiante_id', $this->estudiante->id)
-                ->where('pagado', false)
+                ->where('pagado', true)
                 ->get();
             $metodoPago = MetodoPago::find(1);
             foreach ($pagosPendientes as $pagoPendiente) {

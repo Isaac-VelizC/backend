@@ -20,7 +20,7 @@
                             <div class="row">
                                <div class="col-lg-12">
                                   <div class="form-group">
-                                     <label for="email" class="form-label">E-mail o Username</label>
+                                     <label for="email" class="form-label">Usuario</label>
                                      <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required aria-describedby="email" autocomplete="email" autofocus>
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
@@ -54,17 +54,6 @@
                             </div>
                             <div class="d-flex justify-content-center">
                                <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
-                            </div>
-                            <p class="text-center my-3">¿O iniciar sesión con otras cuentas?</p>
-                            <div class="d-flex justify-content-center">
-                               <ul class="list-group list-group-horizontal list-group-flush">
-                                  <li class="list-group-item border-0 pb-0">
-                                     <a href="#"><img src="../../assets/images/brands/fb.svg" alt="fb"></a>
-                                  </li>
-                                  <li class="list-group-item border-0 pb-0">
-                                     <a href="#"><img src="../../assets/images/brands/gm.svg" alt="gm"></a>
-                                  </li>
-                               </ul>
                             </div>
                          </form>
                       </div>
