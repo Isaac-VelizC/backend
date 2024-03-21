@@ -15739,7 +15739,7 @@ thead, tbody, tfoot, tr, td, th {
   color: #dee2e6;
 }
 .iq-navbar.nav-glass .navbar-nav .caption .caption-title {
-  color: #ffffff;
+  color: #000000;
 }
 .iq-navbar.nav-glass .navbar-nav .caption .caption-sub-title {
   color: #dee2e6;
@@ -25295,4 +25295,44 @@ pre[class*=language-] {
     max-width: 100%;
     min-width: 260px;
   }
+}
+
+
+input.defaultCheckbox::before {
+	/*content: url(../src/assets/svg/checked.svg); */
+	color: #D1AFFD;
+	opacity: 0; 
+	height: 16px; 
+	width: 16px;
+	position: absolute; 
+	left: 50%;
+	transform: translate(-50%, 0px);
+} 
+
+input:checked.defaultCheckbox::before { 
+	opacity: 1;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    z-index: -1;
+}
+  
+/* Track */
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #c85904;
+    opacity: 10px;
+    border-radius: 10px;
+}
+/* Handle */
+::-webkit-scrollbar-thumb:hover{
+    background: #a45500;
+    opacity: 10px;
+    border-radius: 10px;
 }

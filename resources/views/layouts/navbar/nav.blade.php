@@ -44,7 +44,7 @@
           <ul class="mb-2 navbar-nav ms-auto align-items-center navbar-list mb-lg-0">
             <li class="nav-item dropdown">
               <a class="py-0 nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="{{ asset(Auth::user()->persona->photo != 'user.jpg' ? 'storage/' . Auth::user()->persona->photo : 'img/user.jpg') }}" alt="User-Profile" class="theme-color-default-img img-fluid avatar avatar-50 avatar-rounded">
+                <img src="{{ asset(Auth::user()->persona->photo != 'user.jpg' ? 'storage/' . Auth::user()->persona->photo : 'img/user.jpg') }}" alt="User-Profile" class=" img-fluid avatar avatar-50 avatar-rounded">
                 <div class="caption ms-3 d-none d-md-block ">
                   <h6 class="mb-0 caption-title">{{ Auth::user()->name }}</h6>
                       @foreach(Auth::user()->getRoleNames()->toArray() as $role)
@@ -55,9 +55,7 @@
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li>
                   <a class="dropdown-item" href="{{ route('users.profile') }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                      <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm7.753 18.305c-.261-.586-.789-.991-1.871-1.241-2.293-.529-4.428-.993-3.393-2.945 3.145-5.942.833-9.119-2.489-9.119-3.388 0-5.644 3.299-2.489 9.119 1.066 1.964-1.148 2.427-3.393 2.945-1.084.25-1.608.658-1.867 1.246-1.405-1.723-2.251-3.919-2.251-6.31 0-5.514 4.486-10 10-10s10 4.486 10 10c0 2.389-.845 4.583-2.247 6.305z"/>
-                    </svg>
+                    <i class="bi bi-person-circle"></i>
                     Ver Perfil
                   </a>
                 </li>
@@ -65,9 +63,7 @@
                 <li>
                   <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                   document.getElementById('logout-form').submit();">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                      <path d="M8 10v-5l8 7-8 7v-5h-8v-4h8zm2-8v2h12v16h-12v2h14v-20h-14z"/>
-                    </svg>
+                    <i class="bi bi-box-arrow-right"></i>
                     Salir
                   </a>
                   <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

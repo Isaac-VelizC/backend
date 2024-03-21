@@ -120,8 +120,8 @@ class CocinaController extends Controller
             $ingredientes = Ingrediente::whereIn('id', $tags)->pluck('nombre')->toArray();
     
             // Construir la pregunta para OpenAI
-            $question = 'Genera una receta de tipo ' . $request->tipoPlato . ' con los siguientes ingredientes: ' . implode(', ', $ingredientes) . '. Incluye los pasos de preparación, el tiempo estimado de preparación y la cantidad de porciones.';
-    
+            $question = "¿Podrías crear una receta de " . $request->tipoPlato . " utilizando " . implode(', ', $ingredientes) . " como ingredientes? Por favor, incluye los pasos de preparación, el tiempo estimado de preparación y la cantidad de porciones. 
+            Además, ¿puedes proporcionar la receta en una estructura HTML, mostrando los pasos de manera organizada?";
             // Enviar la consulta a OpenAI
             $response = OpenAI::chat()->create([
                 'model' => 'gpt-3.5-turbo-0301',
@@ -131,13 +131,13 @@ class CocinaController extends Controller
             ]);
     
             // Procesar la respuesta
+            // Procesar la respuesta
             $answer = trim($response['choices'][0]['message']['content']);
-            //$recetas = explode("\n", $answer);}
-            $recetas = $this->procesarRespuestaOpenAI($answer);
-            RecetaGenerada::create([
+            $recetas = $answer;
+            //$recetas = $this->procesarRespuestaOpenAI($answer);
+            /*RecetaGenerada::create([
                 'receta' => $recetas,
-            ]);
-    
+            ]);*/
             // Devolver la respuesta a la vista
             return view('admin.recetas.index', ['question' => $question, 'recetas' => $recetas]);
         } catch (\Illuminate\Validation\ValidationException $e) {

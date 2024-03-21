@@ -17,13 +17,23 @@
     <link rel='stylesheet' href='{{ asset('assets/vendor/fullcalendar/daygrid/main.css')}}' />
     <link rel='stylesheet' href='{{ asset('assets/vendor/fullcalendar/timegrid/main.css')}}' />
     <link rel='stylesheet' href='{{ asset('assets/vendor/fullcalendar/list/main.css')}}' />
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../assets/images/favicon.ico" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/aos/dist/aos.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/hope-ui.min.css?v=2.0.0')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/custom.min.css?v=2.0.0')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/dark.min.css')}}"/>
+    <link rel="stylesheet" href="{{ asset('assets/css/customizer.min.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/rtl.min.css')}}"/>
+    
     <script>
         var baseUrl = {!! json_encode(url('/')) !!}
     </script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     @livewireStyles
 </head>
-<body>
+<body class="  ">
+      <!-- loader END -->
     @if (auth()->check())
         @if (in_array('Estudiante', Auth::user()->getRoleNames()->toArray()))
             @include('layouts.navbar.sidebar.estud')
@@ -37,7 +47,7 @@
             @yield('content')
             @role('Admin')
                 <div class="btn-download">
-                    <a class="btn btn-light px-3 py-2" href="{{ route('admin.backup.db_igla') }}">
+                    <a class="btn btn-light px-3 py-2" href="#">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <path d="M15.836 7.353c-.793-.828-1.931-1.44-3.27-1.628l.211-1.492-3.097 2.02 2.465 2.57.202-1.486c.86.15 1.515.509 
                             1.96.972 1.035 1.081.919 2.73-.453 3.625-1.299.847-3.182.664-4.216-.415-.727-.758-.938-1.852-.183-2.846l-1.297-1.352c-1.605 
@@ -86,6 +96,11 @@
     <script src='{{ asset('assets/vendor/fullcalendar/interaction/main.js')}}'></script>
     <script src='{{ asset('assets/js/plugins/calender.js')}}'></script>
     <script src="{{ asset('assets/js/select2.min.js')}}"></script>
+    <script src="{{ asset('/assets/js/plugins/setting.js')}}"></script>
+    <script src="{{ asset('/assets/js/plugins/fslightbox.js')}}"></script>
+    <script src="{{ asset('/assets/js/plugins/form-wizard.js')}}"></script>
+    <script src="{{ asset('/assets/vendor/aos/dist/aos.js')}}"></script>
+    
     <script>
         function mostrarBarraProgreso() {
             document.getElementById('barraProgreso').style.display = 'block';

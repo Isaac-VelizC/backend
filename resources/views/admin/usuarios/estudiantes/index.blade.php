@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="position-relative iq-banner">
-   <div class="iq-navbar-header" style="height: 150px;">
+   <div class="iq-navbar-header" style="height: 215px;">
       <div class="container-fluid iq-container">
             <div class="row">
                <div class="col-md-12">
@@ -18,7 +18,7 @@
             </div>
       </div>
       <div class="iq-header-img">
-         <img src="{{ asset('img/fondo2.jpg') }}" alt="header" class="theme-color-default-img img-fluid w-100 h-100 animated-scaleX">
+         <img src="{{ asset('img/fondo2.jpg') }}" alt="header" class="img-fluid w-100 h-100 animated-scaleX">
       </div>
    </div>
 </div>

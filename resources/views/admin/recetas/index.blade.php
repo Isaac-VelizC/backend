@@ -77,21 +77,7 @@
                     </form>
                     <hr>
                     @if ($recetas)
-                        @foreach ($recetas as $receta)
-                            <div class="receta">
-                                <h4>{{ $receta['titulo'] }}</h4> {{-- Título de la receta --}}
-                                <ul>
-                                    @foreach ($receta['ingredientes'] as $ingrediente)
-                                        <li>{{ $ingrediente }}</li> {{-- Ingredientes --}}
-                                    @endforeach
-                                </ul>
-                                <ol>
-                                    @foreach ($receta['pasos'] as $paso)
-                                        <li>{{ $paso }}</li> {{-- Pasos de preparación --}}
-                                    @endforeach
-                                </ol>
-                            </div>
-                        @endforeach
+                        {!! $recetas !!}
                     @endif
                 </div>
             </div>

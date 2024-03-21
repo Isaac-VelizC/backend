@@ -30,6 +30,7 @@ use App\Livewire\Estudiante\CalificarTarea;
 use App\Livewire\Estudiante\SubirTarea;
 use App\Livewire\ProfilePage;
 use App\Livewire\Trabajos\ShowTarea;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -57,7 +58,10 @@ Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::middleware(['auth', 'role:Admin|Secretario/a'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.home');
     Route::get('/gestionar/permisos/admin', GestionPermisos::class)->name('admin.gestion.permisos');
-    Route::get('/backup', [BackupController::class, 'downloadBackup'])->name('admin.backup.db_igla');
+    Route::get('/backup', function() {
+        Artisan::call('backup:run'); 
+      });
+    //Route::get('/backup', [BackupController::class, 'downloadBackup'])->name('admin.backup.db_igla');
     Route::get('/admin-estudiantes', [UsersController::class, 'estudiantesAll'])->name('admin.estudinte');
     Route::get('/admin-inscripcions', [UsersController::class, 'formInscripcion'])->name('admin.inscripcion');
     Route::post('/admin-inscripcions/store', [UsersController::class, 'inscripcion'])->name('admin.inscripcion.store');
