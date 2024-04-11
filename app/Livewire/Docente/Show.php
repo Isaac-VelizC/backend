@@ -4,6 +4,7 @@ namespace App\Livewire\Docente;
 
 use App\Models\NumTelefono;
 use App\Models\Persona;
+use App\Models\Personal;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
@@ -20,6 +21,7 @@ class Show extends Component
         'genero' => '',
         'telefono' => '',
         'email' => '',
+        'cargo' => '',
     ];
 
     public function mount($id) {
@@ -36,11 +38,11 @@ class Show extends Component
         $this->docenteEdit['materno'] = $this->item->ap_materno;
         $this->docenteEdit['cedula'] = $this->item->ci;
         $this->docenteEdit['genero'] = $this->item->genero;
-        $this->docenteEdit['telefono'] = optional($this->item->numTelefono)->numero ?? '';
+        $this->docenteEdit['telefono'] = $this->item->numero ?? '';
         $this->docenteEdit['email'] = $this->item->email ?? $this->item->user->email;
+        $this->docenteEdit['cargo'] = $this->item->cargo ? $this->item->personal->cargo : '';
     }
-    public function render()
-    {
+    public function render() {
         return view('livewire.docente.show')->extends('layouts.app')
         ->section('content');
     }
@@ -65,6 +67,7 @@ class Show extends Component
             'docenteEdit.genero' => 'required|in:Mujer,Hombre',
             'docenteEdit.telefono' => 'nullable|string|regex:/^[0-9+()-]{8,15}$/',
             'docenteEdit.email' => 'required|email|unique:personas,email,' . $this->idDocente,
+            'docenteEdit.cargo' => 'nullable|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
         ];
         $this->validate($rules);
         try {
@@ -75,15 +78,19 @@ class Show extends Component
                 'ci' => $this->docenteEdit['cedula'],
                 'genero' => $this->docenteEdit['genero'],
                 'email' => $this->docenteEdit['email'],
+                'numero' => $this->docenteEdit['telefono']
             ]);
-            NumTelefono::updateOrCreate(
-                ['id_persona' => $this->idDocente],
-                ['numero' => $this->docenteEdit['telefono']]
-            );
-    
+            if ($this->item->rol == 'P') {
+                $rols = Personal::where('persona_id', $this->idDocente)->first();
+                if (!$rols) {
+                    return back()->with('success', 'Personal no encontrado.');
+                }
+                $rols->cargo = $this->docenteEdit['cargo'];
+                $rols->save();
+            }
             return back()->with('success', 'La información se actualizó con éxito.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Hubo un problema al actualizar la información del docente.');
+            return back()->with('error', 'Hubo un problema al actualizar la información.');
         }
     }
 }

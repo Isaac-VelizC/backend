@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Curso;
 use App\Models\CursoHabilitado;
 use App\Models\EvalRespuestas;
+use App\Models\Materia;
 use App\Models\Persona;
 use App\Models\Programacion;
 use App\Models\RespuestaEstudiante;
@@ -16,8 +17,7 @@ class EstudianteController extends Controller
 {
     private $idEst;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware(function ($request, $next) {
             $this->idEst = auth()->user()->persona->estudiante->id;
             return $next($request);
@@ -57,9 +57,10 @@ class EstudianteController extends Controller
                     'porcentaje' => $porcentaje
                 ];
             });
+            
 
-            $cursosPorSemestres = Curso::select('semestres.nombre as nombre_semestre', 'cursos.*')
-                ->join('semestres', 'cursos.semestre_id', '=', 'semestres.id')
+            $cursosPorSemestres = Materia::select('semestres.nombre as nombre_semestre', 'materias.*')
+                ->join('semestres', 'materias.semestre_id', '=', 'semestres.id')
                 ->orderBy('semestres.id')
                 ->get();
 
@@ -70,7 +71,9 @@ class EstudianteController extends Controller
             return view('estudiante.cursos.index', compact('events', 'cursosPorSemestres', 'cursosProgramados'));
 
         } catch (\Exception $e) {
-            return view('estudiante.error');
+            $message = $e->getMessage();
+            dd($message);
+            return view('estudiante.error', compact($message));
         }
     }
 

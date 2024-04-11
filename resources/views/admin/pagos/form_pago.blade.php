@@ -69,7 +69,12 @@
                                                 </div>
                                                 <div class="form-group col-lg-3">
                                                     <label class="form-label"><span class="text-danger">*</span> Monto:</label>
-                                                    <input type="number" step="0.01" class="form-control" name="monto" value="{{ old('monto') }}" placeholder="Bs." required>
+                                                    <select class="form-select mb-3 shadow-none" name="monto" required>
+                                                        <option value="" selected disabled>Monto de Pago</option>
+                                                        @foreach ($metodo as $met)
+                                                            <option value="{{ $met->id }}">{{ $met->nombre }} - {{ $met->monto }}</option>
+                                                        @endforeach
+                                                    </select>
                                                     @error('monto')
                                                         <div class="alert alert-danger">{{ $message }}</div>
                                                     @enderror

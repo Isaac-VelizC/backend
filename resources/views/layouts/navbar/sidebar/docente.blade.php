@@ -48,26 +48,31 @@
                     <ul class="sub-nav collapse" id="sidebar-receta" data-bs-parent="#sidebar-menu">
                         <li class="nav-item">
                             <a class="nav-link {{ Route::is('admin.ingredientes') ? 'active' : '' }}" href="{{ route('admin.ingredientes') }}">
-                                <i class="bi bi-basket icon"></i>
+                                <i class="icon">
+                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                        <g>
+                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                        </g>
+                                    </svg>
+                                </i>
                                 <i class="sidenav-mini-icon"> LR </i>
                                 <span class="item-name">Lista Recetas</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ Route::is('admin.recetas') ? 'active' : '' }}" href="{{ route('admin.recetas') }}">
-                                <i class="bi bi-journals icon"></i>
+                                <i class="icon">
+                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                        <g>
+                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                        </g>
+                                    </svg>
+                                </i>
                                 <i class="sidenav-mini-icon"> AR </i>
                                 <span class="item-name">Agregar Recetas</span>
                             </a>
                         </li>
                     </ul>
-                </li>
-                <li><hr class="hr-horizontal"></li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                          <i class="bi bi-postcard"></i>
-                          <span class="item-name">Publicaciones</span>
-                    </a>
                 </li>
             </ul>
           </div>

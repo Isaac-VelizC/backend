@@ -82,44 +82,4 @@
        </div>
     </div>
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const formulario = document.getElementById('formHabilitarDesabilitar');
-        const editarBtn = document.getElementById('editarBtn');
-        const guardarBtn = document.getElementById('guardarBtn');
-        const cancelarBtn = document.getElementById('cancelarBtn');
-        const generoSelect = document.getElementById('generoSelect');
-        const campos = formulario.querySelectorAll('input');
-        const valoresOriginales = {};
-        campos.forEach(function (campo) {
-            valoresOriginales[campo.name] = campo.value;
-        });
-        valoresOriginales['generoSelect'] = generoSelect.value;
-        function restaurarValoresOriginales() {
-            campos.forEach(function (campo) {
-                campo.value = valoresOriginales[campo.name];
-            });
-            generoSelect.value = valoresOriginales['generoSelect'];
-        }
-        // Función para habilitar o deshabilitar todos los campos y el select
-        function habilitarDesabilitarCampos(habilitar) {
-            campos.forEach(function (campo) {
-                campo.disabled = !habilitar;
-            });
-            generoSelect.disabled = !habilitar;
-            editarBtn.style.display = habilitar ? 'none' : 'block';
-            guardarBtn.style.display = habilitar ? 'block' : 'none';
-            cancelarBtn.style.display = habilitar ? 'block' : 'none';
-        }
-        // Manejar eventos de clic
-        editarBtn.addEventListener('click', function () {
-            habilitarDesabilitarCampos(true); // Habilitar
-        });
-        cancelarBtn.addEventListener('click', function () {
-            restaurarValoresOriginales();
-            habilitarDesabilitarCampos(false);
-        });
-        habilitarDesabilitarCampos(false);
-    });
-</script>
 @endsection

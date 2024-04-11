@@ -81,9 +81,9 @@
                            <td><a href="{{ route('admin.P.show', [$item->persona->id]) }}">{{ $item->persona->nombre }} {{ $item->persona->ap_paterno }} {{ $item->persona->ap_materno }}</a>
                            </td>
                             <td>{{ $item->persona->ci }}</td>
-                            <td><a href="#">{{ $item->persona->user->email }}</a></td>
+                            <td><a href="#">{{ $item->persona->user->email ?? $item->persona->email }}</a></td>
                             <td>{{ $item->persona->numTelefono->numero ?? 'N/A' }}</td>
-                            <td><p>{{ $item->persona->user->getRoleNames()->first() }}</p></td>
+                            <td><p>{{ $item->persona->user ? optional($item->persona->user)->getRoleNames()->first() : 'Personal' }}</p></td>
                               @if ($item->estado == true)
                                  <td><p> <span class="badge rounded-pill bg-info text-white">Activo</span></p></td>
                               @else

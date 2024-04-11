@@ -11,6 +11,7 @@ use App\Models\CursoHabilitado;
 use App\Models\Docente;
 use App\Models\Estudiante;
 use App\Models\Horario;
+use App\Models\Materia;
 use App\Models\Programacion;
 use App\Models\Semestre;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class CursoController extends Controller
 {
     public function index() {
-        $cursos = Curso::all();
+        $cursos = Materia::all();
         $modulos = Semestre::all();
         return view('admin.cursos.index', compact('cursos', 'modulos'));
     }
@@ -31,7 +32,7 @@ class CursoController extends Controller
                 'descripcion' => 'nullable|string|max:255',
                 'dependencia' => 'nullable|numeric|exists:cursos,id'
             ]);
-            $curso = new Curso();
+            $curso = new Materia();
             $curso->nombre = $request->nombre;
             $curso->semestre_id = $request->semestre;
             $curso->color = $request->color;
@@ -44,15 +45,15 @@ class CursoController extends Controller
         }
     }
     public function darBajaCurso($id) {
-        $curso = Curso::updateOrCreate(['id' => $id], ['estado' => false]);
+        $curso = Materia::updateOrCreate(['id' => $id], ['estado' => false]);
         return back()->with('success', 'La materia '. $curso->nombre .' se dio de baja con éxito.');
     }
     public function deleteCurso($id) {
-        Curso::where('id', $id)->delete();
+        Materia::where('id', $id)->delete();
         return back()->with('success', 'La materia se elimino con éxito.');
     }
     public function darAltaCurso($id) {
-        $curso = Curso::updateOrCreate(['id' => $id], ['estado' => true]);
+        $curso = Materia::updateOrCreate(['id' => $id], ['estado' => true]);
         return back()->with('success', 'La materia '. $curso->nombre .' se dio de alta con éxito.');
     }
     public function actualizarCurso(Request $request, $id) {
@@ -63,7 +64,7 @@ class CursoController extends Controller
                 'descripcion' => 'nullable|string|max:255',
                 'dependencia' => 'nullable|numeric|exists:cursos,id'
             ]);
-            $curso = Curso::findOrFail($id);
+            $curso = Materia::findOrFail($id);
             $curso->update([
                 'nombre' => $request->nombre,
                 'semestre_id' => $request->semestre,
@@ -81,14 +82,14 @@ class CursoController extends Controller
         $docentes = Docente::where('estado', true)->get();
         $aulas = Aula::where('estado', true)->get();
         $horarios = Horario::all();
-        $materia = Curso::find($id);
+        $materia = Materia::find($id);
         $isEditing = false;
         return view('admin.cursos.habilitar', compact('materia', 'docentes', 'aulas', 'horarios', 'isEditing'));
     }
     public function asignarGuardarCurso(Request $request) {
         $rules = [
             'docente' => 'required|string|max:255|exists:docentes,id',
-            'curso' => 'required|numeric|exists:cursos,id',
+            'curso' => 'required|numeric|exists:materias,id',
             'horario' => 'required|numeric|exists:horarios,id',
             'aula' => 'required|numeric|exists:aulas,id',
             'fechaInicio' => 'required|date',
@@ -117,7 +118,7 @@ class CursoController extends Controller
         $curso = new CursoHabilitado();
         $curso->fill([
         'docente_id' => $request->docente,
-        'curso_id' => $request->curso,
+        'materia_id' => $request->curso,
         'responsable_id' => auth()->user()->id,
         'aula_id' => $request->aula,
         'cupo' => $request->cupo,
@@ -126,7 +127,7 @@ class CursoController extends Controller
         'fecha_fin' => $request->fechaFin,
         ]);
         $curso->save();
-        return redirect()->route('admin.cursos.activos')->with('success', 'El curso se habilito con éxito.');
+        return redirect()->route('admin.cursos.activos')->with('success', 'La materia se habilito con éxito.');
     }
     public function cursosActivos() {
         $cursos = CursoHabilitado::all();
@@ -143,14 +144,14 @@ class CursoController extends Controller
         $aulas = Aula::where('estado', true)->get();
         $horarios = Horario::all();
         $asignado = CursoHabilitado::find($id);
-        $materia = Curso::find($asignado->curso_id);
+        $materia = Materia::find($asignado->materia_id);
         $isEditing = true;
         return view('admin.cursos.habilitar', compact('docentes', 'materia', 'horarios', 'isEditing', 'asignado', 'aulas'));
     }
     public function asignarActualizarCurso(Request $request, $id) {
         $this->validate($request, [
             'docente' => 'string|max:255|exists:docentes,id',
-            'curso' => 'required|numeric|exists:cursos,id',
+            'curso' => 'required|numeric|exists:materias,id',
             'horario' => 'required|numeric|exists:horarios,id',
             'aula' => 'numeric|exists:aulas,id',
             'fechaInicio' => 'required|date',
@@ -181,7 +182,7 @@ class CursoController extends Controller
         $curso = CursoHabilitado::find($id);
         $curso->update([
             'docente_id' => $request->docente ?? $curso->docente_id,
-            'curso_id' => $request->curso,
+            'materia_id' => $request->curso,
             'aula_id' => $request->aula ?? $curso->aula_id,
             'cupo' => $request->cupo,
             'horario_id' => $request->horario,
@@ -218,7 +219,7 @@ class CursoController extends Controller
             }
     
             $action = $request->estado ? 'alta' : 'baja';
-            return back()->with('success', "La materia {$curso->nombre} se dio de {$action} con éxito.");
+            return back()->with('success', "La materia ".$curso->curso->nombre." se dio de {$action} con éxito.");
         } catch (\Exception $e) {
             return back()->with('error', 'Ocurrió un error al gestionar el estado del curso: ' . $e->getMessage());
         }
@@ -252,7 +253,7 @@ class CursoController extends Controller
     }
     public function exportarCurso() {
         try {
-            $cursos = Curso::with('semestre')
+            $cursos = Materia::with('semestre')
             ->select('nombre', 'color', 'semestre_id', 'estado')
             ->get();
             if ($cursos->isEmpty()) {
@@ -301,7 +302,55 @@ class CursoController extends Controller
     }
     public function obtenerCursosAnteriores(Request $request) {
         $semestreId = $request->input('semestreId');
-        $cursos = Curso::where('semestre_id', '<=', $semestreId)->get();
+        $cursos = Materia::where('semestre_id', '<=', $semestreId)->get();
         return response()->json(['cursos' => $cursos]);
     }
+
+    public function pageProgramarEstudiantes($id) {
+        $materia = CursoHabilitado::find($id);
+        // Obtener todos los estudiantes que están activos y en el mismo grado que la materia, pero que aún no están programados en la materia actual
+        $estudiantes = Estudiante::where('estado', 1)
+                                 ->where('grado', $materia->curso->semestre_id)
+                                 ->whereNotIn('id', function ($query) use ($materia) {
+                                    $query->select('estudiante_id')
+                                          ->from('programacions')
+                                          ->where('curso_id', $materia->id);
+                                 })
+                                 ->get();
+    
+        return view('admin.cursos.programar_estud', compact('estudiantes', 'materia'));
+    }
+    
+    public function programarEstudiantesMateria(Request $request) {
+        try {
+            // Obtener el ID del responsable (usuario autenticado)
+            $responsableId = auth()->user()->id;
+            // Obtener el ID del curso desde la solicitud
+            $cursoId = $request->id_materia;
+            // Obtener los IDs de los estudiantes seleccionados desde la solicitud
+            $estudiantesSeleccionados = $request->estudiantes;
+            // Verificar si ya existe una programación para cada estudiante en la materia
+            foreach ($estudiantesSeleccionados as $estudianteId) {
+                // Verificar si ya existe una programación para este estudiante en esta materia
+                $programacionExistente = Programacion::where('estudiante_id', $estudianteId)
+                                                      ->where('curso_id', $cursoId)
+                                                      ->exists();
+                // Si no existe, crear una nueva programación
+                if (!$programacionExistente) {
+                    Programacion::create([
+                        'estudiante_id' => $estudianteId,
+                        'responsable_id' => $responsableId,
+                        'curso_id' => $cursoId,
+                    ]);
+                }
+            }
+    
+            // Devolver una respuesta JSON con un mensaje de éxito
+            return response()->json(['success' => true, 'message' => 'Estudiantes programados exitosamente.']);
+        } catch (\Throwable $th) {
+            // Devolver una respuesta JSON con un mensaje de error
+            return response()->json(['success' => false, 'message' => 'Error al programar los estudiantes: ' . $th->getMessage()]);
+        }
+    }
+    
 }

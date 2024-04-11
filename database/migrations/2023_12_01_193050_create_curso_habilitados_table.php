@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('docente_id')->nullable();
             $table->foreign('docente_id')->references('id')->on('docentes')->onDelete('restrict');
-            $table->unsignedBigInteger('curso_id');
-            $table->foreign('curso_id')->references('id')->on('cursos')->onDelete('cascade');
+            $table->unsignedBigInteger('materia_id');
+            $table->foreign('materia_id')->references('id')->on('materias')->onDelete('cascade');
             $table->unsignedBigInteger('responsable_id');
             $table->foreign('responsable_id')->references('id')->on('users')->onDelete('restrict');
             $table->unsignedBigInteger('horario_id')->nullable();

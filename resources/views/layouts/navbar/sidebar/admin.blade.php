@@ -91,7 +91,7 @@
                     <li class="nav-item">
                         <a class="nav-link {{ Route::is('admin.cursos.activos') ? 'active' : '' }}" href="{{ route('admin.cursos.activos') }}">
                             <i class="bi bi-bookshelf"></i>
-                            <span class="item-name">Cursos</span>
+                            <span class="item-name">Materias</span>
                         </a>
                     </li>
                 @endcan
@@ -195,43 +195,10 @@
                         </li>
                     @endcan
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-receta" role="button" aria-expanded="false" aria-controls="sidebar-receta">
-                            <i class="bi bi-list"></i>
-                            <span class="item-name">Recetas</span>
-                            <i class="right-icon">
-                                <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </i>
+                        <a class="nav-link {{ Route::is('admin.ingredientes') ? 'active' : '' }}" href="{{ route('admin.ingredientes') }}">
+                            <i class="bi bi-journals icon"></i>
+                            <span class="item-name">Lista Recetas</span>
                         </a>
-                        <ul class="sub-nav collapse" id="sidebar-receta" data-bs-parent="#sidebar-menu">
-                            <li class="nav-item">
-                                <a class="nav-link {{ Route::is('admin.ingredientes') ? 'active' : '' }}" href="{{ route('admin.ingredientes') }}">
-                                    <i class="icon">
-                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                            </g>
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon"> LR </i>
-                                    <span class="item-name">Lista Recetas</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ Route::is('admin.recetas') ? 'active' : '' }}" href="{{ route('admin.recetas') }}">
-                                    <i class="icon">
-                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                            </g>
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon"> AR </i>
-                                    <span class="item-name">Agregar Recetas</span>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
                   <li><hr class="hr-horizontal"></li>
                   @role('Admin')

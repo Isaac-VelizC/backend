@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\InfoController;
 use App\Models\Estudiante;
 use App\Models\FormaPago;
+use App\Models\MetodoPago;
 use App\Models\Pagos;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -32,26 +33,31 @@ class PagosController extends Controller
     }
     public function formPagos() {
         $formaPagos = FormaPago::all();
+        $metodo = MetodoPago::all();
         $fecha = now()->toDateString();
-        return view('admin.pagos.form_pago', compact('formaPagos', 'fecha'));
+        return view('admin.pagos.form_pago', compact('formaPagos', 'fecha', 'metodo'));
     }
     public function storePagosSimples(Request $request) {
         $rules = [
             'forma' => 'required|numeric|exists:formas_pagos,id',
             'estudiante' => 'required|numeric|exists:estudiantes,id',
             'fecha' => 'required|date',
-            'monto' => 'required|min:1',
+            'monto' => 'required|numeric',
             'descripcion' => 'nullable|string',
         ];
         $request->validate($rules);
         try {
+            $mot = MetodoPago::find($request->monto);
+            if (!$mot) {
+                return back()->with('error', 'No existe el monto de pago.');
+            }
             Pagos::create([
                 'responsable_id' => auth()->user()->id,
                 'est_id' => $request->estudiante,
                 'forma_id' => $request->forma,
-                'metodo_id' => 1,
+                'metodo_id' => $request->monto,
                 'fecha' => $request->fecha,
-                'monto' => $request->monto,
+                'monto' => $mot->monto,
                 'comentario' => $request->descripcion
             ]);
             $estudi = Estudiante::find($request->estudiante);

@@ -20,11 +20,9 @@
                             <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="visually-hidden">Toggle Dropdown</span>
                             </button>
-                            @if ($item->fecha_ini > \Carbon\Carbon::now())
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="{{ Route('admin.borrar.curso.activo', [$itemId]) }}">Eliminar</a></li>
                                 </ul>
-                            @endif
                         </div>
                    </form>
              </div>

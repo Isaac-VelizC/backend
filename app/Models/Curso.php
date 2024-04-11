@@ -11,14 +11,10 @@ class Curso extends Model
     public $timestamps = false;
     protected $table = "cursos";
     protected $primaryKey = "id";
-    protected $fillable = ['nombre', 'semestre_id', 'color', 'estado', 'dependencia','descripcion'];
+    protected $fillable = ['nombre', 'cupo', 'color', 'estado', 'habilit','descripcion', 'fecha'];
 
-    public function aula()
+    public function participantes()
     {
-        return $this->belongsTo(Aula::class, 'aula_id');
-    }
-    public function semestre()
-    {
-        return $this->belongsTo(Semestre::class, 'semestre_id');
+        return $this->hasMany(Participante::class, 'curso_id');
     }
 }

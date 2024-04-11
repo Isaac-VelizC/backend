@@ -11,7 +11,7 @@ use Livewire\Component;
 class EstudianteContacto extends Component
 {
     public Persona $persona;
-    public $num, $isEditing = false;
+    public $isEditing = false;
     public $contactId = '', $idEstudiante;
 
     public $contactoEdit = [
@@ -27,7 +27,6 @@ class EstudianteContacto extends Component
     public function mount(Estudiante $estudiante) {
         if ($estudiante->contact_id != null) {
             $contacto = Contacto::find($estudiante->contact_id);
-            $this->num = NumTelefono::where('id_persona', $contacto->persona_id)->first();
             $this->contactId = $contacto->id;
             $this->persona = Persona::find($contacto->persona_id);
             $this->edit();
@@ -43,7 +42,7 @@ class EstudianteContacto extends Component
         $this->contactoEdit['materno'] = $this->persona->ap_materno;
         $this->contactoEdit['cedula'] = $this->persona->ci;
         $this->contactoEdit['genero'] = $this->persona->genero;
-        $this->contactoEdit['celular'] = $this->num->numero;  
+        $this->contactoEdit['celular'] = $this->persona->numero;  
         $this->contactoEdit['email'] = $this->persona->email;
         $this->isEditing = true;
     }
@@ -53,7 +52,7 @@ class EstudianteContacto extends Component
             'contactoEdit.nombre' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
             'contactoEdit.paterno' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
             'contactoEdit.materno' => 'nullable|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
-            'contactoEdit.cedula' => 'required|string|regex:/^\d{7}(?:-[0-9A-Z]{1,2})?$/|min:7|unique:personas,ci,' . $this->persona->id,
+            'contactoEdit.cedula' => 'required|string|regex:/^\d{7,9}(?:-[0-9A-Z]{1,2})?$/|min:7|unique:personas,ci,' . $this->persona->id,
             'contactoEdit.genero' => 'required|in:Mujer,Hombre,Otro',
             'contactoEdit.email' => 'nullable|email|unique:personas,email,' . $this->persona->id,
         ];
@@ -65,11 +64,8 @@ class EstudianteContacto extends Component
             'ci' => $this->contactoEdit['cedula'],
             'genero' => $this->contactoEdit['genero'],
             'email' => $this->contactoEdit['email'],
+            'numero' => $this->contactoEdit['celular']
         ]);
-    
-        $this->persona->numTelefono()->updateOrInsert(
-            ['numero' => $this->contactoEdit['celular']]
-        );
         session()->flash('success', 'La informacion del contacto se actualizo con éxito.');
     }
 
@@ -79,7 +75,7 @@ class EstudianteContacto extends Component
                 'contactoEdit.nombre' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
                 'contactoEdit.paterno' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
                 'contactoEdit.materno' => 'nullable|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
-                'contactoEdit.cedula' => 'required|string|regex:/^\d{7}(?:-[0-9A-Z]{1,2})?$/|min:7|unique:personas,ci',
+                'contactoEdit.cedula' => 'required|string|regex:/^\d{7,9}(?:-[0-9A-Z]{1,2})?$/|min:7|unique:personas,ci',
                 'contactoEdit.genero' => 'required|in:Mujer,Hombre,Otro',
                 'contactoEdit.email' => 'nullable|email|unique:personas,email',
             ];
@@ -92,9 +88,6 @@ class EstudianteContacto extends Component
                 'ci' => $this->contactoEdit['cedula'],
                 'genero' => $this->contactoEdit['genero'],
                 'email' => $this->contactoEdit['email'],
-            ]);
-            // Asociar número de teléfono a la nueva persona
-            $persona->numTelefono()->create([
                 'numero' => $this->contactoEdit['celular']
             ]);
             // Crear un nuevo contacto asociado a la persona
@@ -102,7 +95,7 @@ class EstudianteContacto extends Component
             // Actualizar el ID del contacto en el estudiante
             Estudiante::find($this->idEstudiante)->update(['contact_id' => $contac->id]);
             $this->isEditing = false;
-            return back();
+            return back()->with('success', 'La información se actualizó con éxito.');
         } catch (\Exception $e) {
             session()->flash('error', 'Hubo un error al procesar la solicitud: ' . $e->getMessage());
         }

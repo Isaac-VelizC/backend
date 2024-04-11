@@ -12,7 +12,7 @@ class CursoHabilitado extends Model
     protected $table = "curso_habilitados";
     protected $primaryKey = "id";
     protected $fillable = ['docente_id',
-        'curso_id',
+        'materia_id',
         'responsable_id',
         'horario_id',
         'aula_id',
@@ -34,7 +34,7 @@ class CursoHabilitado extends Model
     }
     public function curso()
     {
-        return $this->belongsTo(Curso::class, 'curso_id');
+        return $this->belongsTo(Materia::class, 'materia_id');
     }
     public function docente()
     {

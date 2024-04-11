@@ -74,9 +74,9 @@
                                                                <span><b>{{ $curso->nombre }}</b></span>
                                                             </div>
                                                          </div>
-                                                         @if ($cursosProgramados->contains('curso_id', $curso->id))
+                                                         @if ($cursosProgramados->contains('materia_id', $curso->id))
                                                             @php
-                                                               $cursoProgramado = $cursosProgramados->where('curso_id', $curso->id)->first();
+                                                               $cursoProgramado = $cursosProgramados->where('materia_id', $curso->id)->first();
                                                                if ($cursoProgramado) {
                                                                      $nota = optional($cursoProgramado->calificaciones->where('estudiante_id', auth()->user()->persona->estudiante->id)->first())->calificacion ?: null;
                                                                      $fechaInicio = new DateTime($cursoProgramado->fecha_ini);

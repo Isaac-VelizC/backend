@@ -107,6 +107,9 @@ Route::middleware(['auth', 'role:Admin|Secretario/a'])->group(function () {
     Route::get('/borrar/cambiar-estado/{id}', [CursoController::class, 'deleteCursoActivo'])->name('admin.borrar.curso.activo');
     Route::get('/ruta/del/server/para/obtener/disponibilidad', [CursoController::class, 'obtenerDisponibilidad']);
     Route::get('/ruta/al/servidor/para/obtener/cursos', [CursoController::class, 'obtenerCursosAnteriores']);
+    ///Programar Materias
+    Route::get('/programar/materia/estudiantes/{id}', [CursoController::class, 'pageProgramarEstudiantes'])->name('programar.materia');
+    Route::post('/save/materia/estudiantes', [CursoController::class, 'programarEstudiantesMateria'])->name('save.programar.materia');
     ///pagos
     Route::get('/admin-pagos-all', [PagosController::class, 'allPagos'])->name('admin.lista.pagos');
     Route::get('/pagos/formulario/hjfse', [PagosController::class, 'formPagos'])->name('admin.create.pago');

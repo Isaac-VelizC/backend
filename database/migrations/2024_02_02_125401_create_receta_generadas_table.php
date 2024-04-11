@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('receta_generadas', function (Blueprint $table) {
             $table->id();
-            $table->text('receta')->nullable();
+            $table->string('titulo');
+            $table->string('ingredientes');
+            $table->string('pasos');
+            $table->text('descripcion')->nullable();
+            $table->string('porciones')->nullable();
             $table->dateTime('fecha')->default(now());
             $table->boolean('estado')->default(true);
             $table->timestamps();

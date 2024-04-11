@@ -19,6 +19,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Role::create(['name' => 'Estudiante']);
         Role::create(['name' => 'Docente']);
         Role::create(['name' => 'Secretario/a']);
+        Role::create(['name' => 'Personal']);
 
         // Crear permisos
         Permission::create(['name' => 'GestionUsers']);

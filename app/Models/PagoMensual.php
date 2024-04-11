@@ -11,7 +11,7 @@ class PagoMensual extends Model
     public $timestamps = false;
     protected $table = "pago_mensuals";
     protected $primaryKey = "id";
-    protected $fillable = ['estudiante_id', 'mes', 'anio', 'fecha', 'pagado'];
+    protected $fillable = ['estudiante_id', 'metodo_id', 'pago_id', 'mes', 'anio', 'fecha', 'pagado', 'codigo', 'monto'];
 
     public function estudiante()
     {
@@ -20,7 +20,12 @@ class PagoMensual extends Model
     
     public function pago()
     {
-        return $this->belongsTo(Pagos::class, 'id', 'pagoMes_id');
+        return $this->belongsTo(Pagos::class, 'id', 'pago_id');
+    }
+
+    public function metodoPago()
+    {
+        return $this->belongsTo(MetodoPago::class, 'metodo_id');
     }
 
 }

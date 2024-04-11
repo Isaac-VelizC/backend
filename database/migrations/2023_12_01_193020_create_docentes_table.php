@@ -16,6 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('id_persona')->nullable();
             $table->foreign('id_persona')->references('id')->on('personas')->onDelete('cascade');
             $table->boolean('estado')->default(true);
+            $table->decimal('sueldo', 10, 2)->nullable();
+            $table->dateTime('f_contrato')->default(now());
+            $table->dateTime('f_salida')->nullable();
+            $table->string('rol')->default('D');
             $table->timestamps();
             $table->softDeletes();
         });

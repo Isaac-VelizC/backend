@@ -25,9 +25,8 @@ class UsersSeeder extends Seeder
             'email' => 'teagan.croft@gmail.com',
             'password' => bcrypt('TeaganCroft'),
         ]);
-
-        Persona::create(['user_id' => '1', 'nombre' => 'Isak', 'ci' => '8513398', 'genero' => 'Hombre', 'rol' => 'P']);
-        Persona::create(['user_id' => '2', 'nombre' => 'Teagan', 'ci' => '6962512', 'genero' => 'Mujer', 'rol' => 'P']);
+        Persona::create(['user_id' => '1', 'nombre' => 'Isak', 'ap_paterno' => 'Veliz', 'ci' => '8513398', 'genero' => 'Hombre', 'rol' => 'P']);
+        Persona::create(['user_id' => '2', 'nombre' => 'Teagan', 'ap_paterno' => 'Croft', 'ci' => '6962512', 'genero' => 'Mujer', 'rol' => 'P']);
         Personal::create(['persona_id' => '2']);
         Personal::create(['persona_id' => '1']);
         

@@ -48,10 +48,10 @@ class UsersController extends Controller
             'nombre' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
             'ap_pat' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
             'ap_mat' => 'nullable|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
-            'ci' => 'required|string|regex:/^\d{7}(?:-[0-9A-Z]{1,2})?$/|unique:personas,ci|min:7',
+            'ci' => 'required|string|regex:/^\d{7,8}(?:-[0-9A-Z]{1,2})?$/|unique:personas,ci|min:7',
             'genero' => 'required|in:Mujer,Hombre,Otro',
             'email' => 'required|email|unique:personas,email',
-            'telefono' => 'required|string|regex:/^[0-9+()-]{8,15}$/|unique:num_telefonos,numero',
+            'telefono' => 'required|string|regex:/^[0-9+()-]{8,15}$/|unique:personas,numero',
             'direccion' => 'required|string',
             'fNac' => 'required|date|before:-5 years',
             'horario' => 'required|integer|exists:horarios,id',
@@ -63,10 +63,10 @@ class UsersController extends Controller
                 'nombreC' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
                 'ap_patC' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
                 'ap_matC' => 'nullable|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
-                'ciC' => 'required|string|regex:/^\d{7}(?:-[0-9A-Z]{1,2})?$/|unique:personas,ci|min:7',
+                'ciC' => 'required|string|regex:/^\d{7,8}(?:-[0-9A-Z]{1,2})?$/|unique:personas,ci|min:7',
                 'generoC' => 'required|in:Mujer,Hombre,Otro',
                 'emailC' => 'nullable|email',
-                'telefonoC' => 'nullable|string|regex:/^[0-9+()-]{8,15}$/|unique:num_telefonos,numero',
+                'telefonoC' => 'nullable|string|regex:/^[0-9+()-]{8,15}$/|unique:personas,numero',
             ];
             $request->validate($rulesContacto);    
             if ($request->filled('telefonoC')) {
@@ -95,11 +95,8 @@ class UsersController extends Controller
                 'ci' => $request->ci,
                 'genero' => $request->genero,
                 'email' => $request->email,
+                'numero' => $request->telefono
             ]);
-    
-            // Agregar el número de teléfono si existe
-            $telefono = $request->telefono ? ['numero' => $request->telefono] : null;
-            $pers->numTelefono()->create($telefono);
     
             // Crear la información del estudiante
             if ($request->filled('nombreC')) {
@@ -132,12 +129,9 @@ class UsersController extends Controller
                 'ci' => $request->ciC,
                 'genero' => $request->generoC,
                 'email' => $request->emailC,
+                'numero' => $request->telefonoC,
                 'rol' => 'F',
             ]);
-
-            $telefono = ['numero' => $request->telefonoC];
-            $contacto->numTelefono()->create($telefono);
-
             $contac = $contacto->contacto()->create();
             return $contac->id;
         } catch (\Throwable $th) {
@@ -150,10 +144,10 @@ class UsersController extends Controller
             'nombre' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
             'ap_pat' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
             'ap_mat' => 'nullable|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
-            'ci' => 'required|string|regex:/^\d{7}(?:-[0-9A-Z]{1,2})?$/|unique:personas,ci|min:7',
+            'ci' => 'required|string|regex:/^\d{7,8}(?:-[0-9A-Z]{1,2})?$/|unique:personas,ci|min:7',
             'genero' => 'required|in:Mujer,Hombre,Otro',
             'email' => 'required|email|unique:personas,email',
-            'telefono' => 'nullable|string|regex:/^[0-9+()-]{8,15}$/|unique:num_telefonos,numero',
+            'telefono' => 'nullable|string|regex:/^[0-9+()-]{8,15}$/|unique:personas,numero',
         ];
         $request->validate($rules);
         try {
@@ -170,10 +164,8 @@ class UsersController extends Controller
                 'ci' => $request->ci,
                 'genero' => $request->genero,
                 'email' => $request->email,
-                'rol' => 'D'
-            ]);
-            $pers->numTelefono()->create([
                 'numero' => $request->telefono,
+                'rol' => 'D'
             ]);
             $pers->docente()->create();
             return redirect()->route('admin.docentes')->with('success', 'La información se guardo con éxito.');
@@ -181,6 +173,7 @@ class UsersController extends Controller
             return back()->with('error', 'Ocurrio un error. Por favor, inténtalo de nuevo. Detalles: ' . $th->getMessage());
         }
     }
+
     public function gestionarEstadoEstudiante($id, $accion) {
         $persona = Persona::find($id);
         if ($persona) {
@@ -231,11 +224,11 @@ class UsersController extends Controller
                     'nombre' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
                     'ap_pat' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
                     'ap_mat' => 'nullable|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
-                    'ci' => 'required|string|regex:/^\d{7}(?:-[0-9A-Z]{1,2})?$/|min:7|unique:personas,ci,' . $estud->persona->id,
+                    'ci' => 'required|string|regex:/^\d{7,8}(?:-[0-9A-Z]{1,2})?$/|min:7|unique:personas,ci,' . $estud->persona->id,
                     'genero' => 'required|in:Mujer,Hombre,Otro',
                     'email' => 'required|email|unique:personas,email,' . $estud->persona->id,
                     'direccion' => 'required|string',
-                    'telefono' => 'nullable|string|regex:/^[0-9+()-]{8,15}$/|unique:num_telefonos,numero,' . $estud->persona->numTelefono->id,
+                    'telefono' => 'nullable|string|regex:/^[0-9+()-]{8,15}$/|unique:personas,numero,' . $estud->persona->id,
                     'fnac' => 'required|date|before:-5 years',
                     'horario' => 'required|numeric|exists:horarios,id',
                 ];
@@ -255,8 +248,8 @@ class UsersController extends Controller
             $pers->ci = $request->ci;
             $pers->genero = $request->genero;
             $pers->email = $request->email;
+            $pers->numero = $request->telefono;
             $pers->update();
-            NumTelefono::where('id_persona', $pers->id)->update(['numero' => $request->telefono]);
     
             return back()->with('success', 'La informacion se actualizo con éxito.');
         } catch (\Throwable $th) {

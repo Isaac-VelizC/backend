@@ -25297,25 +25297,10 @@ pre[class*=language-] {
   }
 }
 
-
-input.defaultCheckbox::before {
-	/*content: url(../src/assets/svg/checked.svg); */
-	color: #D1AFFD;
-	opacity: 0; 
-	height: 16px; 
-	width: 16px;
-	position: absolute; 
-	left: 50%;
-	transform: translate(-50%, 0px);
-} 
-
-input:checked.defaultCheckbox::before { 
-	opacity: 1;
-}
-
 /* width */
 ::-webkit-scrollbar {
     width: 10px;
+    height: 5px;
     z-index: -1;
 }
   

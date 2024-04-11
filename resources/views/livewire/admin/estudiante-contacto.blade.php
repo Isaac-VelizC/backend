@@ -10,6 +10,12 @@
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
+    @if(session('success'))
+        <div id="myAlert" class="alert alert-left alert-success alert-dismissible fade show mb-3 alert-fade" role="alert">
+            <span>{{ session('success') }}</span>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <div class="card-body">
         <div class="new-user-info">
             <form wire:submit.prevent="{{ $isEditing ? 'update' : 'store' }}" class="needs-validation" novalidate>

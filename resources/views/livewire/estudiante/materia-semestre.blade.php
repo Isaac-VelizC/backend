@@ -19,21 +19,22 @@
                     @if ($materias->count() > 0)
                         @foreach ($materias as $item)
                             @php
-                                $programacion = $estudiante->programados->firstWhere('cursoDocente.curso_id', $item->id);
+                                $programacion = $estudiante->programados->firstWhere('cursoDocente.materia_id', $item->id);
                                 $estado = $programacion ? $programacion->estado_materia : 'No programado';
                                 $badgeColor = $estado == 'Aprobado' ? 'bg-success' : ($estado == 'Reprobado' ? 'bg-danger' : 'bg-warning');
                             @endphp
                             <div class="col-lg-4 col-md-12">
-                                <a class="card" @if ($estado != "Aprobado")
-                                    wire:click='showMateria({{ $item->id }})'
-                                @endif>
-                                    <div class="card-body">
+                                <a class="card" 
+                                    @if ($estado != "Aprobado")
+                                        wire:click='showMateria({{ $item->id }})'
+                                    @endif>
+                                    <div class="card-body rounded-4" style="{{ $estado == 'No programado' ?: 'background: #ffd1ab'}}">
                                         <div class="d-grid mb-2">
                                             <div class="d-flex align-items-center text-black">
                                                 <p class="mb-0 h6">{{ $item->nombre }}</p>
                                             </div>
                                             <br>
-                                                <p class="h6 text-center"><span class="badge {{ $badgeColor }} text-white">{{ $estado }}</span></p>
+                                            <p class="h6 text-center"><span class="badge {{ $badgeColor }} text-white">{{ $estado }}</span></p>
                                         </div>
                                     </div>
                                 </a>

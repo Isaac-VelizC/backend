@@ -3,9 +3,9 @@
 namespace App\Livewire\Estudiante;
 
 use App\Http\Controllers\InfoController;
-use App\Models\Curso;
 use App\Models\CursoHabilitado;
 use App\Models\Estudiante;
+use App\Models\Materia;
 use App\Models\Programacion;
 use App\Models\Semestre;
 use Carbon\Carbon;
@@ -23,7 +23,7 @@ class MateriaSemestre extends Component
         $this->semestres = Semestre::all();
         $primerSemetre = Semestre::all()->first();
         $this->semestreActivo = $primerSemetre->id;
-        $this->materias = Curso::where('semestre_id', $primerSemetre->id)->get();
+        $this->materias = Materia::where('semestre_id', $primerSemetre->id)->get();
     }
     
     public function render()
@@ -32,14 +32,14 @@ class MateriaSemestre extends Component
     }
     public function cursosSemestre($id) {
         $this->idSemestre = $id;
-        $this->materias = Curso::where('semestre_id', $id)->get();
+        $this->materias = Materia::where('semestre_id', $id)->get();
         $this->semestreActivo = $id;
     }
 
     public function showMateria($id) {
         try {
-            $this->curso = Curso::find($id);
-            $this->CursoHabilitado = CursoHabilitado::where('curso_id', $this->curso->id)->where('estado', true)->get();
+            $this->curso = Materia::find($id);
+            $this->CursoHabilitado = CursoHabilitado::where('materia_id', $this->curso->id)->where('estado', true)->get();
             $this->dispatch('materiaShown', $id);
         } catch (\Exception $e) {
             session()->flash('error', 'Error al obtener los datos: ' . $e->getMessage());
@@ -65,7 +65,7 @@ class MateriaSemestre extends Component
     }
     
     public function desprogramarCurso($id) {
-        Programacion::find($id)->delete();
+        Programacion::where('curso_id', $id)->where('estudiante_id', $this->idEst)->delete();
         $this->curso;
         $this->CursoHabilitado = [];
         session()->flash('success', 'Materia desprogramada');

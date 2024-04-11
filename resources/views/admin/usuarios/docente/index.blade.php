@@ -60,12 +60,12 @@
                  <table id="datatableDocentes" class="table table-striped" data-toggle="data-table">
                     <thead>
                        <tr>
-                        <th>Nombre Completo</th>
-                        <th>E-mail</th>
-                        <th>C.I.</th>
-                        <th>Genero</th>
-                        <th>Estado</th>
-                        <th></th>
+                            <th>Nombre Completo</th>
+                            <th>E-mail</th>
+                            <th>C.I.</th>
+                            <th>Telefono</th>
+                            <th>Estado</th>
+                            <td></td>
                        </tr>
                     </thead>
                     <tbody>
@@ -75,7 +75,7 @@
                                 <td><p><a href="{{ route('admin.D.show', [$item->id]) }}">{{ $item->nombre }} {{$item->ap_paterno}} {{$item->ap_materno}}</a></p></td>
                                 <td><p>{{ $item->email }}</p></td>
                                 <td><p>{{ $item->ci }}</p></td>
-                                <td><p>{{ $item->genero }}</p></td>
+                                <td><p>{{ $item->numero }}</p></td>
                                 @if ($item->estado == true)
                                     <td><p> <span class="badge rounded-pill bg-info text-white">Activo</span></p></td>
                                 @else

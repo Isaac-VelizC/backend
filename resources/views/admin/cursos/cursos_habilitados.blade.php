@@ -7,8 +7,8 @@
           <div class="col-md-12">
               <div class="flex-wrap d-flex justify-content-between align-items-center">
                   <div class="btn-group" role="group" aria-label="Basic outlined example">
-                     <a type="button" class="btn btn-outline-primary active">Cursos Habilitados</a>
-                     <a type="button" class="btn btn-outline-primary" href="{{ route('admin.cursos') }}" style="color: black">Cursos</a>
+                     <a type="button" class="btn btn-outline-primary active">Habilitados</a>
+                     <a type="button" class="btn btn-outline-primary" href="{{ route('admin.cursos') }}" style="color: black">Materias</a>
                   </div>
               </div>
           </div>
@@ -70,8 +70,11 @@
                               @endif
                            <td>
                               <div class="flex align-items-center list-user-action">
+                                 <a class="btn btn-sm btn-icon btn-gray" data-bs-toggle="tooltip" data-bs-placement="top" title="Programar" href="{{ route('programar.materia', [$item->id]) }}">
+                                    <i class="bi bi-check2-circle"></i>
+                                 </a>
                                  <a class="btn btn-sm btn-icon btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver" href="{{ route('admin.cursos.show', [$item->id]) }}">
-                                       <i class="bi bi-eye"></i>
+                                    <i class="bi bi-eye"></i>
                                  </a>
                                  <a class="btn btn-sm btn-icon btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"  href="{{ route('admin.asigando.edit', [$item->id]) }}">
                                        <i class="bi bi-pen"></i>

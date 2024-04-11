@@ -103,11 +103,11 @@
                            </li>
                            <li class="list-group-item d-flex justify-content-between align-items-start">
                               <div class="fw-bold">Celular</div>
-                              <span>{{ $info->numTelefono->numero }}</span>
+                              <span>{{ $info->numero }}</span>
                            </li>
                            <li class="list-group-item d-flex justify-content-between align-items-start">
                               <div class="fw-bold">Referencia</div>
-                              <span>{{ $famil ? $famil->numTelefono->numero : 'No tiene' }}</span>
+                              <span>{{ $famil ? $famil->numero : 'No tiene' }}</span>
                            </li>
                         </ul>
                      </div>

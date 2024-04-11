@@ -46,44 +46,44 @@
                         <form class="needs-validation" novalidate method="POST" action="{{ route('admin.inscripcion.store') }}">
                         @csrf
                         <div class="row">
-                            <div class="col-sm-12 col-lg-6">
+                            <div class="col-sm-12 col-lg-12">
                                 <div class="row">
-                                    <div class="form-group col-md-12">
+                                    <div class="form-group col-md-4">
                                         <label class="form-label" for="fname">Nombres: *</label>
-                                        <input type="text" class="form-control" id="fname" name="nombre" value="{{ old('nombre') }}" placeholder="Nombres" required>
+                                        <input type="text" class="form-control" id="fname" name="nombre" value="{{ old('nombre') }}" required>
                                     </div>
                                     @error('nombre')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
                                         <label class="form-label" for="lname">Primer Apellido:</label>
-                                        <input type="text" class="form-control" id="lname" name="ap_pat" value="{{ old('ap_pat') }}" placeholder="Apellidos">
+                                        <input type="text" class="form-control" id="lname" name="ap_pat" value="{{ old('ap_pat') }}">
                                     </div>
                                     @error('ap_pat')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
                                         <label class="form-label" for="lname">Segundo Apellido:</label>
-                                        <input type="text" class="form-control" id="lname" name="ap_mat" value="{{ old('ap_mat') }}" placeholder="Apellidos">
+                                        <input type="text" class="form-control" id="lname" name="ap_mat" value="{{ old('ap_mat') }}">
                                     </div>
                                     @error('ap_mat')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                                    <div class="form-group col-md-12">
-                                        <label class="form-label" for="cname">Cedula de Identidad: *</label>
-                                        <input type="text" class="form-control" id="cname" name="ci" value="{{ old('ci') }}" placeholder="Cedula de Identidad" required>
+                                    <div class="form-group col-md-4">
+                                        <label class="form-label" for="cname">Cedula: *</label>
+                                        <input type="text" class="form-control" id="cname" name="ci" value="{{ old('ci') }}" required>
                                     </div>
                                     @error('ci')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
                                         <label class="form-label" for="cname">Fecha Nacimiento: *</label>
-                                        <input type="date" class="form-control" id="cname" name="fNac" value="{{ old('fNac') }}" placeholder="Fecha Nacimiento" required>
+                                        <input type="date" class="form-control" id="cname" name="fNac" value="{{ old('fNac') }}" required>
                                     </div>
                                     @error('fNac')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                                    <div class="form-group col-sm-6">
+                                    <div class="form-group col-sm-4">
                                         <label class="form-label">Genero: *</label>
                                         <select name="genero" class="selectpicker form-select" data-style="py-0" value="{{ old('genero') }}" required>
                                             <option value="" disabled selected>Seleccionar</option>
@@ -95,14 +95,14 @@
                                     @error('genero')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-3">
                                         <label class="form-label" for="add1">Dirección: *</label>
-                                        <input type="text" class="form-control" id="add1" name="direccion" value="{{ old('direccion') }}" placeholder="Dirección" required>
+                                        <input type="text" class="form-control" id="add1" name="direccion" value="{{ old('direccion') }}" required>
                                     </div>
                                     @error('direccion')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                                    <div class="form-group col-sm-6">
+                                    <div class="form-group col-md-3">
                                         <label class="form-label">Horario: *</label>
                                         <select class="selectpicker form-select" data-style="py-0" name="horario" required>
                                             <option value="" disabled selected>Seleccionar</option>
@@ -118,62 +118,65 @@
                                     @error('horario')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-3">
                                         <label class="form-label" for="mobno">Numero Celular: *</label>
-                                        <input type="text" class="form-control" id="mobno" name="telefono" value="{{ old('telefono') }}" placeholder="Numero de Celular" required>
+                                        <input type="text" class="form-control" id="mobno" name="telefono" value="{{ old('telefono') }}" required>
                                     </div>
                                     @error('telefono')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-3">
                                         <label class="form-label" for="email">E mail: *</label>
-                                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" placeholder="E-mail" required>
+                                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
                                     </div>
                                     @error('email')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-lg-6">
+                            <div class="text-center">
+                                <button id="mostrarBtn" class="btn btn-link" type="button">¿Agregar contacto?</button>
+                                <button id="ocultarBtn" class="btn btn-link" type="button" style="display: none;">Ocultar</button>
+                            </div>
+                            <div id="infoContacto" class="col-sm-12 col-lg-12" style="display: none;">
                                 <h5 class="mb-3">Información de Contacto (Opcional)</h5>
                                 <div class="row">
-                                    <div class="form-group col-md-12">
+                                    <div class="form-group col-md-4">
                                         <label class="form-label" for="nomb">Nombre: *</label>
-                                        <input type="text" class="form-control" id="nomb" name="nombreC" value="{{ old('nombreC') }}" placeholder="Nombre">
+                                        <input type="text" class="form-control" id="nomb" name="nombreC" value="{{ old('nombreC') }}">
                                     </div>
                                     @error('nombreC')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
                                         <label class="form-label" for="apePC">Primer Apellido:</label>
-                                        <input type="text" class="form-control" id="apPC" name="ap_patC" value="{{ old('ap_patC') }}" placeholder="Paterno">
+                                        <input type="text" class="form-control" id="apPC" name="ap_patC" value="{{ old('ap_patC') }}">
                                     </div>
                                     @error('ap_patC')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
                                         <label class="form-label" for="apeMC">Segundo Apellido:</label>
-                                        <input type="text" class="form-control" id="apMC" name="ap_matC" value="{{ old('ap_matC') }}" placeholder="Materno">
+                                        <input type="text" class="form-control" id="apMC" name="ap_matC" value="{{ old('ap_matC') }}">
                                     </div>
                                     @error('ap_matC')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                                    <div class="form-group col-md-12">
-                                        <label class="form-label" for="ciC">Cedular de Identidad: *</label>
-                                        <input type="text" class="form-control" id="ciC" name="ciC" value="{{ old('ciC') }}" placeholder="Cedular de Identidad">
+                                    <div class="form-group col-md-3">
+                                        <label class="form-label" for="ciC">Cedula: *</label>
+                                        <input type="text" class="form-control" id="ciC" name="ciC" value="{{ old('ciC') }}">
                                     </div>
                                     @error('ciC')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                    
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-3">
                                         <label class="form-label" for="numcelC">Numero de Celular: *</label>
-                                        <input type="text" class="form-control" id="numcelC" name="telefonoC" value="{{ old('telefonoC') }}" placeholder="Numero de Celular">
+                                        <input type="text" class="form-control" id="numcelC" name="telefonoC" value="{{ old('telefonoC') }}">
                                     </div>
                                     @error('telefonoC')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                                    <div class="form-group col-sm-6">
+                                    <div class="form-group col-sm-3">
                                         <label class="form-label">Genero: *</label>
                                         <select name="generoC" class="selectpicker form-select" value="{{ old('generoC') }}" data-style="py-0">
                                             <option value="Hombre" selected>Hombre</option>
@@ -184,9 +187,9 @@
                                     @error('generoC')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                                    <div class="form-group col-md-12">
+                                    <div class="form-group col-md-3">
                                         <label class="form-label" for="emailC">Correo Electronico:</label>
-                                        <input type="text" class="form-control" id="emailC" name="emailC" value="{{ old('emailC') }}" placeholder="Correo Electronico">
+                                        <input type="text" class="form-control" id="emailC" name="emailC" value="{{ old('emailC') }}">
                                     </div>
                                     @error('emailC')
                                         <div class="alert alert-danger">{{ $message }}</div>
@@ -194,7 +197,9 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="text-center">
                             <button type="submit" class="btn btn-primary">Inscribir Estudiante</button>
+                        </div>
                         </form>
                     </div>
                 </div>
@@ -202,4 +207,28 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const mostrarBtn = document.getElementById('mostrarBtn');
+        const ocultarBtn = document.getElementById('ocultarBtn');
+        const infoContacto = document.getElementById('infoContacto');
+
+        mostrarBtn.addEventListener('click', function() {
+            infoContacto.style.display = 'block';
+            ocultarBtn.style.display = 'inline';
+            mostrarBtn.style.display = 'none';
+        });
+
+        ocultarBtn.addEventListener('click', function() {
+            infoContacto.style.display = 'none';
+            ocultarBtn.style.display = 'none';
+            mostrarBtn.style.display = 'inline';
+            // Restablecer valores de los campos de entrada
+            const camposEntrada = infoContacto.querySelectorAll('input[type="text"]');
+            camposEntrada.forEach(function(input) {
+                input.value = ''; // Restablecer valor a vacío
+            });
+        });
+    });
+</script>
 @endsection

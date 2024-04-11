@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Curso;
 use App\Models\Docente;
 use App\Models\Estudiante;
+use App\Models\Materia;
 use App\Models\Persona;
 use App\Models\User;
 use Carbon\Carbon;
@@ -26,7 +26,7 @@ class AdminController extends Controller
         $users = User::all();
         $estudiantes = Estudiante::all();
         $docentes = Docente::all();
-        $materias = Curso::all();
+        $materias = Materia::all();
         return view('admin.home', compact('users', 'estudiantes', 'docentes', 'materias'));
     }
     public function store(Request $request) {
@@ -37,38 +37,41 @@ class AdminController extends Controller
             'ci' => 'required|string|regex:/^\d{7}(?:-[0-9A-Z]{1,2})?$/|unique:personas,ci|min:7',
             'genero' => 'required|in:Mujer,Hombre,Otro',
             'email' => 'required|email|unique:personas,email',
-            'telefono' => 'nullable|string|regex:/^[0-9+()-]{8,15}$/|unique:num_telefonos,numero',
+            'telefono' => 'nullable|string|regex:/^[0-9+()-]{8,15}$/|unique:personas,numero',
             'rol' => 'required|numeric|exists:roles,id',
+            'cargo' => 'nullable|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u'
         ];
         $request->validate($rules);
         try {
-            $user = User::firstOrCreate(
-                ['name' => $this->generateUniqueUsername($request->nombre)],
-                ['email' => $request->email, 'password' => Hash::make('u.'.$request->ci)]
-            );
-            $role = Role::findById($request->rol);
-        
-            if ($role) {
-                $user->assignRole($role);
-            } else {
-                return back()->with('error', 'El rol seleccionado no existe.');
+            $user = null;
+            if ($request->acesso === 'S') {
+                $user = User::firstOrCreate(
+                    ['name' => $this->generateUniqueUsername($request->nombre)],
+                    ['email' => $request->email, 'password' => Hash::make('u.'.$request->ci)]
+                );
+                $role = Role::findById($request->rol);
+                if ($role) {
+                    $user->assignRole($role);
+                } else {
+                    return back()->with('error', 'El rol seleccionado no existe.');
+                }
             }
+            
             $pers = Persona::create([
-                'user_id' => $user->id,
+                'user_id' => optional($user)->id,
                 'nombre' => $request->nombre,
                 'ap_paterno' => $request->ap_pat,
                 'ap_materno' => $request->ap_mat,
                 'ci' => $request->ci,
                 'genero' => $request->genero,
                 'email' => $request->email,
-                'rol' => 'P'
-            ]);
-            $pers->numTelefono()->create([
                 'numero' => $request->telefono,
+                'rol' => 'P'
             ]);
             $pers->personal()->create([
                 'persona_id' => $pers->id,
-                'fecha_contratado' => Carbon::now(),
+                'f_contrato' => Carbon::now(),
+                'cargo' => $request->cargo,                
             ]);
             return redirect()->route('admin.personal')->with('success', 'La información se guardo con éxito.');
         } catch (\Throwable $th) {

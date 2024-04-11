@@ -51,8 +51,8 @@
         </div>
         <div class="card-body">
             @foreach ($categorias as $item)
-                <div class="fc-event" wire:click='edit({{$item->id}})' style="margin-bottom: 5px;background-color: {{ $item->backgroundColor }};">
-                    <span class="marquee-text tipoEvento" style="color: {{$item->textColor}};">{{ $item->nombre }}</span>
+                <div class=" rounded-2 cursor-pointer overflow-x-scroll" wire:click='edit({{$item->id}})' style="margin-bottom: 5px; background-color: {{ $item->backgroundColor }};">
+                    <span class=" px-2" style="color: {{$item->textColor}};">{{ $item->nombre }}</span>
                 </div>
             @endforeach
         </div>

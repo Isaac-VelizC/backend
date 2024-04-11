@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Aula;
-use App\Models\Curso;
+use App\Models\Materia;
 use App\Models\FormaPago;
 use App\Models\Horario;
 use App\Models\MetodoPago;
@@ -50,7 +50,7 @@ class TiposSeeder extends Seeder
         ];
         // Itera para crear registros de cursos con materias reales
         foreach ($materias as $materia) {
-            Curso::create([
+            Materia::create([
                 'nombre' => $materia,
                 'semestre_id' => rand(1, 2),
                 'color' => '#ff0000',
@@ -81,8 +81,8 @@ class TiposSeeder extends Seeder
             ]);
         }
         
-        MetodoPago::create(['nombre' => 'Cuotas', 'monto' => 450]);
-        MetodoPago::create(['nombre' => 'Total', 'monto' => 16200]);
+        MetodoPago::create(['nombre' => 'Mesual', 'monto' => 450]);
+        MetodoPago::create(['nombre' => 'Insumos', 'monto' => 70]);
         
         FormaPago::create(['nombre' => 'Transferencia Bancaria']);
         FormaPago::create(['nombre' => 'Pago en Efectivo']);

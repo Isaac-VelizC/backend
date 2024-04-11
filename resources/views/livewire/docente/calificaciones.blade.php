@@ -21,9 +21,11 @@
                         <div class="d-flex align-items-center flex-wrap">
                             <button class="btn btn-secondary" type="button" wire:click='calcularNotas'>Calcular Notas</button>
                         </div>
-                        <div class="d-flex align-items-center flex-wrap">
-                            <a class="btn btn-primary" href="{{ route('docente.tareas.criterios', $idCurso) }}">Criterios</a>
-                        </div>
+                        @role('Admin')
+                            <div class="d-flex align-items-center flex-wrap">
+                                <a class="btn btn-primary" href="{{ route('docente.tareas.criterios', $idCurso) }}">Criterios</a>
+                            </div>
+                        @endrole
                     @endif
                 </div>
                 <div class="card-body">

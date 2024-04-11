@@ -76,6 +76,10 @@ Breadcrumbs::for('Materias.create', function (BreadcrumbTrail $trail, $curso) {
     $trail->parent('Materias');
     $trail->push('Habilitar '.$curso->nombre, route('admin.asignar.curso', $curso->id));
 });
+Breadcrumbs::for('Materias.programar', function (BreadcrumbTrail $trail) {
+    $trail->parent('Materias.Habilitados');
+    $trail->push('Programar estudiantes', route('admin.cursos.activos'));
+});
 // Gestionar
 Breadcrumbs::for('Gestionar', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
