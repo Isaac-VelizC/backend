@@ -60,20 +60,20 @@
                                                                     <table align="center" cellspacing="0" cellpadding="0" border="0" width="100%">
                                                                         <tbody>
                                                                             <tr>
-                                                                                <td style="font-size:13px; font-weight:500; font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-top:12px;padding-left:15px;" valign="top">Cliente </td>
+                                                                                <td style="font-size:13px; font-weight:500; font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-top:12px;padding-left:15px;" valign="top">Fecha </td>
+                                                                                <td style="font-size:13px; font-weight:500; font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-top:12px;padding-left:15px;white-space:nowrap;" align="right" valign="top">{{ $pago->fecha }}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="font-size:13px; font-weight:500; font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-top:12px;padding-left:15px;" valign="top">Señores </td>
                                                                                 <td style="font-size:13px; font-weight:500; font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-top:12px;padding-left:15px;white-space:nowrap;" align="right" valign="top">
                                                                                     {{ $pago->estudiante->persona->nombre }} {{ $pago->estudiante->persona->ap_paterno }} {{ $pago->estudiante->persona->ap_materno }}
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
-                                                                                <td style="font-size:13px; font-weight:500; font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-top:12px;padding-left:15px;" valign="top">Cedula de Identidad </td>
+                                                                                <td style="font-size:13px; font-weight:500; font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-top:12px;padding-left:15px;" valign="top">NIT/CI </td>
                                                                                 <td style="font-size:13px; font-weight:500; font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-top:12px;padding-left:15px;white-space:nowrap;" align="right" valign="top">
                                                                                     {{ $pago->estudiante->persona->ci }}
                                                                                 </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td style="font-size:13px; font-weight:500; font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-top:12px;padding-left:15px;" valign="top">Fecha </td>
-                                                                                <td style="font-size:13px; font-weight:500; font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-top:12px;padding-left:15px;white-space:nowrap;" align="right" valign="top">{{ $pago->fecha }}</td>
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
@@ -95,11 +95,18 @@
                                                                 <td style="padding:25px 25px 15px 25px;" valign="top">
                                                                     <table align="center" cellspacing="0" cellpadding="0" border="0" width="100%">
                                                                         <tbody>
-                                                                            <tr>
-                                                                                <td style="font-size:13px; font-weight:500; font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-top:12px;white-space:nowrap;" align="left" valign="top">1</td>
-                                                                                <td style="font-size:13px; font-weight:500; font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-top:12px;padding-left:15px;" valign="top">Monto </td>
-                                                                                <td style="font-size:13px; font-weight:500; font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-top:12px;padding-left:15px;white-space:nowrap;" align="right" valign="top">{{ $pago->monto }}Bs.</td>
-                                                                            </tr>
+                                                                            @foreach ($datos as $item)
+                                                                                <tr>
+                                                                                    <td style="font-size:13px; font-weight:500; font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-top:12px;white-space:nowrap;" align="left" valign="top">{{ $item->codigo }}</td>
+                                                                                    <td style="font-size:13px; font-weight:500; font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-top:12px;padding-left:15px;" valign="top">
+                                                                                        @if($item->metodoPago)
+                                                                                            {{ $item->metodoPago->nombre }}
+                                                                                        @endif
+                                                                                    </td>
+                                                                                    <td style="font-size:13px; font-weight:500; font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-top:12px;padding-left:15px;white-space:nowrap;" align="right" valign="top">{{ $item->monto }}Bs.</td>
+                                                                                </tr>
+                                                                            @endforeach
+                                                                            
                                                                         </tbody>
                                                                     </table>
                                                                 </td>

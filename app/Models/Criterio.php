@@ -10,7 +10,7 @@ class Criterio extends Model
     use HasFactory;
     protected $table = "criterios";
     protected $primaryKey = "id";
-    protected $fillable = ['nombre', 'porcentaje', 'total', 'curso_id'];
+    protected $fillable = ['nombre', 'porcentaje', 'total'];
 
     public function categorias()
     {
@@ -19,9 +19,5 @@ class Criterio extends Model
     public function trabajos()
     {
         return $this->hasMany(Trabajo::class, 'criterio_id');
-    }
-    public function cursosHabilitado()
-    {
-        return $this->belongsTo(CursoHabilitado::class, 'curso_id');
     }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CalendarioController;
 use App\Http\Controllers\Admin\CocinaController;
+use App\Http\Controllers\Admin\CriterioController;
 use App\Http\Controllers\Admin\CursoController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Docente\CursoController as DocenteCursoController;
@@ -10,7 +11,6 @@ use App\Http\Controllers\Docente\DocenteController;
 use App\Http\Controllers\Estudent\EstudianteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\PagosController;
-use App\Http\Controllers\BackupController;
 use App\Http\Controllers\Docente\RecetaController;
 use App\Http\Controllers\InfoController;
 use App\Livewire\Admin\AdminInfo;
@@ -23,10 +23,8 @@ use App\Livewire\Admin\Informe\EstudianteReportes;
 use App\Livewire\Admin\Informe\MateriaReportes;
 use App\Livewire\Admin\Informe\PagosReportes;
 use App\Livewire\Admin\MateriaEvaluacionDocente;
-use App\Livewire\Docente\CriteriosTrabajos;
 use App\Livewire\Docente\NewReceta;
 use App\Livewire\Docente\Show;
-use App\Livewire\Estudiante\CalificarTarea;
 use App\Livewire\Estudiante\SubirTarea;
 use App\Livewire\ProfilePage;
 use App\Livewire\Trabajos\ShowTarea;
@@ -116,6 +114,7 @@ Route::middleware(['auth', 'role:Admin|Secretario/a'])->group(function () {
     Route::post('/pagos/store', [PagosController::class, 'storePagosSimples'])->name('admin.store.pago');
     Route::get('/pagos/guadar/imprimir/{id}', [PagosController::class, 'guardarImprimirPago'])->name('admin.pago.guardar.imprimir');
     Route::get('/pagos/habilitar/mes', [PagosController::class, 'habilitarPagosMes'])->name('admin.habiltar.pagos.mes');
+    Route::get('/obtener/detalles/pago/{id}', [PagosController::class, 'obtenerDetallesPago'])->name('admin.pagos.detalle');
     //Cocina
     //Acerda de IGLA
     Route::get('/informacion', [HomeController::class, 'acercaDe'])->name('admin.ajustes');
@@ -158,9 +157,8 @@ Route::middleware(['auth', 'role:Docente'])->group(function () {
     Route::get('/editar/tema/{id}', [DocenteCursoController::class, 'viewTemeEdit'])->name('docente.edit.tema');
     Route::put('/editar/tema/{id}/update', [DocenteCursoController::class, 'updateTema'])->name('docente.update.tema');
 
-    Route::get('/calificando/tarea/{id}', CalificarTarea::class)->name('calificar.tarea.estudiante');
     Route::post('/planificacion/curso/{id}', [DocenteController::class, 'planificacion'])->name('guardar.planificacion');
-    Route::get('/criterios/tareas/{id}/eval', CriteriosTrabajos::class)->name('docente.tareas.criterios');
+    
     Route::post('/selectReceta',[DocenteCursoController::class, 'selectReceta'])->name('search.recetas');
 });
 Route::middleware(['auth', 'role:Estudiante'])->group(function () {
@@ -172,6 +170,16 @@ Route::middleware(['auth', 'role:Estudiante'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/criterios/tareas/eval', [CriterioController::class, 'index'])->name('admin.tareas.criterios');
+    Route::post('/criterios/add/store', [CriterioController::class, 'criteroAdd'])->name('admin.store.criterios');
+    Route::get('/criterios/edit/{id}', [CriterioController::class, 'pageCriteroUpdate'])->name('admin.editar.criterios');
+    Route::put('/criterios/edit/update/{id}', [CriterioController::class, 'criteroUpdate'])->name('admin.update.criterios');
+    Route::delete('/criterios/delete/{id}', [CriterioController::class, 'criterioDelete'])->name('admin.delete.criterios');
+    Route::post('/criterios/add/cat/store', [CriterioController::class, 'criteroCatAdd'])->name('admin.store.cat.criterios');
+    Route::get('/criterios/edit/cat/{id}', [CriterioController::class, 'pageCriteroCatUpdate'])->name('admin.editar.cat.criterios');
+    Route::put('/criterios/edit/cat/update/{id}', [CriterioController::class, 'criteroCatUpdate'])->name('admin.update.cat.criterios');
+    Route::delete('/criterios/delete/cat/{id}', [CriterioController::class, 'criterioCatDelete'])->name('admin.delete.cat.criterios');
+    Route::get('/select/ponderacion/{id}', [CriterioController::class, 'selectPonderacion'])->name('select.ponderacion');
     //calendario
     Route::get('/calendar/mostrar', [CalendarioController::class, 'mostrar'])->name('admin.calendario.ver');
     Route::get('/calendar/inicio/fin', [CalendarioController::class, 'mostrarInicioFin'])->name('admin.calendario.ver.curso.asignar');

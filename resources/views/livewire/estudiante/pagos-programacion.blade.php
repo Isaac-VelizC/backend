@@ -16,28 +16,7 @@
            <div class="card-body p-0">
               <div class="table-responsive pricing pt-2">
                  <table class="table table-bordered mb-0">
-                    <thead>
-                       <tr>
-                        @if (count($pagosMensuales) > 0)
-                           <p class="text-center h4">Pagos Mensuales Pendientes</p>
-                           <br>
-                           @foreach ($pagosMensuales as $met)
-                              <th>
-                                 <div>
-                                    <div class="text-bold h5">{{ $met['mes'] }} {{ $met['anio'] }}</div>
-                                    <div class="d-flex justify-content-start align-items-center mt-4">
-                                       <small>Bs.</small>
-                                       <div class="mx-2 h4">{{ $met['monto'] }}</div>
-                                    </div>
-                                    <button class="btn btn-primary rounded-pill mt-3 w-100" wire:click="formPago({{ $met['idMetodo'] }}, {{ $met['id'] }}, '{{ $met['mes'] }}')">Pagar</button>
-                                 </div>
-                              </th>
-                           @endforeach
-                        @else
-                           <p class="text-center text-black">No hay pagos mensuales pendientes.</p>
-                        @endif
-                       </tr>
-                    </thead>
+                    
                     <tbody>
                         <tr>
                            <th colspan="5" class="bg-light">Fecha Pago</th>

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="position-relative iq-banner">
-    <div class="iq-navbar-header text-black" style="height: 200px;">
+    <div class="iq-navbar-header text-black" style="height: 180px;">
        <div class="container-fluid iq-container">
           <div class="row">
                 <div class="col-md-12">
@@ -18,7 +18,7 @@
     </div>
  </div>
 <div class="conatiner-fluid content-inner mt-n5 py-0">
-    <div class="row">                
+    <div class="row">
         <div class="col-sm-12 col-lg-12">
             @if(session('error'))
                 <div id="myAlert" class="alert alert-left alert-danger alert-dismissible fade show mb-3 alert-fade" role="alert">
@@ -69,16 +69,16 @@
                                                 </div>
                                                 <div class="form-group col-lg-3">
                                                     <label class="form-label"><span class="text-danger">*</span> Monto:</label>
-                                                    <select class="form-select mb-3 shadow-none" name="monto" required>
-                                                        <option value="" selected disabled>Monto de Pago</option>
-                                                        @foreach ($metodo as $met)
-                                                            <option value="{{ $met->id }}">{{ $met->nombre }} - {{ $met->monto }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                    @foreach ($metodo as $met)
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="monto[]" id="monto{{ $met->id }}" value="{{ $met->id }}">
+                                                            <label class="form-check-label" for="monto{{ $met->id }}">{{ $met->nombre }} - {{ $met->monto }}</label>
+                                                        </div>
+                                                    @endforeach
                                                     @error('monto')
                                                         <div class="alert alert-danger">{{ $message }}</div>
                                                     @enderror
-                                                </div>                            
+                                                </div>                                                                        
                                                 <div class="form-group col-lg-6">
                                                     <label class="form-label">Descripción: (Opcional) </label>
                                                     <textarea type="text" class="form-control" name="descripcion" placeholder="Escribe una breve descripción"></textarea>

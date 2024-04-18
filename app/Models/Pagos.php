@@ -27,8 +27,5 @@ class Pagos extends Model
     {
         return $this->belongsTo(FormaPago::class, 'forma_id');
     }
-    public function pagoMensuales()
-    {
-        return $this->hasMany(PagoMensual::class, 'id', 'pago_id');
-    }
+    
 }

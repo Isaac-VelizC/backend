@@ -10,6 +10,9 @@
                      <a type="button" class="btn btn-outline-primary active">Habilitados</a>
                      <a type="button" class="btn btn-outline-primary" href="{{ route('admin.cursos') }}" style="color: black">Materias</a>
                   </div>
+                  <div class="mt-2 mt-md-0">
+                     <a  href="{{ route('admin.tareas.criterios') }}" class="btn btn-primary">Criterios</a>
+                 </div>
               </div>
           </div>
       </div>

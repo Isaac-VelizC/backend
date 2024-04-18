@@ -4,6 +4,7 @@ namespace App\Livewire\Docente;
 
 use App\Models\CatCritTrabajo;
 use App\Models\CategoriaCriterio;
+use App\Models\Configuration;
 use App\Models\Criterio;
 use App\Models\CursoHabilitado;
 use App\Models\Trabajo;
@@ -11,17 +12,105 @@ use Livewire\Component;
 
 class CriteriosTrabajos extends Component
 {
+    public $criterios, $totalCursoOriginal, $totalPonderacion;
+    public $criterioSeleccionado, $tipoCriterio, $isEditing = false, $idParaEditar;
+    public $criteioEdit = ['nombre' => '', 'porcentaje' => ''];
+    public $cat = ['criterio' => '', 'nombre' => '', 'porcentaje' => ''];
+
+    public function mount() {
+        $this->criterios = Criterio::all();
+        $this->totalCursoOriginal = Configuration::find(1)->ponderacion;
+    }
+
+    public function criterioAdd() {
+        $rules = [
+            "criteioEdit.nombre" => 'required|string',
+            "criteioEdit.porcentaje" => 'required|numeric|min:5|max:100',
+            "totalPonderacion" => 'required|numeric|max:100|min:0',
+        ];
+        $this->validate($rules);
+        $this->guardarCriterio($this->criteioEdit, Criterio::class, 'criterio');
+    }
+
+    public function actualizarTotalPonderacion() {
+        if (empty($this->criteioEdit['porcentaje'])) {
+            $this->totalPonderacion = $this->totalCursoOriginal;
+        } elseif (is_numeric($this->criteioEdit['porcentaje'])) {
+            $this->totalPonderacion = $this->totalCursoOriginal - $this->criteioEdit['porcentaje'];
+            if ($this->totalPonderacion < 0 || $this->totalPonderacion > 100) {
+                session()->flash('error', 'El % no puede ser menor a 0 ni mayor al total');
+            }
+        } else {
+            session()->flash('error', 'El % no es un valor numérico.');
+        }
+    }
+
+    protected function guardarCriterio($data, $model, $tipo) {
+        try {
+            if ($this->isEditing) {
+                $instance = $model::find($this->idParaEditar);
+        
+                dd('Editar');
+                /*if ($instance) {
+                    $instance->update([
+                        'nombre' => $data['nombre'],
+                        'porcentaje' => $data['porcentaje'], 
+                        'total' => $data['porcentaje'],
+                        $claveRelacion => $valorRelacion,
+                    ]);
+            
+                    if ($tipo == 'criterio') {
+                        $this->ActualizarTotalDB($this->totalCurso);
+                    } else {
+                        $this->ActualizarTotalCat($this->totalPocentCategoria, $data['criterio']);
+                    }
+                    $this->isEditing = false;
+                    $this->idParaEditar = '';
+                }*/
+            } else {
+                $model::create([
+                    'nombre' => $data['nombre'],
+                    'porcentaje' => $data['porcentaje'], 
+                    'total' => $data['porcentaje']
+                ]);
+                if ($tipo == 'criterio' ) {
+                    $this->ActualizarTotalDB($this->totalPonderacion);
+                } else {
+                    $this->ActualizarTotalCat($this->totalPocentCategoria, $data['criterio']);
+                }
+            }
+            $this->resetForm();
+            session()->flash('success', 'Se guardó con éxito');
+        } catch (\Exception $e) {
+            session()->flash('error', $e->getMessage());
+        }
+    }
+    
+
+    public function render()
+    {
+        return view('livewire.docente.criterios-trabajos')->extends('layouts.app')->section('content');
+    }
+    
+    /*
+    private function llamadasModelos() {
+        $this->criterios =  Criterio::where('curso_id', $this->idCurso)->get();
+        //$criteriosConCategorias = Criterio::with('categorias')->get();
+        $this->categorias = CategoriaCriterio::all();
+        $this->totalCurso = $this->materia->nota_total;
+        $this->totalCursoOriginal = $this->materia->nota_total;
+        $this->totalPocentCategoria = 0;
+        $this->totalCatOriginal = 0;
+    }
     public $trabajos, $idCurso, $criterios, $categorias, $totalCurso, $totalCursoOriginal, $totalCatOriginal, $totalPocentCategoria;
     public $selectedTrabajos = [];
     public CursoHabilitado $materia;
-    public $criteioEdit = ['nombre' => '', 'porcentaje' => ''];
-    public $cat = ['criterio' => '', 'nombre' => '', 'porcentaje' => ''];
     public $criterioSeleccionado, $tipoCriterio, $isEditing = false, $idParaEditar;
     protected $listeners = ['cerrarModal'];
 
-    public function mount($id) {
-        $this->idCurso = $id;
-        $this->materia = CursoHabilitado::find($id);
+    public function mount() {
+        $this->idCurso = 1;
+        $this->materia = CursoHabilitado::find(1);
         $this->trabajosSinCriterio();
         $this->llamadasModelos();
     }
@@ -32,41 +121,12 @@ class CriteriosTrabajos extends Component
             ->whereNull('criterio_id')
             ->get();
     }
-
-    private function llamadasModelos() {
-        $this->criterios =  Criterio::where('curso_id', $this->idCurso)->get();
-        //$criteriosConCategorias = Criterio::with('categorias')->get();
-        $this->categorias = CategoriaCriterio::all();
-        $this->totalCurso = $this->materia->nota_total;
-        $this->totalCursoOriginal = $this->materia->nota_total;
-        $this->totalPocentCategoria = 0;
-        $this->totalCatOriginal = 0;
-    }
-    public function actualizarTotalCurso() {
-        if (empty($this->criteioEdit['porcentaje'])) {
-            $this->totalCurso = $this->totalCursoOriginal;
-        } elseif (is_numeric($this->criteioEdit['porcentaje'])) {
-            $this->totalCurso = $this->totalCursoOriginal - $this->criteioEdit['porcentaje'];
-            if ($this->totalCurso < 0 || $this->totalCurso > 100) {
-                session()->flash('error', 'El % no puede ser menor a 0 ni mayor al total');
-            }
-        } else {
-            session()->flash('error', 'El % no es un valor numérico.');
-        }
-    }
+    
     public function render()
     {
         return view('livewire.docente.criterios-trabajos')->extends('layouts.app')->section('content');
     }
-    public function criterioAdd() {
-        $rules = [
-            "criteioEdit.nombre" => 'required|string',
-            "criteioEdit.porcentaje" => 'required|numeric|min:5|max:100',
-            "totalCurso" => 'required|numeric|max:100|min:0',
-        ];
-        $this->validate($rules);
-        $this->guardarCriterio($this->criteioEdit, 'curso_id', $this->idCurso, Criterio::class, 'criterio');
-    }
+    
     public function categoriaAdd() {
         $rules = [
             "cat.criterio" => 'required|numeric|exists:criterios,id',
@@ -101,46 +161,6 @@ class CriteriosTrabajos extends Component
         $this->criteioEdit = ['nombre' => '', 'porcentaje' => ''];
         $this->cat = ['criterio' => '', 'nombre' => '', 'porcentaje' => ''];
         $this->llamadasModelos();
-    }
-    protected function guardarCriterio($data, $claveRelacion, $valorRelacion, $model, $tipo) {
-        try {
-            if ($this->isEditing) {
-                $instance = $model::find($this->idParaEditar);
-            
-                if ($instance) {
-                    $instance->update([
-                        'nombre' => $data['nombre'],
-                        'porcentaje' => $data['porcentaje'], 
-                        'total' => $data['porcentaje'],
-                        $claveRelacion => $valorRelacion,
-                    ]);
-            
-                    if ($tipo == 'criterio') {
-                        $this->ActualizarTotalDB($this->totalCurso);
-                    } else {
-                        $this->ActualizarTotalCat($this->totalPocentCategoria, $data['criterio']);
-                    }
-                    $this->isEditing = false;
-                    $this->idParaEditar = '';
-                }
-            } else {
-                $model::create([
-                    'nombre' => $data['nombre'],
-                    'porcentaje' => $data['porcentaje'], 
-                    'total' => $data['porcentaje'],
-                    $claveRelacion => $valorRelacion,
-                ]);
-                if ($tipo == 'criterio' ) {
-                    $this->ActualizarTotalDB($this->totalCurso);
-                } else {
-                    $this->ActualizarTotalCat($this->totalPocentCategoria, $data['criterio']);
-                }
-            }
-            $this->resetForm();
-            session()->flash('success', 'Se guardó con éxito');
-        } catch (\Exception $e) {
-            session()->flash('error', $e->getMessage());
-        }
     }
     protected function ActualizarTotalDB($nota) {
         $this->materia->update([
@@ -277,6 +297,6 @@ class CriteriosTrabajos extends Component
             // Manejo de excepciones
             session()->flash('error', $th->getMessage());
         }
-    }
+    }*/
     
 }

@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('nombre');
             $table->integer('porcentaje');
             $table->integer('total');
-            $table->unsignedBigInteger('curso_id')->nullable();
-            $table->foreign('curso_id')->references('id')->on('curso_habilitados')->onDelete('restrict');
             $table->timestamps();
         });
 

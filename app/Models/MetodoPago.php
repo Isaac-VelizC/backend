@@ -13,9 +13,9 @@ class MetodoPago extends Model
     protected $primaryKey = "id";
     protected $fillable = ['nombre', 'monto'];
     
-    public function pagos()
+    public function mensualPago()
     {
-        return $this->hasMany(Pagos::class, 'metodo_id');
+        return $this->hasMany(PagoMensual::class, 'metodo_id');
     }
 
 }

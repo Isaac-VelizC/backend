@@ -92,11 +92,7 @@
                                             @foreach ($resultados as $item)
                                                 <tr>
                                                     <td>{{ $item->estudiante->persona->nombre }} {{ $item->estudiante->persona->ap_paterno }} {{ $item->estudiante->persona->ap_materno }}</td>
-                                                    @if ($item->pago)
-                                                        <td>{{ $item->pago->monto }}Bs.</td>
-                                                    @else
-                                                        <td>No pago</td>
-                                                    @endif
+                                                    <td>{{ $item->monto }}Bs.</td>
                                                     <td>{{ \Carbon\Carbon::create()->month($item->mes)->locale('es_ES')->monthName }}</td>
                                                     <td>{{ $item->anio }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($item->fecha)->locale('es_ES')->isoFormat('LL') }}</td>

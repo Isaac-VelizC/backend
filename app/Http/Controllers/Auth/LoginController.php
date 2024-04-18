@@ -30,4 +30,16 @@ class LoginController extends Controller
         // Si el usuario no tiene un rol específico, redirige a la página de inicio
         return redirect()->route('home');
     }
+
+    /*public function username()
+    {
+        $login = request()->input('username_or_email');
+
+        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+
+        request()->merge([$field => $login]);
+
+        return $field;
+    }*/
+    
 }

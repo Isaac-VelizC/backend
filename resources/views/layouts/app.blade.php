@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ 'IGLA' }}</title>
+    <title>{{ 'Instituto Técnico Igla' }}</title>
     <!-- Agrega los enlaces para los íconos -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/icon.jpg') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/icon.jpg') }}">
-    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('img/icon.jpg') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/icon.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('img/icon.png') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/core/libs.min.css')}}" />
     <link rel="stylesheet" href="{{ asset('assets/css/hope-ui.css')}}" />
     <link rel="stylesheet" href="{{ asset('assets/css/select2.min.css')}}"/>
@@ -47,7 +47,14 @@
             @yield('content')
             @role('Admin')
                 <div class="btn-download">
-                    <a class="btn btn-light px-3 py-2" href="#">
+                    <a class="btn btn-warning px-3 py-2" href="{{ route('admin.create.pago') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4
+                             14.083c0-2.145-2.232-2.742-3.943-3.546-1.039-.54-.908-1.829.581-1.916.826-.05 1.675.195 2.443.465l.362-1.647c-.907-.276-1.719-.402-2.443-.421v-1.018h-1v1.067c-1.945.267-2.984 
+                             1.487-2.984 2.85 0 2.438 2.847 2.81 3.778 3.243 1.27.568 1.035 1.75-.114 2.011-.997.226-2.269-.168-3.225-.54l-.455 1.644c.894.462 1.965.708 3 .727v.998h1v-1.053c1.657-.232 3.002-1.146 3-2.864z"/>
+                        </svg>
+                    </a>
+                    <a class="btn btn-danger px-3 py-2" href="#">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <path d="M15.836 7.353c-.793-.828-1.931-1.44-3.27-1.628l.211-1.492-3.097 2.02 2.465 2.57.202-1.486c.86.15 1.515.509 
                             1.96.972 1.035 1.081.919 2.73-.453 3.625-1.299.847-3.182.664-4.216-.415-.727-.758-.938-1.852-.183-2.846l-1.297-1.352c-1.605 

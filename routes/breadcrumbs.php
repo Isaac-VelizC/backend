@@ -64,6 +64,10 @@ Breadcrumbs::for('Materias.Habilitados', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Materias Habilitados', route('admin.cursos.activos'));
 });
+Breadcrumbs::for('criterios.gestion', function (BreadcrumbTrail $trail,) {
+    $trail->parent('Materias.Habilitados');
+    $trail->push('Gestionar Criterios', route('admin.tareas.criterios'));
+});
 Breadcrumbs::for('Materias.show', function (BreadcrumbTrail $trail, $curso) {
     $trail->parent('Materias.Habilitados');
     $trail->push($curso->curso->nombre, route('admin.cursos.show', $curso->id));
@@ -136,10 +140,6 @@ Breadcrumbs::for('Materia.show', function (BreadcrumbTrail $trail, $curso) {
 Breadcrumbs::for('trabajo.show', function (BreadcrumbTrail $trail, $curso, $tarea) {
     $trail->parent('Materia.show', $curso);
     $trail->push($tarea->titulo, route('show.tarea', $tarea->id));
-});
-Breadcrumbs::for('criterios.gestion', function (BreadcrumbTrail $trail, $curso) {
-    $trail->parent('Materia.show', $curso);
-    $trail->push('Gestionar Criterios', route('docente.tareas.criterios', $curso->id));
 });
 Breadcrumbs::for('materias.tema', function (BreadcrumbTrail $trail, $tema) {
     $trail->parent('materias.inicio');
