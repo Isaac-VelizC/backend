@@ -31,15 +31,12 @@ class LoginController extends Controller
         return redirect()->route('home');
     }
 
-    /*public function username()
+    public function username()
     {
-        $login = request()->input('username_or_email');
-
+        $login = request()->input('email');
         $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
-
         request()->merge([$field => $login]);
-
         return $field;
-    }*/
+    }
     
 }

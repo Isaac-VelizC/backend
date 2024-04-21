@@ -16,7 +16,7 @@
                         <div class="col-lg-12">
                            <div class="form-group">
                               <label for="email" class="form-label">Usuario</label>
-                              <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required aria-describedby="email" autocomplete="email" autofocus>
+                              <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required aria-describedby="email" autocomplete="email" autofocus>
                            @error('email')
                                  <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
