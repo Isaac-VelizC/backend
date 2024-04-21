@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Aula;
+use App\Models\Configuration;
 use App\Models\Materia;
 use App\Models\FormaPago;
 use App\Models\Horario;
@@ -93,5 +94,7 @@ class TiposSeeder extends Seeder
         TipoEvento::create(['nombre' => 'Límites de Pago']);
         TipoEvento::create(['nombre' => 'Inicio y Final de Períodos']);
         TipoEvento::create(['nombre' => 'Festivales y Eventos Especiales']);
+
+        Configuration::create(['ponderacion' => 100]);
     }
 }
