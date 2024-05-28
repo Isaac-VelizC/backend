@@ -6,19 +6,17 @@
       <div class="container-fluid iq-container">
             <div class="row">
                <div class="col-md-12">
-                  <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
-                        <h5>{{ Breadcrumbs::render('Estudiantes') }}</h5>
-                        <a class="btn btn-light text-black" href="{{ route('admin.inscripcion') }}">
-                           <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
-                              <path d="M24 21h-3l1-3h1l1 3zm-12.976-4.543l8.976-4.575v6.118c-1.007 2.041-5.607 3-8.5 3-3.175 0-7.389-.994-8.5-3v-6.614l8.024 5.071zm11.976.543h-1v-7.26l-10.923 5.568-11.077-7 12-5.308 11 6.231v7.769z"/>
-                           </svg> Inscribir
+                  <div class="flex-wrap d-flex justify-content-between align-items-center">
+                        <h5 class="text-black">{{ Breadcrumbs::render('Estudiantes') }}</h5>
+                        <a class="btn btn-primary" href="{{ route('admin.inscripcion') }}">
+                           Inscribir
                         </a>
                   </div>
                </div>
             </div>
       </div>
       <div class="iq-header-img">
-         <img src="{{ asset('img/fondo2.jpg') }}" alt="header" class="img-fluid w-100 h-100 animated-scaleX">
+         <img src="{{ asset('img/fondo1.jpg') }}" alt="header" class="img-fluid w-100 h-100 animated-scaleX">
       </div>
    </div>
 </div>

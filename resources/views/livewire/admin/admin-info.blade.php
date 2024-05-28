@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="iq-header-img">
-                <img src="{{ asset('img/portada.jpg') }}" alt="header" class="img-fluid w-100 h-100 animated-scaleX">
+                <img src="{{ asset('img/fondo1.jpg') }}" alt="header" class="img-fluid w-100 h-100 animated-scaleX">
             </div>
         </div>
     </div>
@@ -120,7 +120,9 @@
                                         <div class="ms-2 me-auto" wire:click='seleccionarMetodo({{$metodo->id}})'>
                                             <div class="fw-bold">{{ $metodo->nombre }} - {{ $metodo->monto }}bs.</div>
                                         </div>
-                                        <span class="badge bg-ligth btn" wire:click='eliminarMetodo({{$metodo->id}})'><i class="bi bi-trash text-danger"></i></span>
+                                        @if ( $metodo->id != 1 )
+                                            <span class="badge bg-ligth btn" wire:click='eliminarMetodo({{$metodo->id}})'><i class="bi bi-trash text-danger"></i></span>
+                                        @endif
                                     </li>
                                 @endforeach
                             @else

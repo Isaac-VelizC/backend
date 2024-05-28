@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Docente;
 use App\Models\Estudiante;
+use App\Models\Evento;
+use App\Models\Inventario;
 use App\Models\Materia;
 use App\Models\Persona;
 use App\Models\User;
@@ -23,11 +25,15 @@ class AdminController extends Controller
         return view('admin.usuarios.lista_users', compact('users'));
     }   
     public function index() {
-        $users = User::all();
-        $estudiantes = Estudiante::all();
-        $docentes = Docente::all();
-        $materias = Materia::all();
-        return view('admin.home', compact('users', 'estudiantes', 'docentes', 'materias'));
+        
+        $mes = PagosController::nombres();
+        $users = User::all()->count();
+        $estudiantes = Estudiante::all()->count();
+        $docentes = Docente::all()->count();
+        $materias = Materia::all()->count();
+        $eventos = Evento::where('estado', 1)->get();
+        $countInventario = Inventario::all()->count();
+        return view('admin.home', compact('users', 'estudiantes', 'docentes', 'materias', 'eventos', 'mes', 'countInventario'));
     }
     public function store(Request $request) {
         $rules = [
@@ -46,8 +52,8 @@ class AdminController extends Controller
             $user = null;
             if ($request->acesso === 'S') {
                 $user = User::firstOrCreate(
-                    ['name' => $this->generateUniqueUsername($request->nombre)],
-                    ['email' => $request->email, 'password' => Hash::make('u.'.$request->ci)]
+                    ['name' => $request->ci ], //$this->generateUniqueUsername($request->nombre)],
+                    ['email' => $request->email, 'password' => Hash::make('igla.'.$request->ci)]
                 );
                 $role = Role::findById($request->rol);
                 if ($role) {

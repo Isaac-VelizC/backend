@@ -10,9 +10,15 @@ use Illuminate\Http\Request;
 class DocenteController extends Controller
 {
     public function index() {
-        $cursos = CursoHabilitado::where('docente_id', auth()->user()->persona->docente->id)->get();
+        $iddocente =  auth()->user()->persona->docente->id;
+        $cursos = CursoHabilitado::where('docente_id', $iddocente)->get();
         $recetas = Receta::all();
-        return view('docente.home', compact('cursos', 'recetas'));
+        $misRecetas = []; /*Receta::where('docente_id', auth()->user()->id)
+        ->latest()  // Ordenar por el campo creado más reciente
+        ->limit(10) // Obtener solo los últimos 10 registros
+        ->get();*/
+        $materiasA = CursoHabilitado::where(['estado' => true, 'docente_id' => $iddocente ])->get();
+        return view('docente.home', compact('cursos', 'recetas', 'misRecetas', 'materiasA'));
     }
     public function planificacion(Request $request, $id) {
         $request->validate([

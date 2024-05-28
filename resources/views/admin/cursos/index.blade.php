@@ -1,25 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="iq-navbar-header" style="height: 150px;">
-  <div class="iq-container">
-      <div class="row">
-          <div class="col-md-12">
-              <div class="flex-wrap d-flex justify-content-between align-items-center">
-                  <div>
-                     <div class="btn-group" role="group" aria-label="Basic outlined example">
-                        <a type="button" class="btn btn-outline-primary" href="{{ route('admin.cursos.activos') }}" style="color: black">Habilitados</a>
-                        <a type="button" class="btn btn-outline-primary active">Materias</a>
+<div class="position-relative iq-banner">
+   <div class="iq-navbar-header" style="height: 150px;">
+      <div class="iq-container">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="flex-wrap d-flex justify-content-between align-items-center">
+                        <div>
+                           <div class="btn-group" role="group" aria-label="Basic outlined example">
+                              <a type="button" class="btn btn-outline-primary" href="{{ route('admin.cursos.activos') }}" style="color: black">Habilitados</a>
+                              <a type="button" class="btn btn-outline-primary active">Materias</a>
+                           </div>
+                        </div>
+                        <div class="mt-2 mt-md-0">
+                           <a data-bs-toggle="modal" data-bs-target="#newCurso" class="btn btn-primary">+ Agregar</a>
                      </div>
                   </div>
-                  <div class="mt-2 mt-md-0">
-                     <a data-bs-toggle="modal" data-bs-target="#newCurso" class="btn btn-primary">+ Agregar</a>
-                 </div>
-              </div>
-          </div>
+               </div>
+            </div>
       </div>
-  </div>
-</div> 
+      <div class="iq-header-img">
+         <img src="{{ asset('img/fondo1.jpg') }}" alt="header" class="img-fluid w-100 h-100 animated-scaleX">
+      </div>
+   </div> 
+</div>
+
 
 @include('admin.cursos.widgets.form_create')
 
@@ -54,7 +60,6 @@
                     <thead>
                        <tr>
                           <th>Nombre</th>
-                          <th>Color</th>
                           <th>Semestre</th>
                           <th>Estado</th>
                           <th></th>
@@ -64,7 +69,6 @@
                      @foreach ($cursos as $item)
                         <tr>
                            <td><p>{{ $item->nombre }}</p></td>
-                           <td><p><span class="badge" style="background-color: {{ $item->color }}">Color</span></p></td>
                            <td><p>{{ $item->semestre->nombre }}</p></td>
                            <td><span class="badge rounded-pill @if ($item->estado == true) bg-info text-white">Activo @else bg-danger text-white">Inactivo @endif </span></td>
                            <td>

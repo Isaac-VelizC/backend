@@ -14,8 +14,8 @@ class Kernel extends ConsoleKernel
 
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command(GenerarRegistrosMensuales::class)->monthlyOn(1, '00:00');
-        //$schedule->command('app:generar-registros-mensuales')->dailyAt('10:45');
+        //$schedule->command('GenerarRegistrosMensuales::class')->monthlyOn(1, '00:00');
+        $schedule->command('app:generar-registros-mensuales')->dailyAt('12:00');//->mountly();
 
         //$schedule->command('inspire')->hourly();
         /*$schedule->command('backup:clean')->daily()->at('01:00');

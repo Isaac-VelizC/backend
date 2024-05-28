@@ -20,6 +20,8 @@ return new class extends Migration
             $table->integer('tiempo')->nullable();
             $table->json('ocasion')->nullable();
             $table->text('consejos')->nullable();
+            $table->unsignedBigInteger('docente_id')->nullable();
+            $table->foreign('docente_id')->references('id')->on('docentes')->onDelete('restrict');
             $table->timestamps();
         });
 

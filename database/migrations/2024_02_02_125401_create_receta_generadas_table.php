@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('receta_generadas', function (Blueprint $table) {
             $table->id();
             $table->string('titulo');
-            $table->string('ingredientes');
-            $table->string('pasos');
+            $table->json('ingredientes');
+            $table->json('pasos');
+            $table->integer('tiempo');
             $table->text('descripcion')->nullable();
             $table->string('porciones')->nullable();
             $table->dateTime('fecha')->default(now());

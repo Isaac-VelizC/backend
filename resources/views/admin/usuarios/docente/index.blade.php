@@ -9,13 +9,13 @@
                 <div class="col-md-12">
                     <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
                         <h5>{{ Breadcrumbs::render('Docentes') }}</h5>
-                        <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Nuevo Docente</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Nuevo Docente</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="iq-header-img">
-            <img src="{{ asset('img/fondo2.jpg') }}" alt="header" class="img-fluid w-100 h-100 animated-scaleX">
+            <img src="{{ asset('img/fondo1.jpg') }}" alt="header" class="img-fluid w-100 h-100 animated-scaleX">
         </div>
     </div>
 </div>

@@ -21,13 +21,12 @@
                 <div class="form-group">
                     <label class="form-label">Color de Fondo: </label>
                     <select class="form-select" wire:model="eventos.backgroundColor" required>
-                        <option value="#0000FF">🔵 Azul</option>
-                        <option value="#800080">🟣 Morado</option>
-                        <option value="#FFA500">🟠 Naranja</option>
-                        <option value="#FF0000">🔴 Rojo</option>
-                        <option value="#008000">🟢 Verde</option>
-                        <option value="#FFFF00">🟡 Amarillo</option>
-                        <option value="#A52A2A">🟤 Marrón</option>
+                        <option style="color: #0000FF" value="#0000FF">Azul</option>
+                        <option style="color: #FF0000" value="#FF0000">Rojo</option>
+                        <option style="color: #00FF00" value="#00FF00">Verde</option>
+                        <option style="color: #800080" value="#800080">Morado</option>
+                        <option style="color: #FF6900" value="#FF6900">Naranja</option>
+                        <option style="color: #FF00FF" value="#FF00FF">Magenta</option>
                     </select>
                     @error('eventos.backgroundColor') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
@@ -35,10 +34,10 @@
                     <input type="hidden" wire:model="eventId">
                 @endif
                 <div class="text-center">
-                    @if ($modoEdicion)
-                        <a wire:click="eliminar" class="h3 badge bg-danger" style="color: white" href="">Borrar</a>
+                    @if ($modoEdicion && $eventId != 1)
+                        <button type="button" wire:click="eliminar" class="btn btn-danger" style="color: white">Borrar</button>
                     @endif
-                    <button type="submit" class="h3 badge bg-primary" style="color: white">{{ $modoEdicion ? 'Actualizar' : 'Guardar' }}</button>
+                    <button type="submit" class="btn btn-primary" style="color: white">{{ $modoEdicion ? 'Actualizar' : 'Guardar' }}</button>
                 </div>
             </form>
         </div>
@@ -46,12 +45,13 @@
     <div class="card">
         <div class="card-header text-center">
             <div class="header-title">
-                <h4 class="card-title">Tipos de Eventos</h4>
+                <h5 class="card-title">Tipos de Eventos</h5>
             </div>
+            <small class="text-warning">Click para editar</small>
         </div>
         <div class="card-body">
             @foreach ($categorias as $item)
-                <div class=" rounded-2 cursor-pointer overflow-x-scroll" wire:click='edit({{$item->id}})' style="margin-bottom: 5px; background-color: {{ $item->backgroundColor }};">
+                <div class="rounded-2 overflow-x-scroll" wire:click='edit({{$item->id}})' style="cursor: pointer; margin-bottom: 5px; background-color: {{ $item->backgroundColor }};">
                     <span class=" px-2" style="color: {{$item->textColor}};">{{ $item->nombre }}</span>
                 </div>
             @endforeach

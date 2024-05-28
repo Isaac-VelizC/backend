@@ -1,13 +1,6 @@
-<?php // routes/breadcrumbs.php
-
-// Note: Laravel will automatically resolve `Breadcrumbs::` without
-// this import. This is nice for IDE syntax and refactoring.
-
+<?php
 use App\Models\Receta;
 use Diglactic\Breadcrumbs\Breadcrumbs;
-
-// This import is also not required, and you could replace `BreadcrumbTrail $trail`
-//  with `$trail`. This is nice for IDE type checking and completion.
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
 // Home
@@ -36,7 +29,6 @@ Breadcrumbs::for('Estudiantes.edit', function (BreadcrumbTrail $trail, $est) {
     $trail->parent('Estudiantes');
     $trail->push($est->nombre .' ' .$est->ap_paterno .' '.$est->ap_materno, route('admin.E.show', $est->id));
 });
-
 // Docentes
 Breadcrumbs::for('Docentes', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
@@ -153,6 +145,14 @@ Breadcrumbs::for('Pagos.list', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('Pagos.create', function (BreadcrumbTrail $trail) {
     $trail->parent('Pagos.list');
     $trail->push('Registrar nuevo Pago', route('admin.create.pago'));
+});
+Breadcrumbs::for('Pagos.historial', function (BreadcrumbTrail $trail, $mes) {
+    $trail->parent('Pagos.list');
+    $trail->push('Historial de Pagos del mes de '. $mes, route('admin.pagos.historial'));
+});
+Breadcrumbs::for('Pagos.editar', function (BreadcrumbTrail $trail, $id) {
+    $trail->parent('Pagos.list');
+    $trail->push('Editar Pago', route('admin.pagos.edit', $id));
 });
 // Inventario
 Breadcrumbs::for('Inventario.list', function (BreadcrumbTrail $trail) {

@@ -52,7 +52,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
+Route::get('generar/receta.ai', [InfoController::class, 'generateAIReceta'])->name('generate.ai.receta');
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::middleware(['auth', 'role:Admin|Secretario/a'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.home');
@@ -114,8 +114,12 @@ Route::middleware(['auth', 'role:Admin|Secretario/a'])->group(function () {
     Route::get('/pagos/formulario/hjfse', [PagosController::class, 'formPagos'])->name('admin.create.pago');
     Route::post('/pagos/store', [PagosController::class, 'storePagosSimples'])->name('admin.store.pago');
     Route::get('/pagos/guadar/imprimir/{id}', [PagosController::class, 'guardarImprimirPago'])->name('admin.pago.guardar.imprimir');
+    Route::get('', [PagosController::class, 'storeImprimirPago'])->name('store.imprimir.pago');
     Route::get('/pagos/habilitar/mes', [PagosController::class, 'habilitarPagosMes'])->name('admin.habiltar.pagos.mes');
     Route::get('/obtener/detalles/pago/{id}', [PagosController::class, 'obtenerDetallesPago'])->name('admin.pagos.detalle');
+    Route::get('/obtener/historial/pago', [PagosController::class, 'historialPago'])->name('admin.pagos.historial');
+    Route::get('/edit/pago/{id}', [PagosController::class, 'editPage'])->name('admin.pagos.edit');
+    Route::put('/pagos/update/{id}', [PagosController::class, 'updatePago'])->name('admin.update.pago');
     //Cocina
     //Acerda de IGLA
     Route::get('/informacion', [HomeController::class, 'acercaDe'])->name('admin.ajustes');
@@ -143,7 +147,6 @@ Route::middleware(['auth', 'role:Admin|Secretario/a'])->group(function () {
     Route::post('/cantidad/update/{id}', [CocinaController::class, 'updateCantidad'])->name('admin.inventario.update.cantidad');
     Route::get('/historial/inventario', HistorialInventario::class)->name('admin.inventario.historial');
 });
-
 
 Route::middleware(['auth', 'role:Docente'])->group(function () {
     Route::get('/chef-dashboard', [DocenteController::class, 'index'])->name('docente.home');
@@ -195,6 +198,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', ProfilePage::class)->name('users.profile');
     Route::post('/new-type/ingrediente', [CocinaController::class, 'guardarIngrediente'])->name('new.ingrediente.db');
     Route::post('/new/recipe/generate', [CocinaController::class, 'generarRecetaOpenAI'])->name('new.receta.generation');
+    Route::post('/guardar/recipe/generate/AI', [CocinaController::class, 'guardarRecetaOpenAI'])->name('store.receta.AI');
+    Route::get('/show/recipe/{id}', [RecetaController::class, 'showRecipeGenerate'])->name('show.recipe.generate');
     //Cursos
     Route::get('/cursos', [DocenteCursoController::class, 'index'])->name('chef.cursos');
     Route::get('/curso/{id}/materia', [DocenteCursoController::class, 'curso'])->name('cursos.curso');
@@ -203,9 +208,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/store/evaluacion/jajaja', [EstudianteController::class, 'evaluacionDocente'])->name('store.evaluacion.docente');
     //notificaciones
     Route::get('/send-whatsapp', [InfoController::class, 'sendWhatsAppMessage']);
-
     Route::get('/suma', [CocinaController::class, 'suma']);
-
     Route::get('/generar-receta/add', [RecetaController::class, 'listRecetasGeneradas'])->name('receta.generadas.list');
-
 });
+
+Route::get('terminos-de-uso', [InfoController::class, 'termOfUse'])->name('term.of.use');
+Route::get('privacidad-politicas', [InfoController::class, 'privacPolitics'])->name('privacy.politics');

@@ -7,19 +7,19 @@
       <div class="container-fluid iq-container">
          <div class="row">
             <div class="col-md-12">
-               <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
+               <div class="flex-wrap d-flex justify-content-between align-items-center">
                   <div>
-                     <h5>{{ Breadcrumbs::render('Trabajadores') }}</h5>
+                     <h5 class="text-black">{{ Breadcrumbs::render('Trabajadores') }}</h5>
                   </div>
                   <div>
-                     <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Nuevo Personal</button>
+                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Nuevo Personal</button>
                   </div>
                </div>
             </div>
          </div>
       </div>
       <div class="iq-header-img">
-         <img src="{{ asset('img/fondo2.jpg') }}" alt="header" class="img-fluid w-100 h-100 animated-scaleX">
+         <img src="{{ asset('img/fondo1.jpg') }}" alt="header" class="img-fluid w-100 h-100 animated-scaleX">
       </div>
    </div>
 </div>

@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     @livewireStyles
 </head>
-<body class="  ">
+<body>
       <!-- loader END -->
     @if (auth()->check())
         @if (in_array('Estudiante', Auth::user()->getRoleNames()->toArray()))
@@ -47,13 +47,6 @@
             @yield('content')
             @role('Admin')
                 <div class="btn-download">
-                    <a class="btn btn-warning px-3 py-2" href="{{ route('admin.create.pago') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                            <path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4
-                             14.083c0-2.145-2.232-2.742-3.943-3.546-1.039-.54-.908-1.829.581-1.916.826-.05 1.675.195 2.443.465l.362-1.647c-.907-.276-1.719-.402-2.443-.421v-1.018h-1v1.067c-1.945.267-2.984 
-                             1.487-2.984 2.85 0 2.438 2.847 2.81 3.778 3.243 1.27.568 1.035 1.75-.114 2.011-.997.226-2.269-.168-3.225-.54l-.455 1.644c.894.462 1.965.708 3 .727v.998h1v-1.053c1.657-.232 3.002-1.146 3-2.864z"/>
-                        </svg>
-                    </a>
                     <a class="btn btn-danger px-3 py-2" href="{{ route('admin.backup.db_igla') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <path d="M15.836 7.353c-.793-.828-1.931-1.44-3.27-1.628l.211-1.492-3.097 2.02 2.465 2.57.202-1.486c.86.15 1.515.509 
@@ -62,22 +55,13 @@
                             .276-.224.5-.5.5s-.5-.224-.5-.5.224-.5.5-.5.5.224.5.5zm4-2.5l-5-14h-14l-5 14v6h24v-6zm-17.666-12h11.333l3.75 11h-18.834l3.751-11zm15.666 16h-20v-3h20v3z"/>
                         </svg>
                     </a>
-                    <a class="btn btn-primary px-3 py-2" href="{{ route('admin.habiltar.pagos.mes') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                            <path d="M23 12c0 1.042-.154 2.045-.425 3h-2.101c.335-.94.526-1.947.526-3 0-4.962-4.037-9-9-9-1.706 0-3.296.484-4.654 1.314l1.857 
-                            2.686h-6.994l2.152-7 1.85 2.673c1.683-1.049 3.658-1.673 5.789-1.673 6.074 0 11 4.925 11 11zm-6.354 7.692c-1.357.826-2.944 1.308-4.646 
-                            1.308-4.963 0-9-4.038-9-9 0-1.053.191-2.06.525-3h-2.1c-.271.955-.425 1.958-.425 3 0 6.075 4.925 11 11 11 2.127 0 4.099-.621
-                             5.78-1.667l1.853 2.667 2.152-6.989h-6.994l1.855 2.681zm-3.646-7.692v-6h-2v8h7v-2h-5z"/>
-                        </svg>
-                    </a>
-                    <div id="barraProgreso" class="progress" style="display: none;">
-                        <div id="barraProgresoInterior" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
                 </div>
             @endrole
+            @include('layouts.footer.footer')
         </main>
     @else
         @yield('content')
+        @include('layouts.footer.footer')
     @endif
     
     @livewireScripts

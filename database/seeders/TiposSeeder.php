@@ -85,15 +85,12 @@ class TiposSeeder extends Seeder
         MetodoPago::create(['nombre' => 'Mesual', 'monto' => 450]);
         MetodoPago::create(['nombre' => 'Insumos', 'monto' => 70]);
         
-        FormaPago::create(['nombre' => 'Transferencia Bancaria']);
         FormaPago::create(['nombre' => 'Pago en Efectivo']);
         FormaPago::create(['nombre' => 'Pagos a Través de Aplicaciones Móviles']);
 
         TipoEvento::create(['nombre' => 'Clases Regulares']);
-        TipoEvento::create(['nombre' => 'Límite para Inscripciones y Pago']);
         TipoEvento::create(['nombre' => 'Límites de Pago']);
-        TipoEvento::create(['nombre' => 'Inicio y Final de Períodos']);
-        TipoEvento::create(['nombre' => 'Festivales y Eventos Especiales']);
+        TipoEvento::create(['nombre' => 'Festivales y Eventos']);
 
         Configuration::create(['ponderacion' => 100]);
     }

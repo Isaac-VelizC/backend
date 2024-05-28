@@ -10,6 +10,7 @@ use App\Models\Materia;
 use App\Models\Persona;
 use App\Models\Programacion;
 use App\Models\RespuestaEstudiante;
+use App\Models\Trabajo;
 use DateTime;
 use Illuminate\Http\Request;
 
@@ -25,8 +26,16 @@ class EstudianteController extends Controller
     }
 
     public function index() {
-        return view('estudiante.home');
-    }
+        // Obtener todos los cursos activos programados por el estudiante
+        $cursos = Programacion::where('estudiante_id', $this->idEst)->where('estado', true)->get();
+        
+        $programado = Programacion::where('estudiante_id', $this->idEst)->with('cursoDocente')->get();
+        $tareasPendientes = Trabajo::whereIn('curso_id', $programado->pluck('cursoDocente.id')->toArray())
+                ->where('estado', 'Publicado')
+                ->get();
+        // Retornar la vista con las tareas pendientes
+        return view('estudiante.home', compact('cursos', 'tareasPendientes'));
+    }    
 
     public function cursos() {
         try {

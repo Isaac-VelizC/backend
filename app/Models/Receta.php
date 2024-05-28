@@ -10,7 +10,7 @@ class Receta extends Model
     use HasFactory;
     protected $table = "recetas";
     protected $primaryKey = "id";
-    protected $fillable = ['titulo', 'imagen', 'descripcion', 'porcion', 'tiempo', 'ocasion', 'consejos'];
+    protected $fillable = ['titulo', 'imagen', 'descripcion', 'porcion', 'tiempo', 'ocasion', 'consejos', 'docente_id'];
 
     public function pasos() {
         return $this->hasMany(PasosReceta::class, 'receta_id');
@@ -22,6 +22,9 @@ class Receta extends Model
     public function ingredientes() {
         return $this->belongsToMany(Ingrediente::class, 'ingrediente_recetas', 'receta_id', 'ingrediente_id')
             ->withPivot(['cantidad', 'unida_media']);
+    }
+    public function docente() {
+        return $this->belongsTo(Docente::class, 'docente_id');
     }
 }
 class IngredienteReceta extends Model

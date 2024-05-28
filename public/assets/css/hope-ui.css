@@ -25299,11 +25299,11 @@ pre[class*=language-] {
 
 /* width */
 ::-webkit-scrollbar {
-    width: 10px;
-    height: 5px;
+    width: 8px;
+    height: 4px;
     z-index: -1;
 }
-  
+
 /* Track */
 ::-webkit-scrollbar-track {
     border-radius: 10px;

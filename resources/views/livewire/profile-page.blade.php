@@ -8,8 +8,8 @@
                <div class="d-flex flex-wrap align-items-center justify-content-between">
                   <div class="d-flex flex-wrap align-items-center">
                      <div class="profile-img position-relative me-3 mb-3 mb-lg-0 profile-logo profile-logo1">
-                        <a href="{{ asset($info->photo != 'user.jpg' ? 'storage/' . $info->photo : '#') }}">
-                            <img src="{{ asset($info->photo != 'user.jpg' ? 'storage/' . $info->photo : 'img/user.jpg') }}" alt="User-Profile" class="theme-color-default-img img-fluid rounded-pill avatar-100">
+                        <a href="{{ asset($info->photo != 'user.png' ? 'storage/' . $info->photo : 'img/user.png') }}">
+                            <img src="{{ asset($info->photo != 'user.png' ? 'storage/' . $info->photo : 'img/user.png') }}" alt="User-Profile" class="theme-color-default-img img-fluid rounded-pill avatar-100">
                         </a>
                     </div>
                     <div class="d-flex flex-wrap align-items-center mb-3 mb-sm-0">
@@ -43,7 +43,7 @@
                   <div class="card-body">
                      <div class="text-center">
                         <div class="user-profile position-relative">
-                            <img src="{{ asset($info->photo != 'user.jpg' ? 'storage/' . $info->photo : 'img/user.jpg') }}" alt="profile-img" class="rounded-pill avatar-130 img-fluid">
+                            <img src="{{ asset($info->photo != 'user.png' ? 'storage/' . $info->photo : 'img/user.png') }}" alt="profile-img" class="rounded-pill avatar-130 img-fluid">
                             <form class="needs-validation" novalidate wire:submit.prevent='updatedPerfil'>
                                 <label class="upload-icone-portada bg-primary">
                                     <input wire:model="perfil" class="file-upload" type="file" id="customFile" accept="image/*">
@@ -60,6 +60,10 @@
                      </div>
                      <div class="form-group">
                         <ul class="list-group list-group-flush">
+                           <li class="list-group-item d-flex justify-content-between align-items-start">
+                              <div class="fw-bold">Usuario</div>
+                              <span>{{ $info->user->name }}</span>
+                           </li>
                            <li class="list-group-item d-flex justify-content-between align-items-start">
                               <div class="fw-bold">Nombre</div>
                               <span>{{ $info->nombre }} {{$info->ap_paterno}} {{$info->ap_materno}}</span>

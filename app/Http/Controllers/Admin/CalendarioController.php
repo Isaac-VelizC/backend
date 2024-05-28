@@ -91,7 +91,7 @@ class CalendarioController extends Controller
     }
     public function mostrarInicioFin() {
         try {
-            $events = Evento::with('tipo')->where('tipo_id', 4)->get();
+            $events = Evento::with('tipo')->where('tipo_id', 1)->get();
             $events = $events->map(function ($event) {
                 return [
                     'id' => $event->id,

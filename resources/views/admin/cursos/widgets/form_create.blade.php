@@ -56,13 +56,15 @@
                                     <div class="form-group">
                                         <label class="form-label" for="exampleInputcolor">Color de la materia</label>
                                         <select class="form-select" id="exampleInputcolor" name="color" required>
-                                            <option value="#0000FF" selected>🔵 Azul</option>
-                                            <option value="#800080">🟣 Morado</option>
-                                            <option value="#FFA500">🟠 Naranja</option>
-                                            <option value="#FF0000">🔴 Rojo</option>
-                                            <option value="#008000">🟢 Verde</option>
-                                            <option value="#FFFF00">🟡 Amarillo</option>
-                                            <option value="#A52A2A">🟤 Marrón</option>
+                                            <option value="#FF5733" style="background: #FF5733" selected>#FF5733</option>
+                                            <option value="#FF942F" style="background: #FF942F">#FF942F</option>
+                                            <option value="#97FF2F" style="background: #97FF2F">#97FF2F</option>
+                                            <option value="#2FFF77" style="background: #2FFF77">#2FFF77</option>
+                                            <option value="#2FFFC6" style="background: #2FFFC6">#2FFFC6</option>
+                                            <option value="#2FC3FF" style="background: #2FC3FF">#2FC3FF</option>
+                                            <option value="#8A2FFF" style="background: #8A2FFF">#8A2FFF</option>
+                                            <option value="#DF2FFF" style="background: #DF2FFF">#DF2FFF</option>
+                                            <option value="#FF2F91" style="background: #FF2F91">#FF2F91</option>
                                         </select>
                                     </div>
                                   </div>

@@ -44,7 +44,7 @@
           <ul class="mb-2 navbar-nav ms-auto align-items-center navbar-list mb-lg-0">
             <li class="nav-item dropdown">
               <a class="py-0 nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="{{ asset(Auth::user()->persona->photo != 'user.jpg' ? 'storage/' . Auth::user()->persona->photo : 'img/user.jpg') }}" alt="User-Profile" class=" img-fluid avatar avatar-50 avatar-rounded">
+                <img src="{{ asset(Auth::user()->persona->photo != 'user.png' ? 'storage/' . Auth::user()->persona->photo : 'img/user.png') }}" alt="User-Profile" class=" img-fluid avatar avatar-50 avatar-rounded">
                 <div class="caption ms-3 d-none d-md-block ">
                   <h6 class="mb-0 caption-title">{{ Auth::user()->name }}</h6>
                       @foreach(Auth::user()->getRoleNames()->toArray() as $role)

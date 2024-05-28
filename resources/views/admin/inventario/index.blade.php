@@ -1,27 +1,34 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="iq-navbar-header" style="height: 150px;">
-    <div class="container-fluid iq-container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
-                    <div>
-                        <h4>{{ Breadcrumbs::render('Inventario.list') }}</h4>
-                    </div>
-                    <div>
-                        <a class="btn btn-link" href="{{ route('admin.inventario.historial') }}">
-                            <i class="bi bi-list-columns"></i> Historial
-                        </a>
-                        <a class="btn btn-warning" href="{{ route('admin.gestion.inventario.form') }}" >
-                            <i class="bi bi-bag-plus"></i> Nuevo
-                        </a>
+
+<div class="position-relative iq-banner">
+    <div class="iq-navbar-header" style="height: 150px;">
+        <div class="container-fluid iq-container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
+                        <div>
+                            <h4>{{ Breadcrumbs::render('Inventario.list') }}</h4>
+                        </div>
+                        <div>
+                            <a class="btn btn-link" href="{{ route('admin.inventario.historial') }}">
+                                <i class="bi bi-list-columns"></i> Historial
+                            </a>
+                            <a class="btn btn-primary" href="{{ route('admin.gestion.inventario.form') }}" >
+                                <i class="bi bi-bag-plus"></i> Nuevo
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="iq-header-img">
+            <img src="{{ asset('img/fondo1.jpg') }}" alt="header" class="img-fluid w-100 h-100 animated-scaleX">
+        </div>
     </div>
-</div>
+ </div>
+
 <div class="conatiner-fluid content-inner mt-n5 py-0">
      @if(session('success'))
          <div id="myAlert" class="alert alert-left alert-success alert-dismissible fade show mb-3 alert-fade" role="alert">

@@ -1,15 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="iq-navbar-header" style="height: 170px;">
-    <div class="container-fluid iq-container text-black">
-        <div class="row">
-            <div class="col-md-12">
-                <h5>{{ Breadcrumbs::render( $isEditing ? 'Materias.edit' : 'Materias.create', $materia) }}</h5>
-            </div>
-        </div>
+<div class="position-relative iq-banner">
+    <div class="iq-navbar-header" style="height: 150px;">
+       <div class="container-fluid iq-container">
+          <div class="row">
+             <div class="col-md-12">
+                <div class="flex-wrap d-flex justify-content-between align-items-center">
+                   <div>
+                        <h5 class="text-black">{{ Breadcrumbs::render( $isEditing ? 'Materias.edit' : 'Materias.create', $materia) }}</h5>
+                    </div>
+                </div>
+             </div>
+          </div>
+       </div>
+       <div class="iq-header-img">
+          <img src="{{ asset('img/fondo1.jpg') }}" alt="header" class="img-fluid w-100 h-100 animated-scaleX">
+       </div>
     </div>
-</div>
+ </div>
+
 <div class="conatiner-fluid content-inner mt-n5 py-0">
     <div class="row">                
         <div class="col-sm-12 col-lg-12">
@@ -27,10 +37,13 @@
                                <h4 class="card-title">{{ $materia->nombre }}</h4>
                                <p>{{ $materia->descripcion }}</p>
                             </div>
+                            <div>
+                                <a href="{{ route('admin.calendario') }}">Ir a calendario</a>
+                            </div>
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-sm-12 col-lg-4">
+                            <div class="col-sm-12 col-lg-6">
                                 <form class="needs-validation text-black" novalidate method="POST" action="{{ $isEditing ? route('admin.asignar.actualizar-curso', $asignado->id) : route('admin.asignar.guardar.curso') }}" onsubmit="return validateForm()">
                                     @csrf
                                     @if($isEditing)
@@ -38,6 +51,7 @@
                                     @endif
                                     <input type="hidden" name="curso" value="{{ $materia->id }}">
                                     <div class="row">
+                                        <p class="text-warning">Seleccionar turno de horario de la materia</p>
                                         <div class="form-group col-md-12 d-flex">
                                             @if ($horarios->count() > 0)
                                                 @foreach ($horarios as $item)
@@ -92,10 +106,12 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-warning">{{ $isEditing ? 'Actualizar' : 'Habilitar' }}</button>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-warning">{{ $isEditing ? 'Actualizar' : 'Habilitar' }}</button>
+                                    </div>
                                 </form>
                             </div>
-                            <div class="col-sm-12 col-lg-8">
+                            <div class="col-sm-12 col-lg-6">
                                 <div id="calendar2" class="calendar-s"></div>
                             </div>
                         </div>
@@ -126,7 +142,7 @@
                 header: {
                     left: "prev,next today",
                     center: "title",
-                    right: "dayGridMonth,listYear"
+                    right: "dayGridMonth"
                 },
                 events: baseUrl + "/calendar/inicio/fin",
     

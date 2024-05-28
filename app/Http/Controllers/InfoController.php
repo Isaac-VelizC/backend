@@ -45,4 +45,16 @@ class InfoController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    public function generateAIReceta() {
+        return view('generate_ai');
+    }
+
+    public function termOfUse() {
+        return view('layouts.footer.termUse');
+    }
+
+    public function privacPolitics() {
+        return view('layouts.footer.privacyPolitics');
+    }
 }

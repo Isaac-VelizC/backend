@@ -55,7 +55,7 @@ class ShowTarea extends Component
         if ($trabajo) {
             $this->trabajoSubido = $trabajo;
             $this->filesSubidos = DocumentoEstudiante::where('entrega_id', $trabajo->id)->get();
-        } else {
+        } elseif($this->tarea->fin >= now()) {
             $fecha = $this->tarea->fin ? 'hasta el ' .$this->tarea->fin : ' sin fecha limite' ;
             session()->flash('success', 'Tiene una tarea pendiente '. $fecha );
         }

@@ -20,4 +20,7 @@ class Docente extends Model
     {
         return $this->hasMany(CursoHabilitado::class, 'docente_id');
     }
+    public function recetas() {
+        return $this->hasMany(Receta::class, 'docente_id');
+    }
 }

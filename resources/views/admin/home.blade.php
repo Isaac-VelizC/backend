@@ -20,7 +20,7 @@
                                        </div>
                                        <div class="progress-detail">
                                           <p  class="mb-2">Total de Usuarios</p>
-                                          <h4 class="counter">{{ count($users) }}</h4>
+                                          <h4 class="counter">{{ $users }}</h4>
                                        </div>
                                  </div>
                               </div>
@@ -38,7 +38,7 @@
                                     </div>
                                        <div class="progress-detail">
                                           <p  class="mb-2">Estudiantes</p>
-                                          <h4 class="counter">{{ count($estudiantes) }}</h4>
+                                          <h4 class="counter">{{ $estudiantes }}</h4>
                                        </div>
                               </div>
                            </div>
@@ -55,50 +55,29 @@
                                     </div>
                                     <div class="progress-detail">
                                        <p  class="mb-2">Docentes</p>
-                                       <h4 class="counter">{{ count($docentes) }}</h4>
+                                       <h4 class="counter">{{ $docentes }}</h4>
                                     </div>
                               </div>
                            </div>
                         </a>
                   </li>
-                  <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="1000">
-                        <a href="{{ route('admin.inscripcion') }}">
-                           <div class="card-body">
-                              <div class="progress-widget">
-                                    <div class="rounded p-3 bg-soft-warning">
-                                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                          <path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4
-                                           14.083c0-2.145-2.232-2.742-3.943-3.546-1.039-.54-.908-1.829.581-1.916.826-.05 1.675.195 2.443.465l.362-1.647c-.907-.276-1.719-.402-2.443-.421v-1.018h-1v1.067c-1.945.267-2.984 
-                                           1.487-2.984 2.85 0 2.438 2.847 2.81 3.778 3.243 1.27.568 1.035 1.75-.114 2.011-.997.226-2.269-.168-3.225-.54l-.455 1.644c.894.462 1.965.708 3 .727v.998h1v-1.053c1.657-.232 3.002-1.146 3-2.864z"/>
-                                       </svg>
-                                    </div>
-                                    <div class="progress-detail">
-                                       <p  class="mb-2">Pagos</p>
-                                       <h4 class="">mes</h4>
-                                    </div>
+                  <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="1100">
+                     <div class="card-body">
+                        <div class="progress-widget">
+                              <div class="rounded p-3 bg-soft-primary">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M24 7v-2c0-2.761-2.238-5-5-5h-14c-2.761 0-5 2.239-5 5v2h10v2h-10v6h4v2h-4v2c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-2h-8v-2h8v-6h-5v-2h5zm-16 11c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4zm3 0c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4zm3 0c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4zm0-8c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4zm3 0c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4z"/>
+                                 </svg>
                               </div>
-                           </div>
-                        </a>
-                  </li>
-                  @role('Admin')
-                     <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="1100">
-                        <div class="card-body">
-                           <div class="progress-widget">
-                                 <div class="rounded p-3 bg-soft-primary">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                       <path d="M24 7v-2c0-2.761-2.238-5-5-5h-14c-2.761 0-5 2.239-5 5v2h10v2h-10v6h4v2h-4v2c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-2h-8v-2h8v-6h-5v-2h5zm-16 11c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4zm3 0c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4zm3 0c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4zm0-8c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4zm3 0c0 .552-.447 1-1 1s-1-.448-1-1v-4c0-.552.447-1 1-1s1 .448 1 1v4z"/>
-                                    </svg>
-                                 </div>
-                                 <a href="{{ route('admin.cursos') }}">
-                                    <div class="progress-detail">
-                                       <p  class="mb-2">Materias</p>
-                                    <h4 class="counter">{{ count($materias) }}</h4>
-                                 </div>
-                                 </a>
-                           </div>
+                              <a href="{{ route('admin.cursos') }}">
+                                 <div class="progress-detail">
+                                    <p  class="mb-2">Materias</p>
+                                 <h4 class="counter">{{ $materias }}</h4>
+                              </div>
+                              </a>
                         </div>
-                     </li>
-                  @endrole
+                     </div>
+                  </li>
                </ul>
                <div class="swiper-button swiper-button-next"></div>
                <div class="swiper-button swiper-button-prev"></div>
@@ -107,16 +86,103 @@
       </div> 
    </div>
    <div class="row">
-      <div class="col-lg-12">
-          <div class="row">
-              <div class="col-lg-12">
-                  <div class="card">
-                      <div class="card-body">
-                          <div id="calendar1" class="calendar-s"></div>
-                      </div>
-                  </div>
-              </div>
-          </div>
+      <div class="col-lg-6">
+         <div class="row">
+            <div class="col-md-6">
+               <div class="card border-bottom border-4 border-0 border-warning">
+                  <a href="{{ route('admin.lista.pagos') }}">
+                     <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                           <div>
+                              <span>Pagos</span>
+                           </div>
+                           <div>
+                              <span>{{ $mes }}</span>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+            </div>
+            <div class="col-md-6">
+               <div class="card border-bottom border-4 border-0 border-warning">
+                  <a href="{{ route('admin.gestion.inventario') }}">
+                     <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                           <div>
+                              <span>Inventario</span>
+                           </div>
+                           <div>
+                              <span>{{ $countInventario }}</span>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+            </div>
+            <div class="col-md-6">
+               <div class="card border-bottom border-4 border-0 border-warning">
+                  <a href="{{ route('admin.calendario') }}">
+                     <div class="card-body">
+                        <span>Calendario</span>
+                     </div>
+                  </a>
+               </div>
+            </div>
+            <div class="col-md-6">
+               <div class="card border-bottom border-4 border-0 border-warning">
+                  <a href="{{ route('admin.administracion') }}">
+                     <div class="card-body">
+                        <span>Panel de Control</span>
+                     </div>
+                  </a>
+               </div>
+            </div>
+         </div>
+         <div class="card">
+            <div class="card-header d-flex justify-content-between">
+               <div class="header-title">
+                  <h4 class="card-title">Fechas del mes</h4>
+               </div>
+            </div>
+            <div class="card-body p-0">
+               <div class="table-responsive mt-4">
+                  <table id="basic-table" class="table table-striped mb-0" role="grid">
+                     <thead>
+                        <tr>
+                           <th>Nombre</th>
+                           <th>Tipo</th>
+                           <th>Fecha Inicio</th>
+                           <th>Fecha Fin</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        @if (count($eventos) > 0)
+                           @foreach ($eventos as $item)
+                              <tr>
+                                 <td>{{ $item->title }}</td>
+                                 <td>{{ $item->tipo->nombre }}</td>
+                                 <td><div class="text-info">{{ date('Y-m-d', strtotime($item->start)) }}</div></td>
+                                 <td>{{ date('Y-m-d', strtotime($item->end)) }}</td>
+                              </tr>
+                           @endforeach
+                        @else
+                            <tr class="text-center">
+                              <td colspan="4">No hay eventos registrados</td>
+                            </tr>
+                        @endif
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-lg-6">
+         <div class="card">
+            <div class="card-body">
+               <div id="calendar1" class="calendar-s"></div>
+            </div>
+         </div>
       </div>
    </div>
 </div>

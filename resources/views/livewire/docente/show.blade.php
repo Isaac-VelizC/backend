@@ -1,17 +1,23 @@
 <div>
-    <div class="iq-navbar-header" style="height: 150px;">
-        <div class="container-fluid iq-container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
-                        <div>
-                          <h4>{{ Breadcrumbs::render($item->rol == 'P' ? 'Trabajadores.edit' : 'Docentes.edit' , $idDocente, $item) }}</h4>
+    <div class="position-relative iq-banner">
+        <div class="iq-navbar-header" style="height: 150px;">
+            <div class="container-fluid iq-container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
+                            <div>
+                            <h4>{{ Breadcrumbs::render($item->rol == 'P' ? 'Trabajadores.edit' : 'Docentes.edit' , $idDocente, $item) }}</h4>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div> 
+            <div class="iq-header-img">
+                <img src="{{ asset('img/fondo1.jpg') }}" alt="header" class="img-fluid w-100 h-100 animated-scaleX">
+            </div>
+        </div> 
+    </div>
+    
     <div class="conatiner-fluid content-inner mt-n5 py-0">
         @if(session('success'))
             <div id="myAlert" class="alert alert-left alert-success alert-dismissible fade show mb-3 alert-fade" role="alert">
@@ -35,7 +41,7 @@
                                 @if (!$item->photo)
                                     <img src="{{ asset($item->photo) }}" alt="profile-img" class="rounded-pill avatar-130 img-fluid">
                                 @else
-                                    <img src="{{ asset('img/user.jpg') }}" alt="profile-img" class="rounded-pill avatar-130 img-fluid">
+                                    <img src="{{ asset('img/user.png') }}" alt="profile-img" class="rounded-pill avatar-130 img-fluid">
                                 @endif
                                 </div>
                                 <div class="mt-3">

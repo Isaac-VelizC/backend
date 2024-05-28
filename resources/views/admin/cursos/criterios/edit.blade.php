@@ -14,6 +14,9 @@
                 </div>
             </div>
         </div>
+        <div class="iq-header-img">
+            <img src="{{ asset('img/fondo1.jpg') }}" alt="header" class="img-fluid w-100 h-100 animated-scaleX">
+        </div>
     </div>
 </div>
 

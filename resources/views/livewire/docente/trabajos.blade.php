@@ -102,7 +102,7 @@
                                                     <div class="d-grid grid-flow-col justify-content-between">
                                                         <div class="twit-feed">
                                                             <div class="d-flex align-items-center">
-                                                                <img class="rounded-pill img-fluid avatar-50 me-3 p-1" src="{{ asset($coment->autor->persona->photo != 'user.jpg' ? 'storage/' . $coment->autor->persona->photo : 'img/user.jpg') }}" alt="">
+                                                                <img class="rounded-pill img-fluid avatar-50 me-3 p-1" src="{{ asset($coment->autor->persona->photo != 'user.png' ? 'storage/' . $coment->autor->persona->photo : 'img/user.png') }}" alt="">
                                                                 <div class="media-support-info">
                                                                     <h6 class="mb-0">{{ $coment->autor->name }}</h6>
                                                                     <div class="twit-date">{{ $coment->created_at }}</div>

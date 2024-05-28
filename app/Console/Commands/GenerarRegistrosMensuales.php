@@ -16,56 +16,24 @@ class GenerarRegistrosMensuales extends Command
     public function handle()
     {
         try {
-            $estudiantes = Estudiante::all();
+            $estudiantes = Estudiante::where('estado', 1)->get();
             $mesActual = Carbon::now()->month;
             $anioActual = Carbon::now()->year;
-            /*foreach ($estudiantes as $estudiante) {
-                $pagoExistente = PagoMensual::where('estudiante_id', $estudiante->id)
-                    ->where('mes', $mesActual)
-                    ->where('anio', $anioActual)
-                    ->first();
-
-                if (!$pagoExistente) {
-                    PagoMensual::create([
-                        'estudiante_id' => $estudiante->id,
-                        'mes' => $mesActual,
-                        'anio' => $anioActual,
-                        'fecha' => Carbon::now(),
-                        'pagado' => false,
-                    ]);
-                }
-            }*/
             foreach ($estudiantes as $estudiante) {
                 $pagoExistente = PagoMensual::where('estudiante_id', $estudiante->id)
                     ->where('mes', $mesActual)
                     ->where('anio', $anioActual)
+                    ->where('metodo_id', 1)
                     ->first();
-            
                 if (!$pagoExistente) {
-                    PagoMensual::create([
-                        'estudiante_id' => $estudiante->id,
-                        'mes' => $mesActual,
-                        'anio' => $anioActual,
-                        'fecha' => Carbon::now(),
-                        'pagado' => true,  // Marcar como pagado
-                    ]);
-                    // Verificar si hay pagos anteriores impagos
-                    $pagosAnterioresImpagos = PagoMensual::where('estudiante_id', $estudiante->id)
-                        ->where(function ($query) use ($mesActual, $anioActual) {
-                            $query->where('anio', '<', $anioActual)
-                                ->orWhere(function ($query) use ($mesActual, $anioActual) {
-                                    $query->where('anio', $anioActual)
-                                        ->where('mes', '<', $mesActual);
-                                });
-                        })->where('pagado', false)->exists();
-                    if (!$pagosAnterioresImpagos) {
-                        $estudiante->update(['estado' => 0]);
-                    }
+                    // Cambiar el estado del estudiante a false
+                    $estudiante->estado = false;
+                    // Guardar el cambio en la base de datos
+                    $estudiante->save();
                 }
             }
             $this->info('Registros mensuales generados con éxito.');
         } catch (\Exception $e) {
-            Log::error('Error al generar registros mensuales: ' . $e->getMessage());
             $this->error('Hubo un error al generar registros mensuales. Consulta los logs para obtener más información.');
         }
     }

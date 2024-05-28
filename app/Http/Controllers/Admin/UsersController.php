@@ -82,8 +82,8 @@ class UsersController extends Controller
         try {
             // Crear o recuperar el usuario
             $user = User::firstOrCreate(
-                ['name' => $this->generateUniqueUsername($request->nombre)],
-                ['email' => $request->email, 'password' => Hash::make('u.'.$request->ci)]
+                ['name' => $request->ci],// $this->generateUniqueUsername($request->ci)],
+                ['email' => $request->email, 'password' => Hash::make('igla.'.$request->ci)]
             );
             $user->assignRole('Estudiante');
     
@@ -152,8 +152,8 @@ class UsersController extends Controller
         $request->validate($rules);
         try {
             $user = User::firstOrCreate(
-                ['name' => $this->generateUniqueUsername($request->nombre)],
-                ['email' => $request->email, 'password' => Hash::make('u.'.$request->ci)]
+                ['name' => $request->ci],//$this->generateUniqueUsername($request->ci)],
+                ['email' => $request->email, 'password' => Hash::make('igla.'.$request->ci)]
             );
             $user->assignRole('Docente');
             $pers = Persona::create([

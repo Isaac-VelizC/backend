@@ -20,12 +20,12 @@
     <div class="conatiner-fluid content-inner mt-n5 py-0">
        <div class="row">
           <div class="col-sm-12">
-             <div class="card">
+             <div class="">
                 <div class="card-body contenido-imprimir">
                     <table class="base contenido-imprimir" align="center" cellspacing="0" cellpadding="0" border="0" width="100%">
                         <tbody>
                         <tr>
-                            <td align="center" bgcolor="#283663" style="font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-bottom:55px;background-color:#e2d7c4;" valign="top">
+                            <td align="center" bgcolor="#283663" style="font-family:Zent, 'Helvetica Neue', Helvetica, Arial, sans-serif;padding-bottom:55px;background-color: transparent;" valign="top">
                                 <table style="width:560px; margin-top: 50px; border-radius: 5px; overflow: hidden;" class="main" align="center" cellspacing="0" cellpadding="0" border="0" width="100%">
                                     <tbody>
                                     <tr>
@@ -155,6 +155,16 @@
 @endsection
 <script>
     function imprimir() {
-        window.print();
+        var contenido = document.querySelector('.contenido-imprimir').innerHTML;
+        var ventana = window.open('', 'PRINT', 'height=600,width=800');
+        ventana.document.write('<html><head><title>Imprimir</title>');
+        ventana.document.write('</head><body >');
+        ventana.document.write(contenido);
+        ventana.document.write('</body></html>');
+        ventana.document.close();
+        ventana.focus();
+        ventana.print();
+        ventana.close();
+        return true;
     }
 </script>

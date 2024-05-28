@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Docente;
 use App\Models\Persona;
 use App\Models\Personal;
 use App\Models\User;
@@ -16,12 +15,12 @@ class UsersSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' =>'Isaac Veliz',
+            'name' =>'IsaacVeliz',
             'email' => 'isa.veliz@gmail.com',
             'password' => bcrypt('IsaacVelizAdmin'),
         ]);
         User::create([
-            'name' =>'Teagan Croft',
+            'name' =>'TeaganCroft',
             'email' => 'teagan.croft@gmail.com',
             'password' => bcrypt('TeaganCroft'),
         ]);

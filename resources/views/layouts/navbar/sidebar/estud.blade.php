@@ -41,6 +41,12 @@
               <span class="item-name">Calificaciones</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link {{ Route::is('admin.recetas') ? 'active' : '' }}" href="{{ route('admin.recetas') }}">
+              <i class="bi bi-cloud-fog"></i>
+              <span class="item-name">Generar Receta</span>
+            </a>
+          </li>
         </ul>
       </div>
     </div>

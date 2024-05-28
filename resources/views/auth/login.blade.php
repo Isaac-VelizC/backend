@@ -7,7 +7,7 @@
             <div class="col-md-10">
                <div class=" px-sm-2 px-4 px-lg-5">
                   <div class=" text-center navbar-brand mb-3 py-4">
-                     <span class="text-dark text-bold display-4 text-wrap"><b>INSTITUTO TECNICO IGLA</b></span>
+                     <img src="{{ asset('img/igla-logo.png') }}" alt="log" width="300">
                   </div>
                   <p class="text-center">Inicie sesión para mantenerse conectado.</p>
                   <form method="POST" action="{{ route('login') }}">

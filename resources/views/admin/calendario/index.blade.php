@@ -5,14 +5,17 @@
 <div class="conatiner-fluid content-inner mt-n5 py-0">
     <div id="myAlert"></div>
     <div class="row">
-        <div class="col-sm-12 col-lg-3">
+        <div class="col-sm-12 col-lg-4">
             @livewire('admin.calendario')
         </div>
-        <div class="col-sm-12 col-lg-9">
+        <div class="col-sm-12 col-lg-8">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <div class="header-title">
                         <h4 class="card-title">Gestionar el Calendario</h4>
+                    </div>
+                    <div>
+                        <a href="{{ route('admin.cursos') }}">Ir a materias</a>
                     </div>
                 </div>
                 <div class="card-body">

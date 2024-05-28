@@ -10,8 +10,14 @@ class RecetaGenerada extends Model
     use HasFactory;
     protected $table = "receta_generadas";
     protected $primaryKey = "id";
-    protected $fillable = ['receta', 'fecha', 'estado'];    
-    protected $casts = [
-        'receta' => 'json',
+    protected $fillable = [
+        'titulo',
+        'ingredientes',
+        'pasos',
+        'tiempo',
+        'porciones',
+        'descripcion',
+        'fecha',
+        'estado'
     ];
 }

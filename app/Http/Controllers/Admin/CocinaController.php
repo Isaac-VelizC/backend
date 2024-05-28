@@ -109,19 +109,22 @@ class CocinaController extends Controller
 
     public function generarRecetaOpenAI(Request $request) {
         try {
-            // Validar la solicitud
             $this->validate($request, [
                 'tipoPlato' => 'required|string|max:255',
+                'tiempo' => 'required|numeric|min:10',
+                'porcion' => 'required|numeric|min:1',
                 'tags.*' => 'required|numeric',
             ]);
-    
             // Obtener los nombres de los ingredientes
             $tags = $request->tags;
             $ingredientes = Ingrediente::whereIn('id', $tags)->pluck('nombre')->toArray();
-    
             // Construir la pregunta para OpenAI
-            $question = "¿Podrías crear una receta de " . $request->tipoPlato . " utilizando " . implode(', ', $ingredientes) . " como ingredientes? Por favor, incluye los pasos de preparación, el tiempo estimado de preparación y la cantidad de porciones. 
-            Además, ¿puedes proporcionar la receta en una estructura HTML, mostrando los pasos de manera organizada?";
+            $question = "¿podrías proporcionarme una receta para un/a " . $request->tipoPlato . " que utilice " . implode(', ', $ingredientes) . " como ingredientes para un tiempo de " . $request->tiempo .", y una cantida de " . $request->porcion . " pociones ? 
+            Sería genial si pudieras incluir los pasos de preparación. Además, ¿podrías organizar la receta en una estructura HTML dentro de un div con las clases
+             de container? Sería ideal que el título esté en un h1 con el id 'titulo', los ingredientes en una etiqueta <ul> con el id
+            'ingredientes', y cada ingrediente tenga su id único que se incremente. Los pasos de preparación deberían estar en una etiqueta <ol> con un id 'pasos' con 
+            cada paso teniendo su id único que también se incremente. Por último, 
+            ¿podrías añadir el tiempo estimado de preparación y la cantidad de porciones, cada uno con su id correspondiente? y no incluir la cabezera de la estructura html ¡Gracias!";
             // Enviar la consulta a OpenAI
             $response = OpenAI::chat()->create([
                 'model' => 'gpt-3.5-turbo-0301',
@@ -129,15 +132,10 @@ class CocinaController extends Controller
                     ['role' => 'user', 'content' => $question],
                 ],
             ]);
-    
-            // Procesar la respuesta
             // Procesar la respuesta
             $answer = trim($response['choices'][0]['message']['content']);
             $recetas = $answer;
             //$recetas = $this->procesarRespuestaOpenAI($answer);
-            /*RecetaGenerada::create([
-                'receta' => $recetas,
-            ]);*/
             // Devolver la respuesta a la vista
             return view('admin.recetas.index', ['question' => $question, 'recetas' => $recetas]);
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -190,86 +188,6 @@ class CocinaController extends Controller
             'pasos' => [],
         ];
     }
-    
-    /*
-    // Función para procesar la respuesta de OpenAI y estructurar las recetas
-    private function procesarRespuestaOpenAI($answer) {
-        $recetas = [];
-        $lines = explode("\n", $answer);
-    
-        $currentReceta = null;
-        foreach ($lines as $line) {
-            $line = trim($line);
-    
-            if (empty($line)) {
-                continue;
-            }
-    
-            // Si la línea comienza con un número, es un paso de receta
-            if (preg_match('/^\d+\./', $line)) {
-                $currentReceta['pasos'][] = $line;
-            } else {
-                // Si no, es parte del título, ingredientes, etc.
-                $currentReceta = $this->procesarLineaReceta($line);
-                $recetas[] = $currentReceta;
-            }
-        }
-    
-        return $recetas;
-    }
-    
-    // Función para procesar cada línea de receta
-    private function procesarLineaReceta($line) {
-        // Inicializar el arreglo de la receta
-        $receta = [
-            'titulo' => '',
-            'ingredientes' => [],
-            'pasos' => [],
-        ];
-
-        // Verificar si la línea contiene "Receta de"
-        if (strpos($line, 'Receta de') !== false) {
-            // Establecer el título de la receta
-            $receta['titulo'] = trim($line);
-        } elseif (strpos($line, 'Ingredientes:') !== false) {
-            // La línea contiene "Ingredientes:", por lo que se deben procesar los ingredientes
-            $receta['ingredientes'] = $this->procesarIngredientes($line);
-        } elseif (strpos($line, 'Preparación:') !== false) {
-            // La línea contiene "Preparación:", por lo que se deben procesar los pasos de preparación
-            $receta['pasos'] = $this->procesarPasos($line);
-        }
-
-        return $receta;
-    }
-
-    // Función para procesar la sección de ingredientes
-    private function procesarIngredientes($line) {
-        // Obtener la sección de ingredientes (eliminando la etiqueta "Ingredientes:")
-        $ingredientesSection = str_replace('Ingredientes:', '', $line);
-        
-        // Dividir la sección de ingredientes en líneas y limpiar cada línea
-        $ingredientesLines = array_map('trim', explode("\n", $ingredientesSection));
-
-        // Eliminar elementos vacíos
-        $ingredientesLines = array_filter($ingredientesLines, 'strlen');
-
-        return $ingredientesLines;
-    }
-
-    // Función para procesar la sección de pasos de preparación
-    private function procesarPasos($line) {
-        // Obtener la sección de pasos (eliminando la etiqueta "Preparación:")
-        $pasosSection = str_replace('Preparación:', '', $line);
-        
-        // Dividir la sección de pasos en líneas y limpiar cada línea
-        $pasosLines = array_map('trim', explode("\n", $pasosSection));
-
-        // Eliminar elementos vacíos
-        $pasosLines = array_filter($pasosLines, 'strlen');
-
-        return $pasosLines;
-    }
-*/
     
     public function inventarioIndex() {
         $ingredientes = Inventario::all();
@@ -364,6 +282,27 @@ class CocinaController extends Controller
             return back()->with('success', 'Se Agrego correctamente');
         } catch (\Throwable $th) {
             return back()->with('error', 'Ocurrio un error: ' . $th->getMessage());
+        }
+    }
+
+    public function guardarRecetaOpenAI(Request $request) {
+        try {
+            // Extraer el tiempo en minutos
+            $tiempo = preg_replace('/[^0-9]/', '', $request->tiempo); // Eliminar todo excepto los números
+            $tiempoMinutos = intval($tiempo); // Convertir a entero
+            // Guardar los datos de la receta en la base de datos
+            $receta = new RecetaGenerada();
+            $receta->titulo = $request->titulo;
+            $receta->ingredientes = json_encode($request->ingredientes);
+            $receta->pasos = json_encode($request->pasos);
+            $receta->tiempo = $tiempoMinutos;
+            $receta->porciones = $request->porciones;
+            $receta->descripcion = 'Receta generada';
+            $receta->fecha = now();
+            $receta->save();
+            return response()->json(['success' => 'Receta guardada exitosamente']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Ocurrió un error: ' . $e->getMessage()], 500);
         }
     }
 }

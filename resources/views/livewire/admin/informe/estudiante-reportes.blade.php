@@ -68,7 +68,7 @@
                             <div class="card-body">
                                 <div class="flex-wrap d-flex justify-content-between align-items-center">
                                     <h3><b>Resultados</b></h3>
-                                    @if ($resultados && count($resultados) > 0)
+                                    <!--@if ($resultados && count($resultados) > 0)
                                         @if ($semestreId)
                                             <button class="btn btn-link text-black"  data-bs-toggle="modal" data-bs-target="#confirProgramacion">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -77,7 +77,7 @@
                                                 </svg> Programar Materia
                                             </button>
                                         @endif
-                                    @endif
+                                    @endif-->
                                 </div>
                                 <br>
                                 <div class="table-responsive">
