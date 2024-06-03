@@ -53,9 +53,9 @@ function addEventIfElementExists(elementId, eventName, callback) {
     var element = document.getElementById(elementId);
     if (element) {
         element.addEventListener(eventName, callback);
-    } else {
+    }/* else {
         console.error(`Element with ID '${elementId}' not found.`);
-    }
+    }*/
 }
 
 // Uso de la función con una tabla específica

@@ -47,7 +47,7 @@
             @yield('content')
             @role('Admin')
                 <div class="btn-download">
-                    <a class="btn btn-danger px-3 py-2" href="{{ route('admin.backup.db_igla') }}">
+                    <a class="btn btn-danger px-3 py-2" href="{{ route('backup.list') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <path d="M15.836 7.353c-.793-.828-1.931-1.44-3.27-1.628l.211-1.492-3.097 2.02 2.465 2.57.202-1.486c.86.15 1.515.509 
                             1.96.972 1.035 1.081.919 2.73-.453 3.625-1.299.847-3.182.664-4.216-.415-.727-.758-.938-1.852-.183-2.846l-1.297-1.352c-1.605 

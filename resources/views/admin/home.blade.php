@@ -133,7 +133,7 @@
                <div class="card border-bottom border-4 border-0 border-warning">
                   <a href="{{ route('admin.administracion') }}">
                      <div class="card-body">
-                        <span>Panel de Control</span>
+                        <span>Administración</span>
                      </div>
                   </a>
                </div>

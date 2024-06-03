@@ -171,3 +171,8 @@ Breadcrumbs::for('Inventario.historial', function (BreadcrumbTrail $trail) {
     $trail->parent('Inventario.list');
     $trail->push('Historial', route('admin.inventario.historial'));
 });
+///Backups
+Breadcrumbs::for('Admin.Backup', function (BreadcrumbTrail $trail) {
+    $trail->parent('home');
+    $trail->push('Historial de Copias de Seguridad', route('backup.list'));
+});

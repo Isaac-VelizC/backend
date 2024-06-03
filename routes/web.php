@@ -51,16 +51,22 @@ Route::get('/', function () {
     }
 });
 
-Auth::routes();
+Route::middleware('throttle:login')->group(function () {
+    Auth::routes();
+});
+
+//Auth::routes();
 Route::get('generar/receta.ai', [InfoController::class, 'generateAIReceta'])->name('generate.ai.receta');
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::middleware(['auth', 'role:Admin|Secretario/a'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.home');
     Route::get('/gestionar/permisos/admin', GestionPermisos::class)->name('admin.gestion.permisos');
-    Route::get('/backup', function() {
-        Artisan::call('backup:run'); 
-      });
-    Route::get('/backup', [BackupController::class, 'downloadBackup'])->name('admin.backup.db_igla');
+    
+    Route::get('/backups', [BackupController::class, 'listBackups'])->name('backup.list');
+    Route::get('/backups/download/{file}', [BackupController::class, 'downloadBackup'])->name('backup.download');
+    Route::post('/backups/run', [BackupController::class, 'runBackup'])->name('backup.run');
+    
+    //Route::get('/backup', [BackupController::class, 'downloadBackup'])->name('admin.backup.db_igla');
     Route::get('/admin-estudiantes', [UsersController::class, 'estudiantesAll'])->name('admin.estudinte');
     Route::get('/admin-inscripcions', [UsersController::class, 'formInscripcion'])->name('admin.inscripcion');
     Route::post('/admin-inscripcions/store', [UsersController::class, 'inscripcion'])->name('admin.inscripcion.store');

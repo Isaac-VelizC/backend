@@ -15,20 +15,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         //$schedule->command('GenerarRegistrosMensuales::class')->monthlyOn(1, '00:00');
-        $schedule->command('app:generar-registros-mensuales')->dailyAt('12:00');//->mountly();
-
-        //$schedule->command('inspire')->hourly();
-        /*$schedule->command('backup:clean')->daily()->at('01:00');
-        $schedule->command('backup:run')->daily()->at('02:00');
-
-        $schedule
-            ->command('backup:run')->daily()->at('01:00')
-            ->onFailure(function () {
-                'Fallos al realiza la copia de seguridad';
-            })
-            ->onSuccess(function () {
-                'Copia de seguridad Correcta';
-            });*/
+        $schedule->command('app:generar-registros-mensuales')->dailyAt('12:00');//->mountly();s
+        $schedule->command('backup:run')->daily();
     }
 
     /**
