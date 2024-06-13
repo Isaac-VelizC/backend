@@ -122,7 +122,7 @@
                                             <span class="visually-hidden">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="{{ route('store.imprimir.pago') }}">Guardar e Imprimir</a></li>
+                                            <li><a class="dropdown-item" href="">Guardar e Imprimir</a></li>
                                         </ul>
                                     </div>
                                 </form>

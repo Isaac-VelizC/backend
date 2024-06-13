@@ -62,6 +62,9 @@
                                     <td>{{ number_format($backup['size'] / 1048576, 2) }} MB</td>
                                     <td>{{ date('Y-m-d H:i:s', $backup['last_modified']) }}</td>
                                     <td class="text-center">
+                                        <a href="{{ route('backup.delete', basename($backup['path'])) }}" class="btn btn-sm btn-icon btn-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
                                         <a href="{{ route('backup.download', basename($backup['path'])) }}" class="btn btn-sm btn-icon btn-success">
                                             <i class="bi bi-download"></i>
                                         </a>

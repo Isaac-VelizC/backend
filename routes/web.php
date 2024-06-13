@@ -55,7 +55,6 @@ Route::middleware('throttle:login')->group(function () {
     Auth::routes();
 });
 
-//Auth::routes();
 Route::get('generar/receta.ai', [InfoController::class, 'generateAIReceta'])->name('generate.ai.receta');
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::middleware(['auth', 'role:Admin|Secretario/a'])->group(function () {
@@ -65,8 +64,8 @@ Route::middleware(['auth', 'role:Admin|Secretario/a'])->group(function () {
     Route::get('/backups', [BackupController::class, 'listBackups'])->name('backup.list');
     Route::get('/backups/download/{file}', [BackupController::class, 'downloadBackup'])->name('backup.download');
     Route::post('/backups/run', [BackupController::class, 'runBackup'])->name('backup.run');
+    Route::get('/backup/delete/{name}', [BackupController::class, 'deleteBackup'])->name('backup.delete');
     
-    //Route::get('/backup', [BackupController::class, 'downloadBackup'])->name('admin.backup.db_igla');
     Route::get('/admin-estudiantes', [UsersController::class, 'estudiantesAll'])->name('admin.estudinte');
     Route::get('/admin-inscripcions', [UsersController::class, 'formInscripcion'])->name('admin.inscripcion');
     Route::post('/admin-inscripcions/store', [UsersController::class, 'inscripcion'])->name('admin.inscripcion.store');
@@ -120,7 +119,7 @@ Route::middleware(['auth', 'role:Admin|Secretario/a'])->group(function () {
     Route::get('/pagos/formulario/hjfse', [PagosController::class, 'formPagos'])->name('admin.create.pago');
     Route::post('/pagos/store', [PagosController::class, 'storePagosSimples'])->name('admin.store.pago');
     Route::get('/pagos/guadar/imprimir/{id}', [PagosController::class, 'guardarImprimirPago'])->name('admin.pago.guardar.imprimir');
-    Route::get('', [PagosController::class, 'storeImprimirPago'])->name('store.imprimir.pago');
+    //Route::get('', [PagosController::class, 'storeImprimirPago'])->name('store.imprimir.pago');
     Route::get('/pagos/habilitar/mes', [PagosController::class, 'habilitarPagosMes'])->name('admin.habiltar.pagos.mes');
     Route::get('/obtener/detalles/pago/{id}', [PagosController::class, 'obtenerDetallesPago'])->name('admin.pagos.detalle');
     Route::get('/obtener/historial/pago', [PagosController::class, 'historialPago'])->name('admin.pagos.historial');

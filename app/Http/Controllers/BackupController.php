@@ -28,29 +28,6 @@ class BackupController extends Controller
         return redirect()->back()->with('success', 'Configuración de backup guardada correctamente.');
     }
 
-    /*public function runBackup(Request $request)
-    {
-        // Ejecuta el backup basado en las configuraciones del cliente
-        $backupJob = BackupJobFactory::createFromArray(config('backup'));
-        
-        $backupJob->dontBackupFilesystem()
-                  ->dontBackupDatabases();
-
-        // Incluye bases de datos seleccionadas
-        foreach ($request->input('databases', []) as $database) {
-            $backupJob->backupDatabase($database);
-        }
-
-        // Incluye archivos seleccionados
-        foreach ($request->input('files', []) as $file) {
-            $backupJob->backupFile($file);
-        }
-
-        $backupJob->run();
-
-        return redirect()->back()->with('success', 'Backup ejecutado correctamente.');
-    }*/
-
     // Método para ejecutar el backup
     public function runBackup()
     {
@@ -90,5 +67,16 @@ class BackupController extends Controller
         }
 
         return redirect()->back()->with('error', 'El archivo de backup no existe.');
+    }
+
+    public function deleteBackup($name) {
+        $filePath = 'backups/' . $name;
+
+        if (Storage::disk('local')->exists($filePath)) {
+            Storage::disk('local')->delete($filePath);
+            return back()->with('success', 'Backup eliminado exitosamente.');
+        }
+
+        return back()->with('error', 'No existe el archivo del backup.');
     }
 }

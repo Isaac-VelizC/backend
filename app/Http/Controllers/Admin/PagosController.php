@@ -72,7 +72,7 @@ class PagosController extends Controller
     }
 
     public function storeImprimirPago(Request $request) {
-        return view('');
+        return 0;
     }
 
     public function formPagos() {
