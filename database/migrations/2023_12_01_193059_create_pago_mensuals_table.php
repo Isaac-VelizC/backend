@@ -13,6 +13,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->decimal('monto', 10, 2);
+            $table->boolean('estado')->default(true);
         });
         
         Schema::create('pago_mensuals', function (Blueprint $table) {

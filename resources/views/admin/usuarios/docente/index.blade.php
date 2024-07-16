@@ -73,7 +73,7 @@
                             @foreach ($docentes as $item)
                             <tr>
                                 <td><p><a href="{{ route('admin.D.show', [$item->id]) }}">{{ $item->nombre }} {{$item->ap_paterno}} {{$item->ap_materno}}</a></p></td>
-                                <td><p>{{ $item->email }}</p></td>
+                                <td><a href="mailto:{{ $item->email }}">{{ $item->email }}</a></td>
                                 <td><p>{{ $item->ci }}</p></td>
                                 <td><p>{{ $item->numero }}</p></td>
                                 @if ($item->estado == true)

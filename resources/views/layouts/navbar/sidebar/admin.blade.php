@@ -120,7 +120,7 @@
                                     <span class="item-name">Estudiantes</span>
                                 </a>
                             </li>
-                            <!--li class="nav-item">
+                            <li class="nav-item">
                                 <a class="nav-link {{ Route::is('admin.asistencias.informe') ? 'active' : '' }}" href="{{ route('admin.asistencias.informe') }}">
                                     <i class="icon">
                                         <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
@@ -132,7 +132,7 @@
                                     <i class="sidenav-mini-icon"> A </i>
                                     <span class="item-name">Asistencias</span>
                                 </a>
-                            </li-->
+                            </li>
                             <!--li class="nav-item">
                                 <a class="nav-link {{ Route::is('admin.materias.informe') ? 'active' : '' }}" href="{{ route('admin.materias.informe')}}">
                                     <i class="icon">

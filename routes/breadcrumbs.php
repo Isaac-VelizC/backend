@@ -176,3 +176,8 @@ Breadcrumbs::for('Admin.Backup', function (BreadcrumbTrail $trail) {
     $trail->parent('home');
     $trail->push('Historial de Copias de Seguridad', route('backup.list'));
 });
+///Notifications
+/*Breadcrumbs::for('Admin.Notify', function (BreadcrumbTrail $trail) {
+   $trail->parent('home');
+   $trail->push('Gestión de Notificaciones', route('admin.notify.index')); 
+});*/

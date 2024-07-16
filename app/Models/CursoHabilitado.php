@@ -73,6 +73,6 @@ class CursoHabilitado extends Model
     }
     public function evaluacionDocente()
     {
-        return $this->belongsTo(EvaluacionHabilitada::class);
+        return $this->belongsTo(EvaluacionHabilitada::class, 'id', 'materia_id');
     }
 }

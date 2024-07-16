@@ -38,7 +38,7 @@
                                  <i class="bi bi-calendar-check"></i>
                               </div>
                               <div class="progress-detail">
-                                 <p  class="mb-2">Historial del mes de {{ $mesActual }}</p>
+                                 <p  class="mb-2">Totales del mes de {{ $mesActual }}</p>
                                  <h6 class="counter">Estudiantes activos {{ $estudiantes }} en el mes de {{ $mesActual }} </h6>
                               </div>
                            </div>
@@ -161,6 +161,7 @@
                      <tr>
                         <th>CODIGO</th>
                         <th>DESCRIPCIÓN</th>
+                        <th>MES</th>
                         <th>P.UNIT</th>
                         <th>SUB TOTAL</th>
                      </tr>
@@ -173,6 +174,7 @@
                   <tr>
                      <td>${item.codigo}</td>
                      <td>${item.descripcion}</td>
+                     <td>${item.mes}</td>
                      <td>${item.monto}</td>
                      <td>${item.monto}</td>
                   </tr>`;

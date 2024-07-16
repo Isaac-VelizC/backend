@@ -45,7 +45,7 @@ class NewTarea extends Component
         $this->validate([
             'tarea.tipo' => 'required|numeric',
             'tarea.tema' => 'nullable|numeric|exists:temas,id',
-            'tarea.titulo' => 'required|string|min:10|max:255',
+            'tarea.titulo' => 'required|string|min:10|max:100',
             'tarea.fin' => 'nullable|date',
             'tarea.con_nota' => 'required|boolean',
             'tarea.nota' => $this->tarea['con_nota'] ? 'required|numeric' : 'nullable|numeric',

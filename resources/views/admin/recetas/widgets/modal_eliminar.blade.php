@@ -1,3 +1,5 @@
+<!--MODAL PARA ELIMINAR UNA RECETA-->
+
 <div class="modal fade" id="deleteConfirm{{ $modalId }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

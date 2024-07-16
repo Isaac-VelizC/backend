@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ingrediente_id')->nullable();
             $table->foreign('ingrediente_id')->references('id')->on('ingredientes')->onDelete('cascade');
             $table->integer('cantidad');
+            $table->text('descripcion')->nullable();
             $table->string('unidad_media')->nullable();
             $table->date('fecha_registro')->default(now());
             $table->datetime('fecha_modificacion')->nullable();

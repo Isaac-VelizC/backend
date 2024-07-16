@@ -11,7 +11,7 @@ class MetodoPago extends Model
     public $timestamps = false;
     protected $table = "metodo_pagos";
     protected $primaryKey = "id";
-    protected $fillable = ['nombre', 'monto'];
+    protected $fillable = ['nombre', 'monto', 'estado'];
     
     public function mensualPago()
     {

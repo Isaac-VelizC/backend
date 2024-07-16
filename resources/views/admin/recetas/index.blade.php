@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+
+<!--PAGINA PRINCIPAL PARA GENERAR RECETAS LADO DOCENTE COMO ESTUDIANTE-->
 <div class="position-relative iq-banner">
     <div class="iq-navbar-header" style="height: 150px;">
         <div class="container-fluid iq-container">

@@ -13,10 +13,8 @@ class DocenteController extends Controller
         $iddocente =  auth()->user()->persona->docente->id;
         $cursos = CursoHabilitado::where('docente_id', $iddocente)->get();
         $recetas = Receta::all();
-        $misRecetas = []; /*Receta::where('docente_id', auth()->user()->id)
-        ->latest()  // Ordenar por el campo creado más reciente
-        ->limit(10) // Obtener solo los últimos 10 registros
-        ->get();*/
+        $misRecetas = Receta::where('docente_id', auth()->user()->persona->docente->id)->latest()->limit(10)
+        ->get();
         $materiasA = CursoHabilitado::where(['estado' => true, 'docente_id' => $iddocente ])->get();
         return view('docente.home', compact('cursos', 'recetas', 'misRecetas', 'materiasA'));
     }

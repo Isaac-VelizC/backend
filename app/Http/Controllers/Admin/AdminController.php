@@ -40,7 +40,7 @@ class AdminController extends Controller
             'nombre' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
             'ap_pat' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
             'ap_mat' => 'nullable|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
-            'ci' => 'required|string|regex:/^\d{7}(?:-[0-9A-Z]{1,2})?$/|unique:personas,ci|min:7',
+            'ci' => 'required|string|regex:/^\d{7,9}(?:-[0-9A-Z]{1,2})?$/|unique:personas,ci|min:7',
             'genero' => 'required|in:Mujer,Hombre,Otro',
             'email' => 'required|email|unique:personas,email',
             'telefono' => 'nullable|string|regex:/^[0-9+()-]{8,15}$/|unique:personas,numero',

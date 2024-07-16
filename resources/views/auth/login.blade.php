@@ -10,6 +10,12 @@
                      <img src="{{ asset('img/igla-logo.png') }}" alt="log" width="300">
                   </div>
                   <p class="text-center">Inicie sesión para mantenerse conectado.</p>
+                  @if(session('error'))
+                     <div id="myAlert" class="alert alert-left alert-danger alert-dismissible fade show mb-3 alert-fade" role="alert">
+                     <span>{{ session('error') }}</span>
+                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                     </div>
+                  @endif
                   <form method="POST" action="{{ route('login') }}">
                      @csrf
                      <div class="row">
@@ -40,10 +46,10 @@
                               <input class="form-check-input" type="checkbox" name="remember" id="customCheck1" {{ old('remember') ? 'checked' : '' }}>
                               <label class="form-check-label" for="customCheck1">Recuerdame</label>
                            </div>
-                           @if (Route::has('password.request'))
-                                 <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    {{ __('¿Olvidaste la contraseña?') }}
-                                 </a>
+                           @if (Route::has('form.change.password'))
+                              <a class="btn btn-link" href="{{ route('form.change.password') }}">
+                                    {{ __('¿Olvido su contraseña?') }}
+                              </a>
                            @endif
                         </div>
                      </div>

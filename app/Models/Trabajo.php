@@ -29,7 +29,7 @@ class Trabajo extends Model
     ];
     
     public function catCritTrabajos() {
-        return $this->hasMany(CatCritTrabajo::class, 'tarea_id');
+        return $this->belongsTo(CatCritTrabajo::class, 'id', 'tarea_id');
     }
 
     public function curso()

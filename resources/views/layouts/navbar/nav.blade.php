@@ -1,18 +1,3 @@
-<style>
-  .notification-count {
-    position: absolute;
-    text-align: center;
-    z-index: 1;
-    top: -1px;
-    right: -1px;
-    width: 20px;
-    height: 20px;
-    font-size: 15px;
-    border-radius: 50%;
-    background-color: #ff4927;
-    color: #fff;
-  }
-</style>
 <nav class="nav navbar navbar-expand-lg navbar-light iq-navbar"z>
       <div class="container-fluid navbar-inner">
         <a href="{{ url('/') }}" class="navbar-brand">
@@ -44,9 +29,10 @@
           <ul class="mb-2 navbar-nav ms-auto align-items-center navbar-list mb-lg-0">
             <li class="nav-item dropdown">
               <a class="py-0 nav-link d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="{{ asset(Auth::user()->persona->photo != 'user.png' ? 'storage/' . Auth::user()->persona->photo : 'img/user.png') }}" alt="User-Profile" class=" img-fluid avatar avatar-50 avatar-rounded">
+                <img src="{{ asset(Auth::user()->persona->photo != 'user.png' ? 'storage/' . Auth::user()->persona->photo : 'img/user.png') }}" alt="User-Profile" 
+                style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
                 <div class="caption ms-3 d-none d-md-block ">
-                  <h6 class="mb-0 caption-title">{{ Auth::user()->name }}</h6>
+                  <h6 class="mb-0 caption-title">{{ Auth::user()->persona->nombre }} {{ Auth::user()->persona->ap_paterno }}</h6>
                       @foreach(Auth::user()->getRoleNames()->toArray() as $role)
                         <p class="mb-0 caption-sub-title">{{ $role }}</p>
                       @endforeach

@@ -27,10 +27,10 @@ class ConfigDocs extends Component
         foreach ($this->files as $file) {
             $originalName = $file->getClientOriginalName();
             $filePath = $file->storeAs('public/files/curso' . $this->idCurso, $originalName);
-            $url = 'storage/' . $filePath;
+            $url = str_replace('public/', '', $filePath);
             DocumentoCurso::create([
                 'nombre' => $originalName,
-                'url' => $url,
+                'url' => 'storage/' . $url,
                 'curso_id' => $this->idCurso,
                 'user_id' => auth()->user()->id
             ]);

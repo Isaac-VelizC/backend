@@ -73,7 +73,6 @@
                                             @foreach ($roles as $item)
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
-                                            <option value="0">Personal</option>
                                         </select>
                                         @error('rol')
                                             <div class="alert alert-danger">{{ $message }}</div>
@@ -87,7 +86,6 @@
                                         @enderror
                                     </div>
                                     <hr>
-                                    
                                     <label class="form-label text-gray" for="rol"><strong>Nota: </strong>¿El perosnal tendra acceso al sistema?</label>
                                     <div class="form-group col-md-12 text-center">
                                         <div class="form-check form-check-inline">

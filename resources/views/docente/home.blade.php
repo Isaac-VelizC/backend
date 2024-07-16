@@ -48,58 +48,30 @@
    </div>
 
    <div class="row">
-      <div class="col-lg-6">
+      <div class="col-lg-12">
          @if (count($materiasA) > 0 )
-               <div class="card-header d-flex justify-content-between">
-                  <div class="header-title">
-                     <h4 class="card-title">Materias</h4>
-                  </div>
-               </div>
+         <div class="card-header d-flex justify-content-between">
+            <div class="header-title">
+               <h4 class="card-title">Materias Activas</h4>
+            </div>
+         </div>
          @endif
          <br>
          <div class="row">
             @foreach ($materiasA as $item)
-               <div class="col-md-6 text-center">
-                  <div class="card rounded-3 " style="background: {{ $item->curso->color }}">
-                     <div class="card-body">
-                        <h4 class="my-0 fw-normal">{{ $item->curso->nombre }}</h4>
-                        <br>
-                        <a type="button" href="{{ route('cursos.curso', $item->id) }}" class="btn btn-outline-primary">Entrar</a>
-                     </div>
+               <div class="col-md-3">
+                  <div class="card" style="border-bottom: 4px solid {{ $item->curso->color }};">
+                     <a href="{{ route('cursos.curso', $item->id) }}">
+                        <div class="card-body">
+                           <div class="d-flex justify-content-between align-items-center">
+                              <span>{{ $item->curso->nombre }}</span>
+                              <small>{{ $item->horario->turno }}</small>
+                           </div>
+                        </div>
+                     </a>
                   </div>
                </div>
             @endforeach
-         </div>
-         <div class="card">
-            <div class="card-header d-flex justify-content-between">
-               <div class="header-title">
-                  <h4 class="card-title">Recetas Recientes</h4>
-               </div>
-            </div>
-            <div class="card-body p-0">
-               <div class="table-responsive mt-4">
-                  <table id="basic-table" class="table table-striped mb-0" role="grid">
-                     <thead>
-                        <tr>
-                           <th>Nombre</th>
-                           <th>Tipo</th>
-                           <th>Porción</th>
-                           <th>Tiempo</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        @foreach ($misRecetas as $item)
-                            <tr>
-                              <td>{{ $item->titulo }}</td>
-                              <td>{{ $item->titulo }}</td>
-                              <td>{{ $item->porcion }}</td>
-                              <td>{{ $item->tiempo }}</td>
-                            </tr>
-                        @endforeach
-                     </tbody>
-                  </table>
-               </div>
-            </div>
          </div>
       </div>
       <div class="col-lg-6">
@@ -109,6 +81,43 @@
             </div>
          </div>
       </div>
+      <div class="col-lg-6">
+         <div class="card">
+            <div class="card-header d-flex justify-content-between">
+               <div class="header-title">
+                  <h4 class="card-title">Recetas Recientes</h4>
+               </div>
+               <strong><a href="{{ route('recetas.add') }}">Nueva Receta</a></strong>
+            </div>
+            <div class="card-body p-0">
+               <div class="table-responsive mt-4">
+                  @if (count($misRecetas) > 0)
+                     <table id="basic-table" class="table table-striped mb-0" role="grid">
+                        <thead>
+                           <tr>
+                              <th>Nombre</th>
+                              <th>Porción</th>
+                              <th>Tiempo</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           @foreach ($misRecetas as $item)
+                              <tr>
+                                 <td><a href="{{ route('admin.show.receta', [$item->id]) }}">{{ $item->titulo }}</a></td>
+                                 <td class="text-center">{{ $item->porcion }}</td>
+                                 <td class="text-center">{{ $item->tiempo }} minutos</td>
+                              </tr>
+                           @endforeach
+                        </tbody>
+                     </table>
+                  @else
+                      <p class="text-center">Ve a tus registra recetas <a href="{{ route('recetas.add') }}">Enlace</a></p>
+                  @endif
+               </div>
+            </div>
+         </div>
+      </div>
+      
    </div>
 </div>
 @endsection

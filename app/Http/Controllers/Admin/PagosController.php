@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\InfoController;
 use App\Models\Estudiante;
-use App\Models\FormaPago;
+//use App\Models\FormaPago;
 use App\Models\MetodoPago;
 use App\Models\PagoMensual;
 use App\Models\Pagos;
@@ -71,83 +71,108 @@ class PagosController extends Controller
         }
     }
 
-    public function storeImprimirPago(Request $request) {
-        return 0;
+    private function mesesList() {
+        $meshoy = now()->format('m');
+        $meses = [
+            '01' => 'Enero',
+            '02' => 'Febrero',
+            '03' => 'Marzo',
+            '04' => 'Abril',
+            '05' => 'Mayo',
+            '06' => 'Junio',
+            '07' => 'Julio',
+            '08' => 'Agosto',
+            '09' => 'Septiembre',
+            '10' => 'Octubre',
+            '11' => 'Noviembre',
+            '12' => 'Diciembre',
+        ];
+    
+        // Filtrar los meses a partir del mes actual hasta diciembre
+        $mesesFiltrados = [];
+        foreach ($meses as $key => $value) {
+            if ($key >= $meshoy) {
+                $mesesFiltrados[$key] = $value;
+            }
+        }
+    
+        return $mesesFiltrados;
     }
-
+    
     public function formPagos() {
-        $formaPagos = FormaPago::all();
-        $metodo = MetodoPago::all();
+        $meses = $this->mesesList();
+        $metodo = MetodoPago::where('estado', 1)->get();
         $fecha = now()->toDateString();
+        $anio = now()->format('Y');
+        $meshoy = now()->format('m');
         $isEditing = false;
-        return view('admin.pagos.form_pago', compact('isEditing', 'formaPagos', 'fecha', 'metodo'));
+        return view('admin.pagos.form_pago', compact('isEditing', 'fecha', 'metodo', 'meses', 'anio', 'meshoy'));
     }
+    
 
     public function storePagosSimples(Request $request) {
         $rules = [
-            'forma' => 'required|numeric|exists:formas_pagos,id',
             'estudiante' => 'required|numeric|exists:estudiantes,id',
-            'fecha' => 'required|date',
+            'fecha' => ['required', 'date_format:Y-m-d', 'before_or_equal:' . today()->format('Y-m-d')],
             'monto' => 'required|array',
             'monto.*' => 'exists:metodo_pagos,id',
             'descripcion' => 'nullable|string',
+            'total' => 'required',
+            'meses' => 'required|array'
         ];
         $request->validate($rules);
+    
         try {
-            // Sumar los montos de los métodos de pago seleccionados
-            $total = 0;
-            foreach ($request->monto as $montoId) {
-                $metodoPago = MetodoPago::find($montoId);
-                if (!$metodoPago) {
-                    return back()->with('error', 'No existe el monto de pago.');
-                }
-                $total += $metodoPago->monto;
-            }
             // Generar el código para el pago
             $code = $this->generarCode($request->fecha, 'pago');
             // Crear el pago
             $pago = Pagos::create([
                 'responsable_id' => auth()->user()->id,
                 'est_id' => $request->estudiante,
-                'forma_id' => $request->forma,
+                'forma_id' => 1,
                 'fecha' => $request->fecha,
-                'monto' => $total,
+                'monto' => $request->total,
                 'comentario' => $request->descripcion,
                 'codigo' => $code,
             ]);
-            // Crear los pagos mensuales
-            foreach ($request->monto as $montoId) {
-                // Obtener el monto del método de pago
-                $metodoPago = MetodoPago::find($montoId);
-                if (!$metodoPago) {
-                    return back()->with('error', 'No existe el monto de pago.');
+    
+            foreach ($request->meses as $mes) {
+                foreach ($request->monto as $montoId) {
+                    // Obtener el monto del método de pago
+                    $metodoPago = MetodoPago::find($montoId);
+                    if (!$metodoPago) {
+                        return back()->with('error', 'No existe el monto de pago.');
+                    }
+    
+                    // Extraer año de la fecha
+                    $anio = date('Y', strtotime($request->fecha));
+    
+                    // Generar el código mensual
+                    $codeMensual = $this->generarCode($request->fecha, 'mensual');
+    
+                    // Crear el pago mensual
+                    PagoMensual::create([
+                        'estudiante_id' => $request->estudiante,
+                        'metodo_id' => $montoId,
+                        'pago_id' => $pago->id,
+                        'mes' => $mes,
+                        'anio' => $anio,
+                        'fecha' => $request->fecha,
+                        'pagado' => true,
+                        'codigo' => $codeMensual,
+                        'monto' => $metodoPago->monto
+                    ]);
                 }
-                // Extraer mes y año de la fecha
-                $mes = date('m', strtotime($request->fecha));
-                $anio = date('Y', strtotime($request->fecha));
-                // Generar el código mensual
-                $codeMensual = $this->generarCode($request->fecha, 'mensual');
-                // Crear el pago mensual
-                PagoMensual::create([
-                    'estudiante_id' => $request->estudiante,
-                    'metodo_id' => $montoId,
-                    'pago_id' => $pago->id,
-                    'mes' => $mes,
-                    'anio' => $anio,
-                    'fecha' => $request->fecha,
-                    'pagado' => true,
-                    'codigo' => $codeMensual,
-                    'monto' => $metodoPago->monto
-                ]);
             }
+    
             // Enviar notificación al estudiante si tiene un número de teléfono registrado
             $estudiante = Estudiante::find($request->estudiante);
             $numeroTelefono = optional($estudiante->persona)->numero;
             if ($numeroTelefono) {
-                $message = 'Su pago de '. $total .'bs. fue registrado con éxito, querido estudiante: '. optional($estudiante->persona)->nombre;
+                $message = 'Su pago de '. $request->total .'bs. fue registrado con éxito, querido estudiante: '. optional($estudiante->persona)->nombre;
                 InfoController::notificacionNotaTarea($numeroTelefono, $message);
             }
-            return redirect()->route('admin.lista.pagos')->with('success', 'Se registró su pago exitosamente: Código de pago: '.$code.'. Monto total: '.$total);
+            return redirect()->route('admin.pago.guardar.imprimir', $pago->id);
         } catch (\Throwable $th) {
             return back()->with('error', 'Ocurrió un error: ' . $th->getMessage());
         }
@@ -168,6 +193,25 @@ class PagosController extends Controller
         $codigo = 'IGLA'. '-' . $fechaFormateada . '-' . str_pad($numeroSecuencia, 4, '0', STR_PAD_LEFT);
         
         return $codigo;
+    }
+
+    private function buscarMes($code) {
+        $meses = [
+            '1' => 'Enero',
+            '2' => 'Febrero',
+            '3' => 'Marzo',
+            '4' => 'Abril',
+            '5' => 'Mayo',
+            '6' => 'Junio',
+            '7' => 'Julio',
+            '8' => 'Agosto',
+            '9' => 'Septiembre',
+            '10' => 'Octubre',
+            '11' => 'Noviembre',
+            '12' => 'Diciembre',
+        ];
+    
+        return $meses[$code] ?? '';
     }
 
     public function obtenerDetallesPago($id) {
@@ -192,6 +236,7 @@ class PagosController extends Controller
             $mesuales[] = [
                 'codigo' => $value->codigo,
                 'descripcion' => $value->metodoPago->nombre ?? null,
+                'mes' => $this->buscarMes($value->mes),
                 'monto' => $value->monto,
                 'subtotal' => $value->monto, // ¿Este es el subtotal?
             ];
@@ -221,9 +266,9 @@ class PagosController extends Controller
             ];
         });
         // Obtener la lista de estudiantes que no han pagado en ningún mes
-        $estudiantesSinPago = $this->estudiantesDebenPagar();
+        //$estudiantesSinPago = $this->estudiantesDebenPagar();
         // Pasar los datos a la vista
-        return view('admin.pagos.historial', compact('pagosPorMetodo', 'estudiantesSinPago', 'totalMonto', 'nombreMes'));
+        return view('admin.pagos.historial', compact('pagosPorMetodo', 'totalMonto', 'nombreMes'));
     }
 
     public function estudiantesDebenPagar() {
@@ -257,84 +302,93 @@ class PagosController extends Controller
         }
         return $resultados;
     }
+
     public function editPage($id) {
-        $formaPagos = FormaPago::all();
+        $meses = $this->mesesList();
         $metodo = MetodoPago::all();
         $pago = Pagos::findorfail($id);
         $pagoMensual = PagoMensual::where('pago_id', $id)->get();
         $fecha = now()->toDateString();
+        $anio = now()->format('Y');
+        $meshoy = [];
+        foreach ($pagoMensual as $value) {
+            if ($value->metodo_id == 1) {
+                $meshoy[] = $value->mes;
+            }
+        }
         $est = Estudiante::find($pago->est_id);
         $estudiante = $est->persona->nombre .' '. $est->persona->ap_paterno .' '. $est->persona->ap_materno . '- CI: '. $est->persona->ci;
         $isEditing = true;
-        return view('admin.pagos.form_pago', compact('isEditing', 'formaPagos', 'fecha', 'metodo', 'pago', 'pagoMensual', 'estudiante'));
+        return view('admin.pagos.form_pago', compact('isEditing', 'fecha', 'metodo', 'pago', 'anio', 'meshoy', 'pagoMensual', 'estudiante', 'meses'));
     }
 
     public function updatePago(Request $request, $id) {
         $rules = [
-            'forma' => 'required|numeric|exists:formas_pagos,id',
             'estudiante' => 'numeric|exists:estudiantes,id',
             'monto' => 'required|array',
             'monto.*' => 'exists:metodo_pagos,id',
             'descripcion' => 'nullable|string',
+            'total' => 'required',
+            'meses' => 'required|array'
         ];
         $request->validate($rules);
         try {
-            // Sumar los montos de los métodos de pago seleccionados
-            $total = 0;
             $fechaActual = Carbon::now();
-            foreach ($request->monto as $montoId) {
-                $metodoPago = MetodoPago::find($montoId);
-                if (!$metodoPago) {
-                    return back()->with('error', 'No existe el monto de pago.');
-                }
-                $total += $metodoPago->monto;
-            }
-            
+        
             $pago = Pagos::find($id);
             if ($request->filled('estudiante')) {
                 $pago->est_id = $request->estudiante;
             }
-            $pago->forma_id = $request->forma;
-            $pago->monto = $total;
+            $pago->monto = $request->total;
             $pago->comentario = $request->descripcion;
             $pago->update();
+
+            // Eliminar pagos mensuales existentes para este pago que no están en la nueva lista de métodos de pago
+            PagoMensual::where('pago_id', $id)->whereNotIn('metodo_id', $request->monto)->delete();
+
             // Crear los pagos mensuales
-            foreach ($request->monto as $montoId) {
-                // Obtener el monto del método de pago
-                $metodoPago = MetodoPago::find($montoId);
-                if (!$metodoPago) {
-                    return back()->with('error', 'No existe el monto de pago.');
-                }
-                $pagoExistente = PagoMensual::where('pago_id', $id)
-                                ->where('metodo_id', $montoId)
-                                ->exists();
-                if (!$pagoExistente) {
-                    $mes = date('m', strtotime($fechaActual));
-                    $anio = date('Y', strtotime($fechaActual));
-                    // Generar el código mensual
-                    $codeMensual = $this->generarCode($fechaActual, 'mensual');
-                    // Crear el pago mensual
-                    PagoMensual::create([
-                        'estudiante_id' => $pago->est_id,
-                        'metodo_id' => $montoId,
-                        'pago_id' => $pago->id,
-                        'mes' => $mes,
-                        'anio' => $anio,
-                        'fecha' => $fechaActual,
-                        'pagado' => true,
-                        'codigo' => $codeMensual,
-                        'monto' => $metodoPago->monto
-                    ]);
+            foreach ($request->meses as $mesCode) {
+                foreach ($request->monto as $montoId) {
+                    // Obtener el monto del método de pago
+                    $metodoPago = MetodoPago::find($montoId);
+                    if (!$metodoPago) {
+                        return back()->with('error', 'No existe el monto de pago.');
+                    }
+
+                    $pagoExistente = PagoMensual::where('pago_id', $id)
+                        ->where('metodo_id', $montoId)
+                        ->where('mes', $mesCode)
+                        ->exists();
+
+                    if (!$pagoExistente) {
+                        // Extraer año de la fecha actual
+                        $anio = date('Y', strtotime($fechaActual));
+                        // Generar el código mensual
+                        $codeMensual = $this->generarCode($fechaActual, 'mensual');
+                        // Crear el pago mensual
+                        PagoMensual::create([
+                            'estudiante_id' => $pago->est_id,
+                            'metodo_id' => $montoId,
+                            'pago_id' => $pago->id,
+                            'mes' => $mesCode,
+                            'anio' => $anio,
+                            'fecha' => $fechaActual,
+                            'pagado' => true,
+                            'codigo' => $codeMensual,
+                            'monto' => $metodoPago->monto
+                        ]);
+                    }
                 }
             }
+
             // Enviar notificación al estudiante si tiene un número de teléfono registrado
             $estudiante = Estudiante::find($pago->est_id);
             $numeroTelefono = optional($estudiante->persona)->numero;
             if ($numeroTelefono) {
-                $message = 'Su pago de '. $total .'bs. fue registrado con éxito, querido estudiante: '. optional($estudiante->persona)->nombre;
+                $message = 'Su pago de '. $request->total .'bs. fue registrado con éxito, querido estudiante: '. optional($estudiante->persona)->nombre;
                 InfoController::notificacionNotaTarea($numeroTelefono, $message);
             }
-            return redirect()->route('admin.lista.pagos')->with('success', 'Se registró su pago exitosamente. Monto total: '.$total);
+            return redirect()->route('admin.pago.guardar.imprimir', $id);
         } catch (\Throwable $th) {
             return back()->with('error', 'Ocurrió un error: ' . $th->getMessage());
         }

@@ -39,6 +39,10 @@
                         </div>
                         <p class="d-inline-block pl-3"> {{ $estudiante->user->getRoleNames()->first() }}</p>
                      </div>
+                     <div class="text-warning text-center">
+                        <strong>Contraseña por defecto</strong>
+                        <small>igla.{{ $estudiante->ci }}</small>
+                     </div>
                    @livewire('admin.estudiante-password', ['id' => $estudiante->id])
                 </div>
              </div>
@@ -47,7 +51,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="bd-example">
-                        <ul class="nav nav-pills" data-toggle="slider-tab" id="myTab" role="tablist">
+                        <ul class="nav nav-pills" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#pills-home1" type="button" role="tab" aria-controls="home" aria-selected="true">Estudiante</button>
                             </li>

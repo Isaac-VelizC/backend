@@ -43,7 +43,7 @@
                   <div class="card-body">
                      <div class="text-center">
                         <div class="user-profile position-relative">
-                            <img src="{{ asset($info->photo != 'user.png' ? 'storage/' . $info->photo : 'img/user.png') }}" alt="profile-img" class="rounded-pill avatar-130 img-fluid">
+                            <img src="{{ asset($info->photo != 'user.png' ? 'storage/' . $info->photo : 'img/user.png') }}" alt="profile-img" class="rounded-pill avatar-100 img-fluid">
                             <form class="needs-validation" novalidate wire:submit.prevent='updatedPerfil'>
                                 <label class="upload-icone-portada bg-primary">
                                     <input wire:model="perfil" class="file-upload" type="file" id="customFile" accept="image/*">

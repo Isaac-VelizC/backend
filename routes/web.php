@@ -11,6 +11,8 @@ use App\Http\Controllers\Docente\DocenteController;
 use App\Http\Controllers\Estudent\EstudianteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\PagosController;
+use App\Http\Controllers\Admin\ReportsController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\Docente\RecetaController;
 use App\Http\Controllers\InfoController;
@@ -19,17 +21,12 @@ use App\Livewire\Admin\EvaluacionDocente;
 use App\Livewire\Admin\GestionPermisos;
 use App\Livewire\Admin\HistorialEvaluacionDocente;
 use App\Livewire\Admin\HistorialInventario;
-use App\Livewire\Admin\Informe\AsistenciaReportes;
-use App\Livewire\Admin\Informe\EstudianteReportes;
 use App\Livewire\Admin\Informe\MateriaReportes;
-use App\Livewire\Admin\Informe\PagosReportes;
-use App\Livewire\Admin\MateriaEvaluacionDocente;
 use App\Livewire\Docente\NewReceta;
 use App\Livewire\Docente\Show;
 use App\Livewire\Estudiante\SubirTarea;
 use App\Livewire\ProfilePage;
 use App\Livewire\Trabajos\ShowTarea;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -52,12 +49,13 @@ Route::get('/', function () {
 });
 
 Route::middleware('throttle:login')->group(function () {
-    Auth::routes();
+    Auth::routes(['register' => false]);
 });
 
 Route::get('generar/receta.ai', [InfoController::class, 'generateAIReceta'])->name('generate.ai.receta');
 Route::get('home', [HomeController::class, 'index'])->name('home');
-Route::middleware(['auth', 'role:Admin|Secretario/a'])->group(function () {
+
+Route::middleware(['auth', 'role:Admin|Secretario/a', 'inactivity:20'])->group(function () {
     Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin.home');
     Route::get('/gestionar/permisos/admin', GestionPermisos::class)->name('admin.gestion.permisos');
     
@@ -119,7 +117,6 @@ Route::middleware(['auth', 'role:Admin|Secretario/a'])->group(function () {
     Route::get('/pagos/formulario/hjfse', [PagosController::class, 'formPagos'])->name('admin.create.pago');
     Route::post('/pagos/store', [PagosController::class, 'storePagosSimples'])->name('admin.store.pago');
     Route::get('/pagos/guadar/imprimir/{id}', [PagosController::class, 'guardarImprimirPago'])->name('admin.pago.guardar.imprimir');
-    //Route::get('', [PagosController::class, 'storeImprimirPago'])->name('store.imprimir.pago');
     Route::get('/pagos/habilitar/mes', [PagosController::class, 'habilitarPagosMes'])->name('admin.habiltar.pagos.mes');
     Route::get('/obtener/detalles/pago/{id}', [PagosController::class, 'obtenerDetallesPago'])->name('admin.pagos.detalle');
     Route::get('/obtener/historial/pago', [PagosController::class, 'historialPago'])->name('admin.pagos.historial');
@@ -132,15 +129,23 @@ Route::middleware(['auth', 'role:Admin|Secretario/a'])->group(function () {
     Route::get('/administrar-info', AdminInfo::class)->name('admin.administracion');
     //Evaluacion docente
     Route::get('/evaluacion/add/docente', EvaluacionDocente::class)->name('evaluacion.docente');
-    Route::get('/evaluacion/listado/docente', MateriaEvaluacionDocente::class)->name('materia.evaluacion.docente');
+    Route::get('/evaluacion/listado/docente', [CursoController::class, 'HabilitarEvaluacionDocenteMateria'])->name('materia.evaluacion.docente');
+    Route::post('/evaluacion/habilitar/docente', [CursoController::class, 'habilitarEvaluacion'])->name('materia.evaluacion.docente.habilitar');
+    Route::post('/evaluacion/deshabilitar/docente', [CursoController::class, 'borrarEvaluacion'])->name('materia.evaluacion.docente.quitar');
+    //Route::get('/evaluacion/listado/docente', MateriaEvaluacionDocente::class)->name('materia.evaluacion.docente');
     Route::get('/evaluacion/historial/docente', HistorialEvaluacionDocente::class)->name('historial.evaluacion.docente');
     //Rutas para exportar
     Route::get('/cursos/exp/pdf', [CursoController::class, 'exportarCurso'])->name('export.cursos');
     //Rutasp para reportes
-    Route::get('/estudiantes/reporte/export', EstudianteReportes::class)->name('admin.estudiantes.informe');
-    Route::get('/asistencias/reporte/export', AsistenciaReportes::class)->name('admin.asistencias.informe');
+    Route::get('/estudiantes/reporte/export', [ReportsController::class, 'reportsEstudents'])->name('admin.estudiantes.informe');
+    Route::post('/estudiantes/export', [ReportsController::class, 'searchEstudiantes']);
+    Route::get('/pagos/reporte/export', [ReportsController::class, 'reportsPagos'])->name('admin.pagos.informe');
+    Route::post('/pagos/export', [ReportsController::class, 'searchPagos']);
+    Route::get('/asistencias/reporte/export', [ReportsController::class, 'reportsAsistencias'])->name('admin.asistencias.informe');
+    Route::post('/asistencias/export', [ReportsController::class, 'searchAsistencias']);
+    
     Route::get('/materias/reporte/export', MateriaReportes::class)->name('admin.materias.informe');
-    Route::get('/pagos/reporte/export', PagosReportes::class)->name('admin.pagos.informe');
+    //Route::get('/pagos/reporte/export', PagosReportes::class)->name('admin.pagos.informe');
     ///Gestion Inventario
     Route::get('/lista/inventario/ingredientes', [CocinaController::class, 'inventarioIndex'])->name('admin.gestion.inventario');
     Route::get('/inventario/ingrediente/form', [CocinaController::class, 'createForm'])->name('admin.gestion.inventario.form');
@@ -151,11 +156,13 @@ Route::middleware(['auth', 'role:Admin|Secretario/a'])->group(function () {
     Route::get('/inventario/borrar/{id}', [CocinaController::class, 'eliminarInvetario'])->name('admin.gestion.inventario.borrar');
     Route::post('/cantidad/update/{id}', [CocinaController::class, 'updateCantidad'])->name('admin.inventario.update.cantidad');
     Route::get('/historial/inventario', HistorialInventario::class)->name('admin.inventario.historial');
+    ///Importacion
+    Route::post('/import-admin', [InfoController::class, 'importDatos'])->name('admin.import');
+    Route::get('/quitar-role/{id}', [UsersController::class, 'quitarRole'])->name('quita.role');
 });
 
 Route::middleware(['auth', 'role:Docente'])->group(function () {
     Route::get('/chef-dashboard', [DocenteController::class, 'index'])->name('docente.home');
-    //Route::get('/trabajo/nueva/post/{id}', NewTarea::class)->name('nueva.tarea.docente');
     Route::get('/trabajo/nueva/post/{id}', [DocenteCursoController::class, 'createTareaNew'])->name('nueva.tarea.docente');
     Route::get('/trabajo/editar/post/{id}', [DocenteCursoController::class, 'editarTareaEdit'])->name('editra.trabajo.docente');
     Route::post('/trabajo/tarea/new', [DocenteCursoController::class, 'crearTarea'])->name('guardar.tarea.new');
@@ -200,6 +207,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/select',[CocinaController::class, 'selectIngredientes'])->name('search.ingredientes');
     Route::post('/admin/buscar-ingredientes', [CocinaController::class, 'buscarIngredientes'])->name('admin.buscar-ingredientes');
     Route::get('/agregar-receta/nueva', NewReceta::class)->name('recetas.add');
+    
     Route::get('/profile', ProfilePage::class)->name('users.profile');
     Route::post('/new-type/ingrediente', [CocinaController::class, 'guardarIngrediente'])->name('new.ingrediente.db');
     Route::post('/new/recipe/generate', [CocinaController::class, 'generarRecetaOpenAI'])->name('new.receta.generation');
@@ -219,3 +227,10 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('terminos-de-uso', [InfoController::class, 'termOfUse'])->name('term.of.use');
 Route::get('privacidad-politicas', [InfoController::class, 'privacPolitics'])->name('privacy.politics');
+
+Route::get('/change-password', [AuthController::class, 'pageCambiarContraseña'])->name('form.change.password');
+Route::post('/confirm-number', [AuthController::class, 'enviarCodigo'])->name('confirm.code');
+Route::get('/reiniciar-contrasenia', [AuthController::class, 'verificarCodigo'])->name('verify.code');
+Route::post('/verify-code', [AuthController::class, 'verificarCodigoPassword'])->name('verify.code.pass');
+Route::get('/verify-code/pass{user}/', [AuthController::class, 'pagePassword'])->name('verify.code.pass.page');
+Route::post('/actualizar-contrasenia', [AuthController::class, 'actualizarPassword'])->name('update.password.code');

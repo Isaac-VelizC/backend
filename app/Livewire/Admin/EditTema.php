@@ -26,10 +26,10 @@ class EditTema extends Component
         foreach ($this->files as $file) {
             $originalName = $file->getClientOriginalName();
             $filePath = $file->storeAs('public/files/tema', $originalName);
-            $url = 'storage/' . $filePath;
+            $url = str_replace('public/', '', $filePath);
             DocTema::create([
                 'nombre' => $originalName,
-                'url' => $url,
+                'url' => 'storage/' . $url,
                 'tema_id' => $this->tema->id
             ]);
         }

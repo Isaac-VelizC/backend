@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Docente;
 
 use App\Http\Controllers\Controller;
+use App\Models\IngredienteReceta;
+use App\Models\PasosReceta;
+use App\Models\Receta;
 use App\Models\RecetaGenerada;
+use Illuminate\Http\Request;
 
 class RecetaController extends Controller
 {

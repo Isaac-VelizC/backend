@@ -40,7 +40,7 @@ class Show extends Component
         $this->docenteEdit['genero'] = $this->item->genero;
         $this->docenteEdit['telefono'] = $this->item->numero ?? '';
         $this->docenteEdit['email'] = $this->item->email ?? $this->item->user->email;
-        $this->docenteEdit['cargo'] = $this->item->cargo ? $this->item->personal->cargo : '';
+        $this->docenteEdit['cargo'] = $this->item->personal ? $this->item->personal->cargo : '';
     }
     public function render() {
         return view('livewire.docente.show')->extends('layouts.app')
@@ -63,7 +63,7 @@ class Show extends Component
             'docenteEdit.nombre' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
             'docenteEdit.paterno' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
             'docenteEdit.materno' => 'nullable|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
-            'docenteEdit.cedula' => 'required|string|regex:/^\d{7}(?:-[0-9A-Z]{1,2})?$/|min:7|unique:personas,ci,' . $this->idDocente,
+            'docenteEdit.cedula' => 'required|string|regex:/^\d{7,9}(?:-[0-9A-Z]{1,2})?$/|min:7|unique:personas,ci,' . $this->idDocente,
             'docenteEdit.genero' => 'required|in:Mujer,Hombre',
             'docenteEdit.telefono' => 'nullable|string|regex:/^[0-9+()-]{8,15}$/',
             'docenteEdit.email' => 'required|email|unique:personas,email,' . $this->idDocente,
@@ -87,6 +87,13 @@ class Show extends Component
                 }
                 $rols->cargo = $this->docenteEdit['cargo'];
                 $rols->save();
+            }
+            if ($this->item->rol == 'D') {
+                User::find($this->item->user->id)->update([
+                    'name' => $this->docenteEdit['cedula'], 
+                    'email' => $this->docenteEdit['email'], 
+                    'password' => Hash::make('igla.'. $this->docenteEdit['cedula'])
+                ]);
             }
             return back()->with('success', 'La información se actualizó con éxito.');
         } catch (\Exception $e) {

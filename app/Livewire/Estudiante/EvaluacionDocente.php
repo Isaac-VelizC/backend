@@ -21,7 +21,7 @@ class EvaluacionDocente extends Component
         $evaluacion = EvaluacionHabilitada::where('materia_id', $id)->first();
         if ($evaluacion) {
             $this->estado = true;
-            $this->evalId = $evaluacion->evaluacionDocente->id;
+            $this->evalId = $evaluacion->id;
             $this->showPreguntas($evaluacion);
         }
     

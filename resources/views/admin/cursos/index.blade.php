@@ -29,7 +29,7 @@
 
 @include('admin.cursos.widgets.form_create')
 
-<div class="conatiner-fluid content-inner mt-n5 py-0">
+<div class="conatiner-fluid content-inner mt-n5 py-0 text-dark">
    @if(session('success'))
        <div id="myAlert" class="alert alert-left alert-success alert-dismissible fade show mb-3 alert-fade" role="alert">
            <span>{{ session('success') }}</span>
@@ -73,12 +73,14 @@
                            <td><span class="badge rounded-pill @if ($item->estado == true) bg-info text-white">Activo @else bg-danger text-white">Inactivo @endif </span></td>
                            <td>
                               <div class="flex align-items-center list-user-action">
-                                 <a class="btn btn-sm btn-icon btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Asignar" href="{{ route('admin.asignar.curso', [$item->id]) }}">
+                                 @if ($item->estado)
+                                 <a class="btn btn-sm btn-icon btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Habilitar" href="{{ route('admin.asignar.curso', [$item->id]) }}">
                                        <i class="bi bi-person-gear"></i>
                                  </a>
                                  <a class="btn btn-sm btn-icon btn-warning" data-bs-toggle="modal" data-bs-placement="top" title="Edit" data-bs-target="#editCurso{{ $item->id }}" data-itemid="{{ $item->id }}">
                                        <i class="bi bi-pen"></i>
                                  </a>
+                                 @endif
                                  <a class="btn btn-sm btn-icon btn-danger" data-bs-toggle="modal" data-bs-placement="top" title="Delete" data-bs-target="#deleteConfirm{{ $item->id }}" data-itemid="{{ $item->id }}">
                                        <i class="bi bi-trash"></i>
                                  </a>

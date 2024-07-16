@@ -11,7 +11,7 @@ class Materia extends Model
     public $timestamps = false;
     protected $table = "materias";
     protected $primaryKey = "id";
-    protected $fillable = ['nombre', 'semestre_id', 'color', 'estado', 'dependencia','descripcion'];
+    protected $fillable = ['nombre', 'semestre_id', 'color', 'estado', 'dependencia','descripcion', 'tipo'];
 
     public function aula()
     {

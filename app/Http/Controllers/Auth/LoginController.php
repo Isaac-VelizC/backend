@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
@@ -23,6 +24,10 @@ class LoginController extends Controller
     }
     protected function authenticated(Request $request, $user)
     {
+        if (!$user->persona->estado ) {
+            Auth::logout();
+            return redirect()->route('login')->with('error', 'cuenta inactiva');
+        }
         if ($user->hasRole('Admin') || $user->hasRole('Secretario/a')) {
             return redirect()->route('admin.home');
         } elseif ($user->hasRole('Docente')) {
@@ -57,7 +62,7 @@ class LoginController extends Controller
     protected function incrementLoginAttempts(Request $request)
     {
         $this->limiter()->hit(
-            $this->throttleKey($request), 60 // 60 segundos de bloqueo
+            $this->throttleKey($request), 40 // 60 segundos de bloqueo
         );
     }
 

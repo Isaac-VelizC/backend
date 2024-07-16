@@ -1,99 +1,136 @@
 @extends('layouts.app')
 
 @section('content')
-
-<div class="position-relative iq-banner">
-   <div class="iq-navbar-header" style="height: 215px;">
-      <div class="container-fluid iq-container">
-         <div class="row">
-               <div class="col-md-12">
-                  <div class="flex-wrap d-flex justify-content-between align-items-center text-black">
-                     <div>
-                        <h1>Listado de Pagos</h1>
-                     </div>
-                     <a class="btn btn-light" href="{{ route('admin.create.pago') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                           <path d="M4 8v12h20v-12h-20zm10 10c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm.2-2.021v.421h-.4v-.4c-.414-.007-.843-.105-1.2-.291l.183-.657c.382.148.891.305 1.29.216.46-.104.555-.577.046-.806-.373-.172-1.512-.321-1.512-1.296 0-.545.415-1.034 1.193-1.141v-.425h.4v.407c.289.007.615.058.978.168l-.146.658c-.307-.107-.647-.206-.977-.185-.595.035-.648.551-.232.767.685.321 1.578.561 1.578 1.418 0 .687-.538 1.054-1.201 1.146zm6.8-9.979h-19v11h-2v-13h21v2z"/>
-                        </svg> Registrar Pago
-                     </a>
-                  </div>
-               </div>
-         </div>
-      </div>
-      <div class="iq-header-img">
-         <img src="{{ asset('img/fondo1.jpg') }}" alt="header" class="theme-color-default-img img-fluid w-100 h-100 animated-scaleX">
-      </div>
-   </div>
-</div>
-
-<div class="conatiner-fluid content-inner mt-n5 py-0">
-     @if(session('success'))
-         <div id="myAlert" class="alert alert-left alert-success alert-dismissible fade show mb-3 alert-fade" role="alert">
-             <span>{{ session('success') }}</span>
-             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-         </div>
-     @endif
-    <div class="row">
-       <div class="col-sm-12">
-          <div class="card">
-             <div class="card-body">
-                <div class="table-responsive">
-                   <table id="datatable" class="table table-striped" data-toggle="data-table">
-                      <thead>
-                         <tr>
-                            <th>Nombre</th>
-                            <th>Docente</th>
-                            <th>Aula</th>
-                            <th>Modalidad</th>
-                            <th>Horario</th>
-                            <th>Estado</th>
-                            <th>Tags</th>
-                         </tr>
-                      </thead>
-                      <tbody>
-                       @foreach ($pagos as $item)
-                          <tr>
-                             <td><p>{{ $item->nombre }}</p></td>
-                             <td>
-                             <p><a href="#0">{{ $item->nombre }} {{ $item->ap_paterno }} {{ $item->ap_materno }}</a></p>
-                             </td>
-                             <td>
-                             <p>{{ $item->nombre }}</p>
-                             </td>
-                             <td>
-                             <p>{{ $item->nombre }}</p>
-                             </td>
-                             <td>
-                              <p>{{ $item->horarios }}</p>
-                              </td>
-                              <td>
-                                @if ($item->estado == true)
-                                   <p> <span class="badge rounded-pill bg-info text-white">Activo</span></p>
-                                @else
-                                   <p> <span class="badge rounded-pill bg-danger text-white">Inactivo</span></p>
-                                @endif
-                              </td>
-                             <td>
-                                <div class="flex align-items-center list-user-action">
-                                   <a href="{{ route('admin.cursos.show', [$item->id]) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Asignar">
-                                      <i class="bi bi-eye"></i>
-                                   </a>
-                                   <a data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"  href="{{ route('admin.asigando.edit', [$item->id]) }}">
-                                      <i class="bi bi-pen"></i>
-                                   </a>
-                                   <a data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#deleteConfirm" data-curso-id="{{ $item->id }}">
-                                      <i class="bi bi-trash"></i>
-                                   </a>
+    
+    <div class="iq-navbar-header" style="height: 80px;"></div>
+    <div class="conatiner-fluid content-inner mt-n5 py-0">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row row-cols-1">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="row no-gutters">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="text-center">
+                                            <h4 class="card-title mb-0">REPORTES DE ASISTENCIAS</h4>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <form class="needs-validation" novalidate id="searchAsistencias">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="col">
+                                                <select name="materia" class="form-select" required>
+                                                    <option value="" selected disabled>Seleccionar una materia</option>
+                                                    @foreach ($materias as $materia)
+                                                        <option value="{{ $materia->id }}">{{ $materia->curso->nombre }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col">
+                                                <select name="meses" class="form-select">
+                                                    <option value="" selected>Mes</option>
+                                                    @foreach ($months as $key => $item)
+                                                        <option value="{{ $key }}">{{ $item }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col">
+                                                <select name='year' class="form-select" required>
+                                                    <option value="" selected disabled>Año</option>
+                                                    @for ($year = date('Y'); $year >= $startYear; $year--)
+                                                        <option value="{{ $year }}" {{ $currentYear == $year ? 'selected' : '' }}>{{ $year }}</option>
+                                                    @endfor
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="text-center">
+                                                <button type="reset" class="btn btn-primary btn-sm">Cancelar</button>
+                                                <button type="submit" class="btn btn-secondary btn-sm">Buscar</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                             </td>
-                          </tr>
-                       @endforeach
-                      </tbody>
-                   </table>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="flex-wrap d-flex justify-content-between align-items-center">
+                                    <h3><b>Resultados</b></h3>
+                                </div>
+                                <br>
+                                <div class="table-responsive">
+                                  <div id="resultados"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-             </div>
-          </div>
-       </div>
+            </div>
+        </div>
     </div>
-</div>
+    
+<script>
+    document.getElementById('searchAsistencias').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        let formData = new FormData(this);
+
+        axios.post('/asistencias/export', formData)
+        .then(function (response) {
+                var resultados = response.data.data;
+
+                // Verificar si la lista de resultados está vacía
+                if (resultados.length === 0) {
+                    // Si la lista está vacía, mostrar un mensaje
+                    document.getElementById("resultados").innerHTML = '<h6 class="text-center">No se encontraron resultados.</h6>';
+                    return;
+                }
+                // Construir la presentación de los resultados en la tabla
+                var htmlResultados = '<table id="datatable" class="table table-striped" data-toggle="data-table">';
+                htmlResultados += '<thead>';
+                htmlResultados += '<tr>';
+                // Obtener los nombres de los campos del primer resultado
+                var campos = Object.keys(resultados[0]);
+
+                // Iterar sobre los nombres de los campos y construir las columnas de la tabla
+                campos.forEach(function (campo) {
+                    htmlResultados += '<th>' + campo + '</th>';
+                });
+
+                htmlResultados += '</tr>';
+                htmlResultados += '</thead>';
+                htmlResultados += '<tbody>';
+
+                // Iterar sobre los resultados y construir las filas de la tabla
+                resultados.forEach(function (resultado) {
+                    htmlResultados += '<tr>';
+                    campos.forEach(function (campo) {
+                        htmlResultados += '<td class="text-center">' + resultado[campo] + '</td>';
+                    });
+                    htmlResultados += '</tr>';
+                });
+
+                htmlResultados += '</tbody>';
+                htmlResultados += '</table>';
+                // Actualizar el contenido del contenedor de resultados
+                document.getElementById("resultados").innerHTML = htmlResultados;
+            })
+            .catch(function (error) {
+                // Obtener el mensaje de error del objeto de error
+                var errorMessage = error.response.data.error;
+                // Construir el mensaje de error
+                var htmlError = '<div class="alert alert-danger alert-dismissible show fade">';
+                htmlError += '<span>' + errorMessage + '</span>';
+                htmlError += '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                htmlError += '</div>';
+                // Mostrar el mensaje de error en el contenedor
+                document.getElementById("error").innerHTML = htmlError;
+            });
+    });
+</script>
+
 @endsection

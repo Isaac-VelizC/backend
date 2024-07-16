@@ -9,7 +9,7 @@ class HistorialInventario extends Component
 {
     public $historial;
     public function mount() {
-        $this->historial = ModelsHistorialInventario::all();
+        $this->historial = ModelsHistorialInventario::orderBy('fecha', 'asc')->get();
     }
     public function render()
     {

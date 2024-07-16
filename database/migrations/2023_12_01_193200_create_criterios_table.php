@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('nombre');
             $table->integer('porcentaje');
             $table->integer('total');
+            $table->integer('cantidad_trabajo')->default(1);
+            $table->string('type')->default('Crit');
+            $table->boolean('asistencia')->default(false);
             $table->timestamps();
         });
 
@@ -24,6 +27,9 @@ return new class extends Migration
             $table->string('nombre');
             $table->integer('porcentaje');
             $table->integer('total');
+            $table->integer('cantidad_trabajo')->default(1);
+            $table->boolean('asistencia')->default(false);
+            $table->string('type')->default('Cat');
             $table->unsignedBigInteger('criterio_id');
             $table->foreign('criterio_id')->references('id')->on('criterios')->onDelete('cascade');
             $table->timestamps();

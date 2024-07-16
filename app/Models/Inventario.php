@@ -10,7 +10,7 @@ class Inventario extends Model
     use HasFactory;
     protected $table = "inventarios";
     protected $primaryKey = "id";
-    protected $fillable = ['ingrediente_id', 'cantidad', 'unidad_media', 'fecha_registro', 'fecha_modificacion', 'fecha_caducidad', 'estado'];
+    protected $fillable = ['ingrediente_id', 'cantidad', 'unidad_media', 'descripcion', 'fecha_registro', 'fecha_modificacion', 'fecha_caducidad', 'estado'];
 
     public function ingrediente()
     {

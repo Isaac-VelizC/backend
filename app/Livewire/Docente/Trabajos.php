@@ -16,8 +16,9 @@ class Trabajos extends Component
     public $tema, $idCurso, $temasCurso, $tareas, $comentario = '';
     public $AD3 = false;
     public CursoHabilitado $materia;
-    public $comentariosCurso;
+    public $comentariosCurso, $usuariosID;
     public function mount($id) {
+        $this->usuariosID = auth()->user()->persona->estudiante->id ?? 0;
         $this->idCurso = $id;
         $this->materia = CursoHabilitado::findOrFail($id);
         $this->temasCurso = Tema::where('curso_id', $id)->get();

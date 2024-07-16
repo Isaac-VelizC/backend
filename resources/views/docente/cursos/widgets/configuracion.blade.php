@@ -46,11 +46,13 @@
                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
          @endif
+         @livewire('docente.components.config-docs', ['id' => $curso->id])
          <div class="card">
             <div class="card-header">
                <div class="header-title">
                   <h4 class="card-title">Planificar la materia</h4>
                </div>
+               <br>
                <form method="POST" action="{{ route('guardar.planificacion', [$curso->id]) }}" enctype="multipart/form-data">
                   @csrf
                   <div class="form-group">
@@ -69,7 +71,6 @@
                </form>
             </div>
           </div>
-            @livewire('docente.components.config-docs', ['id' => $curso->id])
         </div>
    </div>
 </div>

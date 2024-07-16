@@ -11,7 +11,7 @@ class CategoriaCriterio extends Model
     
     protected $table = "categorias_criterio";
     protected $primaryKey = "id";
-    protected $fillable = ['nombre', 'porcentaje', 'total', 'criterio_id'];
+    protected $fillable = ['nombre', 'porcentaje', 'total', 'cantidad_trabajo', 'type', 'asistencia', 'criterio_id'];
 
     public function catCritTrabajos()
     {

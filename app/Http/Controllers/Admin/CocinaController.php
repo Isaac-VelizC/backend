@@ -146,51 +146,9 @@ class CocinaController extends Controller
             return back()->with('error', 'Error al generar: ' . $e->getMessage());
         }
     }
-
-    private function procesarRespuestaOpenAI($answer) {
-        $recetas = [];
-        $lines = explode("\n", $answer);
-    
-        $currentReceta = null;
-        foreach ($lines as $line) {
-            $line = trim($line);
-    
-            if (empty($line)) {
-                continue;
-            }
-    
-            // Si la línea comienza con un número, es un paso de receta
-            if (preg_match('/^\d+\./', $line)) {
-                if ($currentReceta) {
-                    $currentReceta['pasos'][] = $line;
-                }
-            } else {
-                // Si no, es parte del título, ingredientes, etc.
-                if ($currentReceta) {
-                    $recetas[] = $currentReceta;
-                }
-                $currentReceta = $this->procesarLineaReceta($line);
-            }
-        }
-    
-        // Agregar la última receta si existe
-        if ($currentReceta) {
-            $recetas[] = $currentReceta;
-        }
-    
-        return $recetas;
-    }
-    
-    private function procesarLineaReceta($line) {
-        return [
-            'titulo' => $line,
-            'ingredientes' => [],
-            'pasos' => [],
-        ];
-    }
     
     public function inventarioIndex() {
-        $ingredientes = Inventario::all();
+        $ingredientes = Inventario::orderBy('fecha_modificacion', 'desc')->get();
         return view('admin.inventario.index', compact('ingredientes'));
     }
     public function createForm() {
@@ -215,6 +173,7 @@ class CocinaController extends Controller
                 'ingrediente_id' => $request->ingredientes,
                 'cantidad' => $request->cantidad,
                 'unidad_media' => $request->unidad,
+                'descripcion' => $request->descripcion,
                 'fecha_modificacion' => Carbon::now()
             ]);
             return redirect()->route('admin.gestion.inventario')->with('success', 'Se registro correctamente');
@@ -233,6 +192,7 @@ class CocinaController extends Controller
                 'ingrediente_id' => $request->ingredientes ?? $request->default,
                 'cantidad' => $request->cantidad,
                 'unidad_media' => $request->unidad,
+                'descripcion' => $request->descripcion,
                 'fecha_modificacion' => Carbon::now()
             ]);
             return redirect()->route('admin.gestion.inventario')->with('success', 'Se actualizo correctamente');

@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Docente;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\InfoController;
+use App\Models\CatCritTrabajo;
+use App\Models\CategoriaCriterio;
+use App\Models\Criterio;
 use App\Models\CursoHabilitado;
 use App\Models\DocumentoDocente;
 use App\Models\Ingrediente;
@@ -32,19 +35,20 @@ class CursoController extends Controller
     public function createTareaNew($id) {
         $isEditing = false;
         $temasCurso = Tema::where('curso_id', $id)->get();
-        return view('docente.cursos.create_tarea', compact('temasCurso', 'id', 'isEditing'));
+        $tipoMateria = CursoHabilitado::find($id)->curso;
+        $criterios = Criterio::with('categorias')->get();
+        return view('docente.cursos.create_tarea', compact('temasCurso', 'tipoMateria', 'id', 'isEditing', 'criterios'));
     }
+
     public function selectReceta(Request $request) {
         $query = $request->input('name');
-    
         $recetas = Receta::where('titulo', 'like', "%$query%")->get();
-    
         return response()->json($recetas);
     }
 
     public function crearTarea(Request $request) {
         $validator = Validator::make($request->all(), [
-            'titulo' => 'required|string|max:255',
+            'titulo' => 'required|string|max:100',
             'fin' => ['date', 'after_or_equal:' . now()->toDateString()],
             'tipo_trabajo' => 'required|string|max:255',
             'tema' => 'nullable|numeric|exists:temas,id',
@@ -52,13 +56,21 @@ class CursoController extends Controller
             'evaluacion' => 'required|boolean',
             'tags.*' => 'exists:ingredientes,id',
             'recetas' => 'exists:recetas,id',
-            'files.*' => 'file'
+            'files.*' => 'file',
+            'criterio' => 'required|numeric|'
         ]);
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-
         try {
+            
+            if ($request->criterio != null && $request->tipo_categoria == 'Crit') {
+                $criterioId  = $request->criterio;
+            } else {
+                $categoryCriterio = CategoriaCriterio::find($request->criterio);
+                $criterioId = $categoryCriterio->criterio_id;
+            }
+
             $tarea = Trabajo::create([
                 'tipo' => $request->tipo_trabajo,
                 'curso_id' => $request->curso,
@@ -73,8 +85,16 @@ class CursoController extends Controller
                 'fin' => $request->fin,
                 'con_nota' => $request->con_nota,
                 'nota' => 100,
-                'estado' => 'Publicado'
+                'estado' => 'Publicado',
+                'criterio_id' => $criterioId,
             ]);
+
+            if ($request->tipo_categoria == 'Cat') {
+                CatCritTrabajo::create([
+                    'cat_id' => $request->criterio,
+                    'tarea_id' => $tarea->id
+                ]);
+            }
 
             $files = $request->file('files');
             if ($files) {
@@ -99,8 +119,8 @@ class CursoController extends Controller
             return back()->with(['error' => 'Error al crear el evento', 'error' => $th->getMessage()], 500);
         }
     }
-    public function editarTareaEdit($id) {
-        $trabajo = Trabajo::find($id);
+    public function editarTareaEdit($idTrabajo) {
+        $trabajo = Trabajo::find($idTrabajo);
         $ingredientes = json_decode($trabajo->ingredientes, true);
     
         $ingrests = [];
@@ -111,9 +131,11 @@ class CursoController extends Controller
         }
         $isEditing = true;
         $temasCurso = Tema::where('curso_id', $trabajo->curso_id)->get();
-        $files = DocumentoDocente::where('tarea_id', $id)->get();
-        
-        return view('docente.cursos.create_tarea', compact('temasCurso', 'isEditing', 'files', 'trabajo', 'ingrests'));
+        $files = DocumentoDocente::where('tarea_id', $idTrabajo)->get();
+        $id = $trabajo->curso_id;
+        $criterios = Criterio::with('categorias')->get();
+        $tipoMateria = CursoHabilitado::find($id)->curso;
+        return view('docente.cursos.create_tarea', compact('temasCurso', 'tipoMateria', 'isEditing', 'files', 'id', 'trabajo', 'ingrests', 'criterios'));
     }
     
     public function updateTrabajo(Request $request, $id) {
@@ -126,12 +148,20 @@ class CursoController extends Controller
             'evaluacion' => 'required|boolean',
             'tags.*' => 'exists:ingredientes,id',
             'recetas' => 'exists:recetas,id',
-            'files.*' => 'file'
+            'files.*' => 'file',
+            'criterio' => 'required|numeric|'
         ]);
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
         try {
+            if ($request->criterio != null && $request->tipo_categoria == 'Crit') {
+                $criterioId  = $request->criterio;
+            } else {
+                $categoryCriterio = CategoriaCriterio::find($request->criterio);
+                $criterioId = $categoryCriterio->criterio_id;
+            }
+
             $tarea = Trabajo::find($id)->update([
                 'tipo' => $request->tipo_trabajo,
                 'tema_id' => $request->tema ?: null,
@@ -143,7 +173,25 @@ class CursoController extends Controller
                 'inico' => now(),
                 'fin' => $request->fin,
                 'con_nota' => $request->con_nota,
+                'criterio_id' => $criterioId,
             ]);
+
+            $catCritTrabajo = CatCritTrabajo::where('tarea_id', $id)->first();
+            if ($catCritTrabajo) {
+                if ($request->tipo_categoria == 'Cat') {
+                    $catCritTrabajo->update([
+                        'cat_id' => $request->criterio,
+                    ]);
+                } else {
+                    $catCritTrabajo->delete();
+                }
+            } else if ($request->tipo_categoria == 'Cat') {
+                CatCritTrabajo::create([
+                    'cat_id' => $request->criterio,
+                    'tarea_id' => $id
+                ]);
+            }
+
             $files = $request->file('files');
             if ($files) {
                 foreach ($files as $file) {
@@ -181,7 +229,7 @@ class CursoController extends Controller
     public function updateTema(Request $request, $id) {
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:255|min:5',
-            'descripcion' => 'nullable|string|max:255'
+            'descripcion' => 'nullable|string'
         ]);
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();

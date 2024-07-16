@@ -39,8 +39,8 @@ class CriterioController extends Controller
     public function pageCriteroUpdate($id) {
         $criterio = Criterio::find($id);
         $ponderacion = Configuration::find(1)->ponderacion;
-        if (!$criterio || !$ponderacion) {
-            return back()->with('success', 'Criterio o ponderacion no encontrado');
+        if (!$criterio) {
+            return back()->with('error', 'Criterio no encontrado');
         }
         return view('admin.cursos.criterios.edit', compact('criterio', 'ponderacion'));
     }
@@ -68,7 +68,8 @@ class CriterioController extends Controller
                 $criterio->porcentaje = $request->porcentaje;
 
                 $criterio->save();
-                Configuration::find(1)->update(['ponderacion' => $request->ponderacion_hidden ]);
+                $valorCondig = $request->ponderacion_hidden -$request->porcentaje;
+                Configuration::find(1)->update(['ponderacion' => $valorCondig ]);
                 return redirect()->route('admin.tareas.criterios')->with('success', 'Criterio actualizado con exito');
             } else {
                 return back()->with('error', 'Criterio no encontrado.');
@@ -118,16 +119,24 @@ class CriterioController extends Controller
                 'totalPocentCategoria' => 'required|numeric|max:100|min:0',
             ];
             $request->validate($rules);
+            // Verificar si existe un registro con asistencia activada
+            $existingAsistencia = CategoriaCriterio::where('asistencia', true)->exists();
+            if ($request->asistencia == 'on' && $existingAsistencia) {
+                return back()->with('error', 'El cálculo de la asistencia ya está habilitado en otro criterio');
+            }
+            // Crear la nueva categoría de criterio
             CategoriaCriterio::create([
                 'nombre' => $request->nombre,
                 'porcentaje' => $request->porcentajeCat,
                 'total' => $request->totalPocentCategoria,
                 'criterio_id' => $request->criterio,
+                'asistencia' => $request->asistencia ? true : false, // Si no se marca el checkbox, se establece como false
             ]);
-            Criterio::find($request->criterio)->update(['total' => $request->totalPocentCategoria ]);
-            return back()->with('success', 'Categoria en criterio guardado con exito');
+            // Actualizar el total del criterio
+            Criterio::find($request->criterio)->update(['total' => $request->totalPocentCategoria]);
+            return back()->with('success', 'Categoría en criterio guardado con éxito');
         } catch (\Throwable $th) {
-            return back()->with('error', 'Error: '. $th->getMessage());
+            return back()->with('error', 'Error: ' . $th->getMessage());
         }
     }
 
@@ -140,6 +149,10 @@ class CriterioController extends Controller
                 'totalPocentCategoria' => 'required|numeric|max:100|min:0',
             ];
             $request->validate($rules);
+            $existingAsistencia = CategoriaCriterio::where('asistencia', true)->exists();
+            if ($request->asistencia == 'on' && $existingAsistencia) {
+                return back()->with('error', 'El cálculo de la asistencia ya está habilitado en otro criterio');
+            }
             $category = CategoriaCriterio::find($id);
             if ($category) {
                 
@@ -147,11 +160,12 @@ class CriterioController extends Controller
                 $category->porcentaje = $request->porcentajeCat;
                 $category->total = $request->totalPocentCategoria;
                 $category->criterio_id = $request->criterio;
+                $category->asistencia = $request->asistencia ? true : false;
                 $category->save();
             }
             
-
-            Criterio::find($request->criterio)->update(['total' => $request->totalPocentCategoria ]);
+            $valorTotal = $request->totalPocentCategoria - $request->porcentajeCat;
+            Criterio::find($request->criterio)->update(['total' => $valorTotal ]);
             return redirect()->route('admin.tareas.criterios')->with('success', 'Categoria en criterio guardado con exito');
         } catch (\Throwable $th) {
             return back()->with('error', 'Error: '. $th->getMessage());

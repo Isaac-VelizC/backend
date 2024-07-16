@@ -90,23 +90,6 @@
     <script src="{{ asset('/assets/js/plugins/setting.js')}}"></script>
     <script src="{{ asset('/assets/js/plugins/fslightbox.js')}}"></script>
     <script src="{{ asset('/assets/js/plugins/form-wizard.js')}}"></script>
-    <script src="{{ asset('/assets/vendor/aos/dist/aos.js')}}"></script>
-    
-    <script>
-        function mostrarBarraProgreso() {
-            document.getElementById('barraProgreso').style.display = 'block';
-            let progreso = 0;
-            const intervalo = setInterval(function() {
-                document.getElementById('barraProgresoInterior').style.width = progreso + '%';
-                document.getElementById('barraProgresoInterior').innerHTML = progreso + '%';
-                progreso++;
-                if (progreso > 100) {
-                    clearInterval(intervalo);
-                    document.getElementById('barraProgreso').style.display = 'none';
-                }
-            }, 50); // Puedes ajustar el intervalo según tus necesidades
-        }
-    </script>
-    
+    <script src="{{ asset('/assets/vendor/aos/dist/aos.js')}}"></script>    
 </body>
 </html>

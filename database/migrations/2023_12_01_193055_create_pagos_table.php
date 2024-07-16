@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreign('est_id')->references('id')->on('estudiantes')->onDelete('restrict');
             $table->dateTime('fecha');
             $table->string('codigo')->unique();
-            $table->decimal('monto', 5, 2);
+            $table->decimal('monto', 10, 2);
             $table->boolean('estado')->default(true);
             $table->text('comentario')->nullable();
             $table->timestamps();

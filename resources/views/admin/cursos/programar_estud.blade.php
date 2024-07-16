@@ -24,7 +24,8 @@
                 <div class="card-body">
                     <div class="flex-wrap">
                         <h4 class="text-xl font-weight-bold">Materia: {{ $materia->curso->nombre }}</h4>
-                        <h5>cupos: {{ $materia->cupo }}</h5>
+                        <h5>Cupos Disponibles: {{ $cuposDisponibles }} / {{ $materia->cupo }}</h5>
+                        <small>Total de estudiantes sin programar materia: {{ count($estudiantes)}}</small>
                     </div>
                     <br>
                     <div class="table-responsive">
@@ -36,6 +37,7 @@
                                     class="bi bi-x-circle"></i></button>
                             <button id="enviarDatos" class="btn btn-outline-primary"><i class="bi bi-send"></i></button>
                             <input type="hidden" name="id_materia" value="{{ $materia->id }}">
+                            <input type="hidden" name="cuposDisponibles" value="{{ $cuposDisponibles }}">
                         </div>
                         @else
                         <div class="text-center">
@@ -106,10 +108,12 @@
             datosSeleccionados.push(checkbox.value);
         });
         var idMateria = document.querySelector('input[name="id_materia"]').value;
+        var cuposDisponibles = document.querySelector('input[name="cuposDisponibles"]').value;
         // Enviar datos utilizando Axios
         axios.post('/save/materia/estudiantes', {
             estudiantes: datosSeleccionados,
-            id_materia: idMateria
+            id_materia: idMateria,
+            cuposDisponibles: cuposDisponibles
         })
         .then(function (response) {
             if (response.data.success) {
@@ -125,6 +129,5 @@
     });
 
 </script>
-
 
 @endsection

@@ -28,22 +28,24 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <table class="table">
+            <table border="1" class="table">
               <thead>
               <tr>
-                <th>N°</th>
+                <th>#</th>
                 <th>Estudiante</th>
-                <th>Asistencia</th>
-                <th>fecha</th>
+                <th>Presentes</th>
+                <th>Faltas</th>
+                <th>Licencias</th>
               </tr>
               </thead>
               <tbody>
                 @foreach ($asistencias as $item)
                     <tr>
-                        <td>{{ $i++ }}</td>
-                        <td>{{ $item->estudiante->persona->nombre }} {{ $item->estudiante->persona->ap_paterno }} {{ $item->estudiante->persona->ap_materno }}</td>
-                        <td>{{ $item->asistencia == 'P' ? 'presente' : ($item->asistencia == 'F' ? 'falta' : 'Licencia') }}</td>
-                        <td>{{ $item->fecha }}</td>
+                      <td>{{ $i++ }}</td>
+                      <td>{{ $item['estudiante']->persona->nombre }} {{ $item['estudiante']->persona->ap_paterno }} {{ $item['estudiante']->persona->ap_materno }}</td>
+                      <td>{{ $item['presentes'] }}</td>
+                      <td>{{ $item['faltas'] }}</td>
+                      <td>{{ $item['licencias'] }}</td>
                     </tr>
                 @endforeach
               </tbody>

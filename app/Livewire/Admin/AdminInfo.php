@@ -7,7 +7,7 @@ use App\Models\CursoHabilitado;
 use App\Models\Estudiante;
 use App\Models\Horario;
 use App\Models\MetodoPago;
-use App\Models\Pagos;
+use App\Models\PagoMensual;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -15,7 +15,7 @@ class AdminInfo extends Component
 {
     public $horarios, $aulas, $metodoPagos;
     public $horariosEdit = ['turno' => '', 'inicio' => '', 'fin' => ''], $idHora = '';
-    public $aulasEdit = ['nombre' => '', 'tipo' => 2, 'codigo' => '', 'capacidad' => ''], $idAula = '';
+    public $aulasEdit = ['nombre' => '', 'codigo' => '', 'capacidad' => ''], $idAula = '';
     public $metodoPagoEdit = '', $metodoMontoEdit = '' ,$idMetodo;
     public function mount() {
         $this->horarios = Horario::all();
@@ -58,8 +58,7 @@ class AdminInfo extends Component
     }
     public function formAula() {
         $data = $this->validate([
-            'aulasEdit.nombre' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
-            'aulasEdit.tipo' => 'required|numeric',
+            'aulasEdit.nombre' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s]+$/u',
             'aulasEdit.codigo' => 'required|unique:aulas,codigo,' . ($this->idAula ?: 'NULL') . ',id',
             'aulasEdit.capacidad' => 'required|numeric|min:5',
         ]);
@@ -78,7 +77,7 @@ class AdminInfo extends Component
     public function formMetodo() {
         $data = $this->validate([
             'metodoPagoEdit' => 'required|string|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
-            'metodoMontoEdit' => 'required'
+            'metodoMontoEdit' => 'required|numeric|min:5'
         ]);
         try {
             if ($this->idMetodo != '') {
@@ -125,7 +124,7 @@ class AdminInfo extends Component
     {
         $this->horariosEdit = ['turno' => '', 'inicio' => '', 'fin' => ''];
         $this->idHora = '';
-        $this->aulasEdit = ['nombre' => '', 'tipo' => '', 'codigo' => '', 'capacidad' => ''];
+        $this->aulasEdit = ['nombre' => '', 'codigo' => '', 'capacidad' => ''];
         $this->idAula = '';
         $this->idMetodo = '';
         $this->metodoPagoEdit = '';
@@ -148,7 +147,7 @@ class AdminInfo extends Component
     }
     public function eliminarMetodo($id) {
         $aula = MetodoPago::find($id);
-        $pagosRelacionadas = Pagos::where('metodo_id', $id)->exists();
+        $pagosRelacionadas = PagoMensual::where('metodo_id', $id)->exists();
         if ($pagosRelacionadas ) {
             session()->flash('error', 'No se puede eliminar el metodo de pago ya que está siendo utilizado.');
         } else {
@@ -156,5 +155,21 @@ class AdminInfo extends Component
             session()->flash('message', 'Metodo de pago eliminado con éxito.');
             $this->mount();
         }
+    }
+
+    public function inhabilitarMetodo($id) {
+        $item = MetodoPago::find($id);
+        $item->estado = $item->estado ? false : true;
+        $item->update();
+        session()->flash('message', 'Metodo de pago se inhabilito con éxito.');
+        $this->mount();
+    }
+
+    public function inhabilitarAula($id) {
+        $aula = Aula::find($id);
+        $aula->estado = $aula->estado ? false : true;
+        $aula->update();
+        session()->flash('message', 'Aula inhabilitada.');
+        $this->mount();
     }
 }

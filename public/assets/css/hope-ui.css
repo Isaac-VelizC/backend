@@ -20870,12 +20870,15 @@ body {
 }
 
 .avatar-50 {
-  height: 50px;
+  
   width: 50px;
   min-width: 50px;
   -webkit-border-radius: 0.25rem;
           border-radius: 0.25rem;
+          overflow: hidden;
+          object-fit: cover;
 }
+
 
 .avatar-60 {
   height: 60px;

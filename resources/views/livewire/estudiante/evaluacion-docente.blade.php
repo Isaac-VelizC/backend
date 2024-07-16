@@ -17,7 +17,6 @@
                             </div>    
                             <p>Docente: {{ $curso->docente->persona->nombre }} {{ $curso->docente->persona->ap_paterno }} {{ $curso->docente->persona->ap_materno }}</p>
                             <p>Materia: {{ $curso->curso->nombre }}</p>
-                            <p>descripcion</p>
                         </div>
                         <hr>
                         <form method="POST" action="{{ route('store.evaluacion.docente') }}">
@@ -41,23 +40,23 @@
                                                 <tr>
                                                     <td style="white-space: pre-wrap;">{{ $pregunta->numero }} - {{ $pregunta->texto }}</td>
                                                     <td class="text-center">
-                                                        <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Mal" class="form-check-input" {{ ($respuestasEstudiante[$pregunta->id] ?? '') === 'Mal' ? 'checked' : '' }}>
+                                                        <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Mal" {{$stadoEvaluacion ? 'disabled' : '' }} class="form-check-input" {{ ($respuestasEstudiante[$pregunta->id] ?? '') === 'Mal' ? 'checked' : '' }}>
                                                     </td>
                                                     <td class="text-center">
-                                                        <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Regular" class="form-check-input" {{ ($respuestasEstudiante[$pregunta->id] ?? '') === 'Regular' ? 'checked' : '' }}>
+                                                        <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Regular" {{$stadoEvaluacion ? 'disabled' : '' }} class="form-check-input" {{ ($respuestasEstudiante[$pregunta->id] ?? '') === 'Regular' ? 'checked' : '' }}>
                                                     </td>
                                                     <td class="text-center">
-                                                        <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Bueno" class="form-check-input" {{ ($respuestasEstudiante[$pregunta->id] ?? '') === 'Bueno' ? 'checked' : '' }}>
+                                                        <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Bueno" {{$stadoEvaluacion ? 'disabled' : '' }} class="form-check-input" {{ ($respuestasEstudiante[$pregunta->id] ?? '') === 'Bueno' ? 'checked' : '' }}>
                                                     </td>
                                                     <td class="text-center">
-                                                        <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Muy Bueno" class="form-check-input" {{ ($respuestasEstudiante[$pregunta->id] ?? '') === 'Muy Bueno' ? 'checked' : '' }}>
+                                                        <input type="radio" name="respuesta[{{ $pregunta->id }}]" value="Muy Bueno" {{$stadoEvaluacion ? 'disabled' : '' }} class="form-check-input" {{ ($respuestasEstudiante[$pregunta->id] ?? '') === 'Muy Bueno' ? 'checked' : '' }}>
                                                     </td>
                                                 </tr>
                                             @endforeach
                                             <tr>
                                                 <td style="white-space: pre-wrap;">Comentario (Opcional)</td>
                                                 <td colspan="4">
-                                                    <textarea name="comentario" class="form-control">{{ $comentario ?? '' }}</textarea>
+                                                    <textarea name="comentario" class="form-control" {{$stadoEvaluacion ? 'disabled' : '' }} >{{ $comentario ?? '' }}</textarea>
                                                 </td>
                                             </tr>
                                         </tbody>

@@ -68,44 +68,41 @@
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/></svg>
                                                 </button>
                                             </div>
-                                            <div class="form-group col-lg-6">
+                                            <div class="form-group col-lg-2">
                                                 <label class="form-label"><span class="text-danger">*</span> Cantidad:</label>
-                                                <input type="number" class="form-control" name='cantidad' value="{{ $isEditing ? $invetario->cantidad : '' }}" placeholder="Cantidad" required>
+                                                <input type="number" class="form-control" name='cantidad' step="0.1" value="{{ $isEditing ? $invetario->cantidad : '' }}" placeholder="Cantidad" required>
                                                 @error('cantidad')
                                                     <div class="alert alert-danger">{{ $message }}</div>
                                                 @enderror
                                             </div>
-                                            <div class="form-group col-lg-6">
+                                            <div class="form-group col-lg-2">
                                                 <label class="form-label"><span class="text-danger">*</span> Unidad medida:</label>
-                                                <!--input type="text" class="form-control" name="unidad" value="{{ $isEditing ? $invetario->unidad_media : '' }}" placeholder="Unidad Media" required-->
                                                 <select class="form-select" id="unidadMedida" name="unidad">
-                                                    
-                                                    <!-- Volumen -->
-                                                    <optgroup label="Volumen">
-                                                        <option value="metroCubico">Metro cúbico (m³)</option>
+                                                    <option value="Opcional" selected disabled>Opcional</option>
+                                                    <optgroup label="Liquidos">
                                                         <option value="litro">Litro (L)</option>
                                                         <option value="mililitro">Mililitro (ml)</option>
-                                                        <option value="centimetroCubico">Centímetro cúbico (cm³)</option>
                                                     </optgroup>
-                                                
-                                                    <!-- Peso/Masa -->
                                                     <optgroup label="Peso/Masa">
+                                                        <option value="kilo">Kilo</option>
                                                         <option value="kilogramo">Kilogramo (kg)</option>
                                                         <option value="gramo">Gramo (g)</option>
                                                         <option value="miligramo">Miligramo (mg)</option>
-                                                        <option value="toneladaMetrica">Tonelada métrica (t)</option>
                                                     </optgroup>
-                            
-                                                    <!-- Volumen (Cocina) -->
-                                                    <optgroup label="Volumen (Cocina)">
-                                                        <option value="taza">Taza</option>
-                                                        <option value="cucharada">Cucharada</option>
-                                                        <option value="cucharadita">Cucharadita</option>
-                                                        <option value="litroCocina">Litro (L)</option>
-                                                        <option value="mililitroCocina">Mililitro (ml)</option>
+                                                    <optgroup label="Unidades">
+                                                        <option value="unidades">Unidades</option>
+                                                        <option value="medias">Medias</option>
+                                                        <option value="medianas">Medianas</option>
                                                     </optgroup>
                                                 </select>
                                                 @error('unidad')
+                                                    <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group col-lg-8">
+                                                <label class="form-label">Descripción:</label>
+                                                <textarea class="form-control" name='descripcion' placeholder="Escriba un descripción corta del ingrediente">{{ $isEditing ? $invetario->descripcion : '' }}</textarea>
+                                                @error('descripcion')
                                                     <div class="alert alert-danger">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -113,8 +110,8 @@
                                     </div>
                                     <br>
                                     <div class="text-center">
-                                        <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancelar</button>
-                                        <button class="btn btn-danger" type="submit">Guardar</button>
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="window.history.back()">Cancelar</button>
+                                        <button class="btn btn-sm btn-danger" type="submit">Guardar</button>
                                     </div>
                                 </form>
                             </div>

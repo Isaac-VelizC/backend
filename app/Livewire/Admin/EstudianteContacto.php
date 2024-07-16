@@ -12,7 +12,7 @@ class EstudianteContacto extends Component
 {
     public Persona $persona;
     public $isEditing = false;
-    public $contactId = '', $idEstudiante;
+    public $contactId = '', $idEstudiante, $estado;
 
     public $contactoEdit = [
         'nombre' => '',
@@ -25,6 +25,7 @@ class EstudianteContacto extends Component
     ];
 
     public function mount(Estudiante $estudiante) {
+        $this->estado = $estudiante->estado;
         if ($estudiante->contact_id != null) {
             $contacto = Contacto::find($estudiante->contact_id);
             $this->contactId = $contacto->id;

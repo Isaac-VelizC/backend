@@ -3,6 +3,7 @@
 namespace App\Livewire\Docente;
 
 use App\Exports\CalificacionesExport;
+use App\Models\Asistencia;
 use App\Models\Calificacion;
 use App\Models\CatCritTrabajo;
 use App\Models\CategoriaCriterio;
@@ -55,6 +56,14 @@ class Calificaciones extends Component
     }
     public function calcularNotas() {
         try {
+            // Verifica si hay trabajos pendientes por calificar
+            $pendientes = TrabajoEstudiante::where('estado', 'Entregado')->where('curso_id', $this->idCurso)->count();
+
+            if ($pendientes > 0) {
+                // Envía un mensaje de advertencia y detén la ejecución
+                session()->flash('error', 'Aún hay trabajos pendientes por calificar.');
+                return;
+            }
             foreach ($this->estudiantes as $value) {
                 $this->calcularNotaTotal($value->id, $this->idCurso);
             }
@@ -64,6 +73,40 @@ class Calificaciones extends Component
             session()->flash('error', 'Ocurrio un error: '.$th->getMessage());
         }
     }
+
+    public function calcularNotAsistencia($idEst, $idCurso, $porcentaje) {
+        // Obtener las asistencias del estudiante en el curso
+        $asistencias = Asistencia::where('curso_id', $idCurso)
+                                ->where('estudiante_id', $idEst)
+                                ->get();
+
+        // Filtrar las asistencias 'P' (Presentes)
+        $asistenciasPresentes = $asistencias->filter(function($asistencia) {
+            return $asistencia->asistencia == 'P';
+        });
+        // Contar las asistencias 'P'
+        $cantidadPresentes = $asistenciasPresentes->count();
+
+        // Multiplicar la cantidad de presentes por el porcentaje del criterio
+        $porcentajeCriterio = $porcentaje;
+        $resultadoMultiplicacion = $cantidadPresentes * $porcentajeCriterio;
+
+        // Calcular el total de asistencias registradas
+        $totalAsistencias = $asistencias->count();
+
+        // Dividir el resultado de la multiplicación por el total de asistencias registradas
+        if ($totalAsistencias > 0) {
+            $notaAsistencia = $resultadoMultiplicacion / $totalAsistencias;
+        } else {
+            $notaAsistencia = 0;
+        }
+
+        // Redondear la nota de asistencia a un valor entero
+        $notaAsistenciaRedondeada = round($notaAsistencia);
+
+        return $notaAsistenciaRedondeada;
+    }
+
     public function calcularNotaTotal($idEst, $idCurso) {
         $tareasEstudiante = TrabajoEstudiante::where('estudiante_id', $idEst)
             ->whereHas('trabajo', function ($query) use ($idCurso) {
@@ -98,7 +141,6 @@ class Calificaciones extends Component
             }
             $notasPorCategoria = [];
             $notasPorCriterio = [];
-
             foreach ($todasLasTareas as $tarea) {
                 $categoriaId = $tarea['categoria'];
                 $criterioId = $tarea['criterio'];
@@ -117,16 +159,18 @@ class Calificaciones extends Component
                     $notasPorCriterio[$criterioId]['suma'] += $nota;
                 }
             }
+
             foreach ($notasPorCategoria as $categoriaId => $data) {
                 $porcentajeCategoria = $data['porcentaje'];
-                $totalTrabajosCat = $this->obtenerTotalTrabajosPorCategoria($categoriaId);
+                $totalTrabajosCat = $this->obtenerTotalTrabajosPorCategoria($categoriaId, $idCurso);
                 $notasPorCategoria[$categoriaId]['notaFinal'] = ($data['suma'] / $totalTrabajosCat) * ($porcentajeCategoria / 100);
             }
             foreach ($notasPorCriterio as $criterioId => $data) {
                 $porcentajeCriterio = $data['porcentaje'];
-                $totalTrabajosCrit = $this->obtenerTotalTrabajosPorCriterio($criterioId);
+                $totalTrabajosCrit = $this->obtenerTotalTrabajosPorCriterio($criterioId, $idCurso);
                 $notasPorCriterio[$criterioId]['notaFinal'] = ($data['suma'] / $totalTrabajosCrit) * ($porcentajeCriterio / 100);
             }
+
             $notasFinalesPorCriterio = [];
             foreach ($notasPorCategoria as $categoriaId => $data) {
                 $criterioId = $this->obtenerCriterioParaCategoria($categoriaId);
@@ -147,14 +191,19 @@ class Calificaciones extends Component
                 $sumaCriterio = $datosCriterio['suma'];
                 $sumarTotal += $sumaCriterio;
             }
+
             $cantidadEvaluaciones = Trabajo::where('evaluacion', true)->count();
             $cantidadNoEvaluaciones = Trabajo::where('evaluacion', false)->count();
+            $criterio = CategoriaCriterio::where('asistencia', 1)->first();
+            if ($criterio) {
+                $notaAsistencia = $this->calcularNotAsistencia($idEst, $idCurso, $criterio->porcentaje);
+            }
             Calificacion::updateOrCreate(
                 ['estudiante_id' => $idEst, 'curso_id' => $idCurso],
                 [
                     'num_trabajos' => $cantidadNoEvaluaciones,
                     'num_evaluaciones' => $cantidadEvaluaciones,
-                    'calificacion' => $sumarTotal,
+                    'calificacion' => $sumarTotal + $notaAsistencia,
                 ]
             );
         }
@@ -170,22 +219,37 @@ class Calificaciones extends Component
         return null;
     }
 
-    function obtenerTotalTrabajosPorCategoria($categoriaId) {
+    function obtenerTotalTrabajosPorCategoria($categoriaId, $cursoId) {
+        // Encuentra la categoría por ID
         $categoria = CategoriaCriterio::find($categoriaId);
+        
         if ($categoria) {
-            $trabajos = $categoria->catCritTrabajos;
+            // Filtra los trabajos relacionados con la categoría y el curso
+            $trabajos = $categoria->catCritTrabajos()->whereHas('trabajo', function($query) use ($cursoId) {
+                $query->where('curso_id', $cursoId);
+            })->get();
+            
+            // Devuelve la cantidad de trabajos encontrados
             return $trabajos->count();
         }    
+        
         return 0;
     }
-    function obtenerTotalTrabajosPorCriterio($criterioId) {
+    function obtenerTotalTrabajosPorCriterio($criterioId, $cursoId) {
+        // Encuentra el criterio por ID
         $criterio = Criterio::find($criterioId);
+    
         if ($criterio) {
-            $trabajos = $criterio->trabajos;
+            // Filtra los trabajos relacionados con el criterio y el curso
+            $trabajos = $criterio->trabajos()->where('curso_id', $cursoId)->get();
+            
+            // Devuelve la cantidad de trabajos encontrados
             return $trabajos->count();
         }
+    
         return 0;
     }
+    
     public function descargarNotasFinalesEXCEL() {
         try {
             $curso = CursoHabilitado::find($this->idCurso);

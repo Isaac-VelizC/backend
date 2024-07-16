@@ -12,9 +12,11 @@
                            <a type="button" class="btn btn-outline-primary active">Habilitados</a>
                            <a type="button" class="btn btn-outline-primary" href="{{ route('admin.cursos') }}" style="color: black">Materias</a>
                         </div>
+                        @role('Admin')
                         <div class="mt-2 mt-md-0">
                            <a  href="{{ route('admin.tareas.criterios') }}" class="btn btn-primary">Criterios</a>
                         </div>
+                        @endrole
                      </div>
                   </div>
                </div>
@@ -81,18 +83,21 @@
                               @endif
                            <td>
                               <div class="flex align-items-center list-user-action">
-                                 <a class="btn btn-sm btn-icon btn-gray" data-bs-toggle="tooltip" data-bs-placement="top" title="Programar" href="{{ route('programar.materia', [$item->id]) }}">
-                                    <i class="bi bi-check2-circle"></i>
-                                 </a>
                                  <a class="btn btn-sm btn-icon btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver" href="{{ route('admin.cursos.show', [$item->id]) }}">
                                     <i class="bi bi-eye"></i>
                                  </a>
-                                 <a class="btn btn-sm btn-icon btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"  href="{{ route('admin.asigando.edit', [$item->id]) }}">
-                                       <i class="bi bi-pen"></i>
+                                 @if ($item->estado) 
+                                 <a class="btn btn-sm btn-icon btn-gray" data-bs-toggle="tooltip" data-bs-placement="top" title="Programar" href="{{ route('programar.materia', [$item->id]) }}">
+                                    <i class="bi bi-check2-circle"></i>
                                  </a>
+                                 <a class="btn btn-sm btn-icon btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar"  href="{{ route('admin.asigando.edit', [$item->id]) }}">
+                                    <i class="bi bi-pen"></i>
+                                 </a>
+                                 @endif
+                                 
                                  @if ($item->estado == true)
                                     <a class="btn btn-sm btn-icon btn-danger" data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#estadoConfirm{{ $item->id }}" data-itemid="{{ $item->id }}">
-                                       <i class="bi bi-trash"></i>
+                                       <i class="bi bi-x-circle"></i>
                                     </a>
                                  @else
                                     <a class="btn btn-sm btn-icon btn-danger" data-bs-placement="top" data-bs-toggle="modal" data-bs-target="#estadoConfirm{{ $item->id }}" data-itemid="{{ $item->id }}">

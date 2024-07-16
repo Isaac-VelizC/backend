@@ -11,6 +11,7 @@ use App\Models\NumTelefono;
 use App\Models\Persona;
 use App\Models\Personal;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -28,7 +29,7 @@ class UsersController extends Controller
     }
     public function allPersonal() {
         $personals = Personal::all();
-        $roles = Role::whereIn('name', ['Admin', 'Secretario/a'])->get();
+        $roles = Role::whereIn('name', ['Admin', 'Secretario/a', 'Personal'])->get();
         $formType = false;
         return view('admin.usuarios.administrador.index', compact('personals', 'formType', 'roles'));
     }
@@ -53,7 +54,7 @@ class UsersController extends Controller
             'email' => 'required|email|unique:personas,email',
             'telefono' => 'required|string|regex:/^[0-9+()-]{8,15}$/|unique:personas,numero',
             'direccion' => 'required|string',
-            'fNac' => 'required|date|before:-5 years',
+            'fNac' => 'required|date|before_or_equal:' . Carbon::now()->subYears(15)->format('Y-m-d'),
             'horario' => 'required|integer|exists:horarios,id',
         ];
         $request->validate($rules);
@@ -229,7 +230,7 @@ class UsersController extends Controller
                     'email' => 'required|email|unique:personas,email,' . $estud->persona->id,
                     'direccion' => 'required|string',
                     'telefono' => 'nullable|string|regex:/^[0-9+()-]{8,15}$/|unique:personas,numero,' . $estud->persona->id,
-                    'fnac' => 'required|date|before:-5 years',
+                    'fnac' => 'required|date|before_or_equal:' . Carbon::now()->subYears(15)->format('Y-m-d'),
                     'horario' => 'required|numeric|exists:horarios,id',
                 ];
                 $request->validate($rules);
@@ -250,6 +251,12 @@ class UsersController extends Controller
             $pers->email = $request->email;
             $pers->numero = $request->telefono;
             $pers->update();
+
+            User::find($pers->user_id)->update([
+                'name' => $request->ci,
+                'email' => $request->email,
+                'password' => Hash::make('igla.'.$request->ci)
+            ]);
     
             return back()->with('success', 'La informacion se actualizo con éxito.');
         } catch (\Throwable $th) {
@@ -269,5 +276,13 @@ class UsersController extends Controller
         })->with('persona')->get();
 
         return response()->json($estudiantes);
-    }    
+    }  
+    
+    public function quitarRole($id) {
+        // Obtener el usuario
+        $user = User::find($id);
+        // Quitar el rol 'Docente' del usuario
+        $user->removeRole('Docente');
+        return back()->with('success', 'Se quito el rol con exito');
+    }
 }

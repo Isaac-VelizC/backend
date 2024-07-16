@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('estado')->default(true);
             $table->integer('dependencia')->default(0);
             $table->text('descripcion')->nullable();
+            $table->integer('tipo')->default(1);
             $table->timestamps();
         });
     }

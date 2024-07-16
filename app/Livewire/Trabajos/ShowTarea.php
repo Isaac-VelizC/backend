@@ -98,7 +98,7 @@ class ShowTarea extends Component
     }
     public function VerTarea($id) {
         $estudiante = Estudiante::find($id);
-        $this->tareaDelEstudiante = 'Estudiante '.$estudiante->persona->nombre . ' ' . $estudiante->persona->ap_paterno . ' ' . $estudiante->persona->ap_materno;
+        $this->tareaDelEstudiante = 'Estudiante: '.$estudiante->persona->nombre . ' ' . $estudiante->persona->ap_paterno . ' ' . $estudiante->persona->ap_materno;
         $subidoPararRevisar = TrabajoEstudiante::where([
             'estudiante_id' => $id, 
             'trabajo_id' => $this->tareaId
@@ -116,16 +116,23 @@ class ShowTarea extends Component
             $notaEstudiante = $this->trabajoSubido[$id];
             if ($notaEstudiante !== null) {
                 if (!preg_match('/^\d+(\.\d{0,2})?$/', $notaEstudiante)) {
-                    $this->addError("errorNota", 'Solo se permiten números o decimales con hasta dos lugares decimales.');
+                    $this->addError("errorNota", 'Solo se permiten números o decimales con hasta dos lugares decimales. 0.00');
+                    return;
+                }
+                if ($notaEstudiante > 100) {
+                    $this->addError("errorNota", 'No se puede poner una nota mas de 100');
                     return;
                 }
                 $notaGuardar = TrabajoEstudiante::where([
                     'estudiante_id' => $id,
                     'trabajo_id' => $this->tareaId,
                 ])->first();
+                
                 if ($notaGuardar) {
                     $notaGuardar->update(['nota' => $notaEstudiante, 'estado' => 'Calificado']);
-                    $this->notificar($id, $notaGuardar->trabajo->titulo, $notaEstudiante); /// Necesita la habilitacion
+                    $this->notificar($id, $notaGuardar->trabajo->titulo, $notaEstudiante);
+                } else {
+                    $this->addError("errorNota", 'Error: No se encontro el trabajo del estudiante');
                 }
             }
         } catch (\Throwable $th) {
@@ -134,7 +141,7 @@ class ShowTarea extends Component
     }
     public function notificar($id, $titulo, $nota) {
         $estudiante = Estudiante::find($id);
-        $num = $estudiante->persona->numTelefono->numero;
+        $num = $estudiante->persona->numero;
         $message = "Se le califico al Trabajo que enviaste ". $titulo . ", con una nota de " . $nota;
         if ($num) {
             InfoController::notificacionNotaTarea($num, $message);

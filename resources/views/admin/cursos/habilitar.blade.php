@@ -36,6 +36,11 @@
                             <div class="header-title">
                                <h4 class="card-title">{{ $materia->nombre }}</h4>
                                <p>{{ $materia->descripcion }}</p>
+                               @if ($isEditing)
+                               <strong>Docente :</strong> {{ $asignado->docente->persona->nombre .' '. $asignado->docente->persona->ap_paterno.' '. $asignado->docente->persona->ap_materno }}
+                               <br>
+                               <strong>Curso :</strong> {{ $asignado->aula->nombre }}
+                               @endif
                             </div>
                             <div>
                                 <a href="{{ route('admin.calendario') }}">Ir a calendario</a>
@@ -78,7 +83,7 @@
                                         <div class="form-group col-md-6">
                                             <label class="form-label" for="aulaSelect">{{ $isEditing ? 'Aula (Opcional)' : 'Aulas: *' }}</label>
                                             <select name="aula" class="form-select" id="aulaSelect" {{ $isEditing ? '' : 'required' }}>
-                                                <option value="" selected disabled>{{ $isEditing ? $asignado->curso->nombre : 'Seleccionar' }}</option>
+                                                <option value="" selected disabled>{{ $isEditing ? $asignado->aula->nombre : 'Seleccionar' }}</option>
                                             </select>
                                             @error('aula')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -105,9 +110,12 @@
                                                 <div class="alert alert-danger">{{ $errors->first('fechaFin') }}</div>
                                             @endif
                                         </div>
+                                        <small class="text-warning">Seleccione fechas en el calendario.</small>
                                     </div>
+                                    <hr>
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-warning">{{ $isEditing ? 'Actualizar' : 'Habilitar' }}</button>
+                                        <a type="reset" class="btn btn-sm btn-danger" href="{{ route('admin.cursos') }}">Cancelar</a>
+                                        <button type="submit" class="btn btn-sm btn-warning">{{ $isEditing ? 'Actualizar' : 'Habilitar' }}</button>
                                     </div>
                                 </form>
                             </div>

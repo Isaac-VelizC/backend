@@ -36,7 +36,7 @@
      @endif
     
      <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <div class="row">
                 <div class="card mb-3">
                     <div class="card-body">
@@ -80,35 +80,6 @@
                         </div>
                     </div>
                 @endforeach
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <div class="header-title">
-                        <h4 class="card-title">Estudiantes que no pagaron del mes</h4>
-                    </div>
-                </div>
-                <div class="card-body">
-                    @if (count($estudiantesSinPago) > 0)
-                        @foreach($estudiantesSinPago as $metodoPago)
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ $metodoPago['metodo_pago'] }} : {{ $metodoPago['cantidad'] }}</h5>
-                                    @if (count($metodoPago['estudiantes']) > 0)
-                                        @foreach($metodoPago['estudiantes'] as $estudiante)
-                                            <div>{{ $estudiante }}</div>
-                                        @endforeach
-                                    @else
-                                        <div class="text-muted">No hay estudiantes</div>
-                                    @endif
-                                </div>
-                            </div>
-                        @endforeach
-                    @else
-                        <div class="text-center">No hay estudiantes</div>
-                    @endif                    
-                </div>
             </div>
         </div>
     </div>

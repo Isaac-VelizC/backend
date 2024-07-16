@@ -46,8 +46,10 @@
                                 </div>
                                 <div class="mt-3">
                                 <p class="d-inline-block pl-3"> {{ $item->user->getRoleNames()->first() }}</p>
+
                                 </div>
                                 <span class="badge rounded-pill bg-danger text-white">Cambiar Rol</span>
+                                <!--a href="{{ route('quita.role', $item->user->id ) }}">Quitar Rol</a-->
                             </div>
                             <form wire:submit.prevent='cambiarPassword'>
                                 @csrf

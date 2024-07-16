@@ -38,15 +38,7 @@
                         @csrf
                         @method('PUT')
                         <div class="row">
-                            <div class="form-group col-lg-12">
-                                <select class="form-select" name="criterio" required onchange="selectPonderacionEdit(this.value)">
-                                    <option value="" disabled>Seleccionar un criterio</option>
-                                    @foreach ($criterios as $crit)
-                                        <option value="{{ $crit->id }}" {{ $crit->id == $categoria->criterio_id ? 'selected' : '' }}>{{ $crit->nombre }}</option>
-                                    @endforeach
-                                </select>                            
-                                @error('criterio') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
+                            <input type="hidden" name="criterio" value="{{ $categoria->criterio->id }}">
                             <div class="form-group col-lg-8">
                                 <input type="text" class="form-control" name="nombre" value="{{ $categoria->nombre }}" placeholder="Ingrese un nombre">
                                 @error('nombre') <span class="text-danger">{{ $message }}</span> @enderror
@@ -59,6 +51,14 @@
                             <div class="form-group col-lg-2">
                                 <input type="numeric" class="form-control" name="totalPocentCategoria" id="totalPocentCategoriaEdit" value="{{ $categoria->criterio->total + $categoria->porcentaje }}" required>
                                 @error('totalPocentCategoria') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" name="asistencia" type="checkbox" id="disabledFieldsetCheck" {{ $categoria->asistencia ? 'checked': '' }}>
+                                    <label class="form-check-label" for="disabledFieldsetCheck"> Incluir las asistencias a la nota</label>
+                                </div>
+                                @error('asistencia') <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div id="alertCat" class="text-danger"></div>
@@ -76,18 +76,6 @@
 
 <script>
     var ponderacion = parseFloat(document.getElementById('totalPocentCategoriaEdit').value);
-    var defecto = parseFloat(document.getElementById('porcentajeDefecto').value);
-
-    function selectPonderacionEdit(id) {
-        axios.get('/select/ponderacion/' + id)
-            .then(function (response) {
-                ponderacion = response.data.data + defecto;
-                document.getElementById('totalPocentCategoriaEdit').value = response.data.data + defecto;
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
 
     // Función para restar el porcentaje
     function restarPorcentajeEditCat() {
@@ -102,7 +90,6 @@
             showError(error); // Mostrar el mensaje de error
         }
     }
-
     // Funciones para mostrar y limpiar mensajes de error
     function showError(errorMessage) {
         document.getElementById('alertCat').innerText = errorMessage;

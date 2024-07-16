@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+   .input-file{
+  display:none;  
+}
+</style>
 <div class="position-relative iq-banner">
    <div class="iq-navbar-header" style="height: 215px;">
       <div class="container-fluid iq-container">
@@ -27,18 +32,29 @@
            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
        </div>
    @endif
+   @if(session('error'))
+       <div id="myAlert" class="alert alert-left alert-danger alert-dismissible fade show mb-3 alert-fade" role="alert">
+           <span>{{ session('error') }}</span>
+           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+       </div>
+   @endif
   <div class="row">
      <div class="col-sm-12">
         <div class="card">
            <div class="card-body">
             <div class="flex-wrap d-flex justify-content-between align-items-center">
                <p></p>
-               <button id="exportBtnEstudiantes1" class="btn btn-link text-black">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                     <path d="M17 13v-13h-2v5h-2v-3h-2v7h-2v-9h-2v13h-6l11 11 11-11z"/>
-                  </svg> Descargar
-               </button>
+               <div class="flex-wrap d-flex gap-2 align-items-center">
+                  <form action="{{ route('admin.import') }}" method="POST" enctype="multipart/form-data">
+                     @csrf
+                     <input type="file" name="file" required class='input-file' id="input_file" style="display: none;">
+                     <button type="submit" id="submit_btn" style="display: none;"></button>
+                     <i class="bi bi-arrow-bar-up btn btn-secondary btn-sm" id='input_btn'></i>
+                 </form>
+                  <i id="exportBtnEstudiantes1" class="bi bi-arrow-bar-down btn btn-primary btn-sm"></i>
+               </div>
             </div>
+            <hr>
               <div class="table-responsive">
                  <table id="datatableEstudiantes" class="table table-striped" data-toggle="data-table">
                     <thead>
@@ -55,7 +71,7 @@
                       @foreach ($estudiantes as $item)
                         <tr>
                             <td><p><a href="{{ route('admin.E.show', $item->persona->id) }}">{{ $item->persona->nombre }} {{$item->persona->ap_paterno}} {{$item->persona->ap_materno}}</a></p></td>
-                            <td><p>{{ $item->persona->email }}</p></td>
+                            <td><a href="mailto:{{ $item->persona->email}}">{{ $item->persona->email }}</a></td>
                             <td><p>{{ $item->persona->ci }}</p></td>
                             <td><p>{{ $item->fecha_nacimiento }}</p></td>
                               @if ($item->estado == true)
@@ -87,5 +103,13 @@
      </div>
   </div>
 </div>
+<script>
+   document.getElementById('input_btn').addEventListener('click', function() {
+       document.getElementById('input_file').click();
+   });
 
+   document.getElementById('input_file').addEventListener('change', function() {
+       document.getElementById('submit_btn').click();
+   });
+</script>
 @endsection

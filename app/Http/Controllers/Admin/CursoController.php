@@ -10,6 +10,8 @@ use App\Models\Curso;
 use App\Models\CursoHabilitado;
 use App\Models\Docente;
 use App\Models\Estudiante;
+use App\Models\EvaluacionDocente;
+use App\Models\EvaluacionHabilitada;
 use App\Models\Horario;
 use App\Models\Materia;
 use App\Models\Programacion;
@@ -30,7 +32,8 @@ class CursoController extends Controller
                 'nombre' => 'required|string|max:255|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
                 'semestre' => 'required|numeric|exists:semestres,id',
                 'descripcion' => 'nullable|string|max:255',
-                'dependencia' => 'nullable|numeric|exists:cursos,id'
+                'dependencia' => 'nullable|numeric|exists:materias,id',
+                'tipo' => 'required|numeric'
             ]);
             $curso = new Materia();
             $curso->nombre = $request->nombre;
@@ -38,6 +41,7 @@ class CursoController extends Controller
             $curso->color = $request->color;
             $curso->descripcion = $request->descripcion;
             $curso->dependencia = $request->dependencia ?? 0;
+            $curso->tipo = $request->tipo;
             $curso->save();
             return back()->with('success', 'La materia ' . $curso->nombre . ' se registro con éxito.');
         } catch (\Exception $e) {
@@ -62,8 +66,10 @@ class CursoController extends Controller
                 'nombre' => 'required|string|max:255|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u',
                 'semestre' => 'required|numeric|exists:semestres,id',
                 'descripcion' => 'nullable|string|max:255',
-                'dependencia' => 'nullable|numeric|exists:cursos,id'
+                'dependencia' => 'nullable|numeric|exists:materias,id',
+                'tipo' => 'required|numeric'
             ]);
+            
             $curso = Materia::findOrFail($id);
             $curso->update([
                 'nombre' => $request->nombre,
@@ -71,6 +77,7 @@ class CursoController extends Controller
                 'color' => $request->color,
                 'descripcion' => $request->descripcion,
                 'dependencia' => $request->dependencia ?? 0,
+                'tipo' => $request->tipo,
             ]);
             return redirect()->route('admin.cursos')->with('success', 'La información se ha actualizado con éxito.');
         } catch (\Exception $e) {
@@ -287,7 +294,7 @@ class CursoController extends Controller
             ];
         });
         // Lógica para obtener aulas disponibles en el horario seleccionado
-        $aulasDisponibles = Aula::whereNotIn('id', function ($query) use ($horario) {
+        $aulasDisponibles = Aula::where('estado', 1)->whereNotIn('id', function ($query) use ($horario) {
             $query->select('aula_id')
                 ->from('curso_habilitados')
                 ->where('horario_id', $horario)
@@ -308,34 +315,46 @@ class CursoController extends Controller
 
     public function pageProgramarEstudiantes($id) {
         $materia = CursoHabilitado::find($id);
-        // Obtener todos los estudiantes que están activos y en el mismo grado que la materia, pero que aún no están programados en la materia actual
         $estudiantes = Estudiante::where('estado', 1)
                                  ->where('grado', $materia->curso->semestre_id)
                                  ->whereNotIn('id', function ($query) use ($materia) {
                                     $query->select('estudiante_id')
                                           ->from('programacions')
-                                          ->where('curso_id', $materia->id);
-                                 })
-                                 ->get();
+                                          ->whereIn('curso_id', function ($subQuery) use ($materia) {
+                                              $subQuery->select('id')
+                                                       ->from('curso_habilitados')
+                                                       ->where('materia_id', $materia->materia_id);
+                                          });
+                                 })->get();
+        
+        $cuposOcupados = Programacion::where('curso_id', $id)->count();
+        $cuposDisponibles = $materia->cupo - $cuposOcupados;
     
-        return view('admin.cursos.programar_estud', compact('estudiantes', 'materia'));
+        return view('admin.cursos.programar_estud', compact('estudiantes', 'materia', 'cuposDisponibles'));
     }
     
     public function programarEstudiantesMateria(Request $request) {
         try {
-            // Obtener el ID del responsable (usuario autenticado)
             $responsableId = auth()->user()->id;
-            // Obtener el ID del curso desde la solicitud
             $cursoId = $request->id_materia;
-            // Obtener los IDs de los estudiantes seleccionados desde la solicitud
             $estudiantesSeleccionados = $request->estudiantes;
+            $cuposDisponibles = $request->cuposDisponibles;
+    
+            // Verificar si se seleccionaron estudiantes
+            if (empty($estudiantesSeleccionados)) {
+                return response()->json(['error' => true, 'message' => 'No se han seleccionado estudiantes.']);
+            }
+    
+            // Verificar si el número de estudiantes seleccionados excede los cupos disponibles
+            if (count($estudiantesSeleccionados) > $cuposDisponibles) {
+                return response()->json(['error' => true, 'message' => 'Solo existen ' . $cuposDisponibles . ' cupos disponibles.']);
+            }
+    
             // Verificar si ya existe una programación para cada estudiante en la materia
             foreach ($estudiantesSeleccionados as $estudianteId) {
-                // Verificar si ya existe una programación para este estudiante en esta materia
                 $programacionExistente = Programacion::where('estudiante_id', $estudianteId)
                                                       ->where('curso_id', $cursoId)
                                                       ->exists();
-                // Si no existe, crear una nueva programación
                 if (!$programacionExistente) {
                     Programacion::create([
                         'estudiante_id' => $estudianteId,
@@ -349,7 +368,64 @@ class CursoController extends Controller
             return response()->json(['success' => true, 'message' => 'Estudiantes programados exitosamente.']);
         } catch (\Throwable $th) {
             // Devolver una respuesta JSON con un mensaje de error
-            return response()->json(['success' => false, 'message' => 'Error al programar los estudiantes: ' . $th->getMessage()]);
+            return response()->json(['error' => true, 'message' => 'Error al programar los estudiantes: ' . $th->getMessage()]);
+        }
+    }
+    
+
+    public function HabilitarEvaluacionDocenteMateria() {
+        $materias = CursoHabilitado::where('estado', true)->get();
+        
+        return view('admin.cursos.docente.materias', compact('materias'));
+    }
+
+    public function habilitarEvaluacion(Request $request) {
+        try {
+            $materias = $request->materias;
+            $registro = EvaluacionDocente::first();
+            if (!$registro) {
+                return response()->json(['error' => 'No existe la evaluacion docente'], 500);
+            }
+            foreach ($materias as $id) {
+                // Comprobar si la materia ya ha sido habilitada
+                $exists = EvaluacionHabilitada::where('materia_id', $id)
+                    ->where('eval_docente_id', $registro->id)
+                    ->exists();
+                
+                if (!$exists) {
+                    EvaluacionHabilitada::create([
+                        'materia_id' => $id,
+                        'eval_docente_id' => $registro->id,
+                    ]);
+                }
+            }
+            return response()->json([
+                'success' => 'Evaluación al docente habilitada en las materias seleccionadas.',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Error al realizar la operación: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function borrarEvaluacion(Request $request) {
+        try {
+            $materias = $request->materias;
+            foreach ($materias as $id) {
+                // Comprobar si la materia ya ha sido habilitada
+                $exists = EvaluacionHabilitada::where('materia_id', $id)->exists();
+                if ($exists) {
+                    EvaluacionHabilitada::where('materia_id', $id)->delete();
+                }
+            }
+            return response()->json([
+                'success' => 'Se quitaron las evaluaciones al docente en las materias seleccionadas.'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Error al realizar la operación: ' . $e->getMessage()
+            ], 500);
         }
     }
     

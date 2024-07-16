@@ -2,9 +2,9 @@
    .input-personalizado {
        border: none;
        outline: none;
-       background-color: rgb(247, 247, 247);
+       background-color: rgb(255, 255, 255);
        padding: 8px;
-       width: 25%;
+       width: auto;
    }
 </style>
 <div class="card">
@@ -24,12 +24,12 @@
                         @foreach ($estudiantesConTareas as $item)
                            <tr>
                               <th>{{ $num++ }}</th>
-                              <th scope="row">
-                                 <a href="#" wire:click='VerTarea({{$item['estudiante']->id}})'>
+                              <th scope="row" style="cursor: pointer;">
+                                 <p wire:click='VerTarea({{$item['estudiante']->id}})'>
                                     {{ $item['estudiante']->persona->nombre }} {{ $item['estudiante']->persona->ap_paterno }} {{ $item['estudiante']->persona->ap_materno }}
-                                 </a>
+                                 </p>
                               </th>
-                              <td class="text-center child-cell">
+                              <td class="text-center">
                                  @if ($item['haEnviadoTarea'])
                                      @if(isset($trabajoSubido[$item['estudiante']->id]))
                                          <input type="text" wire:model.lazy="trabajoSubido.{{ $item['estudiante']->id }}" placeholder="0" class="input-personalizado" wire:change="calificarTarea({{ $item['estudiante']->id }})">
@@ -56,17 +56,15 @@
          <div class="card-header pb-3">
             <h3 class="block-title">Tareas Subidas</h3>
          </div>
-         <div class="card-body p-0">
+         <div class="card-body p-2">
             <div class="table-responsive pricing pt-2">
-               <p>{{ $tareaDelEstudiante }}</p>
+               <p class="text-black">{{ $tareaDelEstudiante }}</p>
                @if ($trabajosSubidosCali)
                   @foreach ($trabajosSubidosCali as $file)             
                      <ol class="list-group">
                         <a href="{{ asset($file->url) }}" target="_blank">
-                           <li class="list-group-item d-flex justify-content-between align-items-start">
-                              <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
-                                 <path d="M22 24h-18v-22h12l6 6v16zm-7-21h-10v20h16v-14h-6v-6zm-1-2h-11v21h-1v-22h12v1zm2 7h4.586l-4.586-4.586v4.586z"/>
-                              </svg>
+                           <li class="list-group-item d-flex justify-content-between align-items-start gap-2">
+                              <i class="bi bi-file-text"></i>
                               <div class="me-auto">
                                  <div class="fw-bold">{{ $file->nombre }}</div>
                                  {{ $file->fecha }}
@@ -75,7 +73,7 @@
                         </a>
                      </ol>
                   @endforeach
-                  <p>{{ $textTarea ?? '' }}</p>
+                  <p class="pt-3">{{ $textTarea ?? '' }}</p>
                @else
                   <div class="text-center">
                      <p>No envio la tarea</p>

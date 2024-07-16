@@ -6,50 +6,30 @@
     <div class="row">
         <div class="col-lg-6">
             @if (count($cursos) > 0 )
-                <div class="card-header d-flex justify-content-between">
-                    <div class="header-title">
-                        <h4 class="card-title">Materias</h4>
-                    </div>
-                </div>
+            <div class="card-header d-flex justify-content-between">
+               <div class="header-title">
+                  <h4 class="card-title">Materias</h4>
+               </div>
+            </div>
             @endif
             <br>
             <div class="row">
-                @foreach ($cursos as $item)
-                <div class="col-md-12">
-                    <div class="row row-cols-1 row-cols-md-2 mb-3 text-center">
-                        <div class="col">
-                            <div class="card rounded-3 " style="background: {{ $item->cursoDocente->curso->color }}">
-                                <div class="card-body">
-                                    <h4 class="my-0 fw-normal">{{ $item->cursoDocente->curso->nombre }}</h4>
-                                    <br>
-                                    <a type="button" href="{{ route('cursos.curso', $item->cursoDocente->id) }}" class="btn btn-outline-primary">Entrar</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
+               @foreach ($cursos as $item)
+                  <div class="col-md-6">
+                     <div class="card" style="border-bottom: 4px solid {{ $item->cursoDocente->curso->color }};">
+                        <a href="{{ route('cursos.curso', $item->cursoDocente->id) }}">
+                           <div class="card-body">
+                              <div class="d-flex justify-content-between align-items-center">
+                                 <span>{{ $item->cursoDocente->curso->nombre }}</span>
+                                 <small>{{ $item->cursoDocente->horario->turno }}</small>
+                              </div>
+                           </div>
+                        </a>
+                     </div>
+                  </div>
+               @endforeach
             </div>
-            <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <div class="header-title">
-                        <h4 class="card-title">Trabajos pendientes</h4>
-                    </div>
-                </div>
-                <div class="card-body p-0">
-                    @if (count($tareasPendientes) <= 0)
-                        <div class="text-center py-3">Aqui saldran tus trabajos pendientes</div>
-                    @else
-                    @foreach ($tareasPendientes as $item)
-                        <div class="card-body">
-                            <h5 class="card-title"><a href="{{ route('show.tarea', $item->id) }}">{{ $item->titulo }}</a></h5>
-                            <div class="text-muted">Se acepta hasta la fecha {{ $item->fin }}</div>
-                        </div>
-                    @endforeach
-                    @endif
-                </div>
-            </div>
-        </div>
+         </div>
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">

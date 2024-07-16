@@ -53,23 +53,26 @@
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group col-md-6">
                                         <label class="form-label" for="exampleInputcolor">Color de la materia</label>
                                         <select class="form-select" id="exampleInputcolor" name="color" required>
                                             <option value="#FF5733" style="background: #FF5733" selected>#FF5733</option>
                                             <option value="#FF942F" style="background: #FF942F">#FF942F</option>
                                             <option value="#97FF2F" style="background: #97FF2F">#97FF2F</option>
-                                            <option value="#2FFF77" style="background: #2FFF77">#2FFF77</option>
-                                            <option value="#2FFFC6" style="background: #2FFFC6">#2FFFC6</option>
-                                            <option value="#2FC3FF" style="background: #2FC3FF">#2FC3FF</option>
-                                            <option value="#8A2FFF" style="background: #8A2FFF">#8A2FFF</option>
-                                            <option value="#DF2FFF" style="background: #DF2FFF">#DF2FFF</option>
                                             <option value="#FF2F91" style="background: #FF2F91">#FF2F91</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="form-label">Tipo Materia</label>
+                                        <select class="form-select" name="tipo" required>
+                                            <option value="1" selected>Practico</option>
+                                            <option value="2">Teorico</option>
                                         </select>
                                     </div>
                                   </div>
                               </div>
                             </div>
+                            <div id="colorLine" style="background: #FF5733; height: 6px"></div>
                         </div>
                     </div>
                 </div>
@@ -83,7 +86,6 @@
 </div>
 <script>
     document.getElementById('modulo_select').addEventListener('change', function() {
-        console.log('hola');
         var selectedSemestreId = this.value;
         axios.get('/ruta/al/servidor/para/obtener/cursos', {
             params: {
@@ -92,7 +94,7 @@
         })
         .then(function(response) {
             var dependenciaSelect = document.getElementById('dependencia_select');
-            dependenciaSelect.innerHTML = '<option value="" disabled selected>Seleccionar</option>';
+            dependenciaSelect.innerHTML = '<option value="" disabled selected>Seleccionar</option><option value="0">Ninguno</option>';
             
             response.data.cursos.forEach(function(curso) {
                 var option = document.createElement('option');
@@ -104,5 +106,11 @@
         .catch(function(error) {
             console.error(error);
         });
+    });
+</script>
+<script>
+    document.getElementById('exampleInputcolor').addEventListener('change', function() {
+        var selectedColor = this.value;
+        document.getElementById('colorLine').style.background = selectedColor;
     });
 </script>

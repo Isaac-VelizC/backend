@@ -1,16 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="iq-navbar-header" style="height: 170px;">
-   <div class="container-fluid iq-container text-black">
-       <div class="row">
-           <div class="col-md-12">
-               <h5>{{ Breadcrumbs::render('Materias.show', $curso) }}</h5>
+<div class="position-relative iq-banner">
+   <div class="iq-navbar-header text-black" style="height: 170px;">
+       <div class="container-fluid iq-container text-black">
+           <div class="row">
+               <div class="col-md-12">
+                  <h5>{{ Breadcrumbs::render('Materias.show', $curso) }}</h5>
+               </div>
            </div>
        </div>
-   </div>
-   <div class="iq-header-img">
-      <img src="{{ asset('img/fondo1.jpg') }}" alt="header" class="img-fluid w-100 h-100 animated-scaleX">
+       <div class="iq-header-img">
+           <img src="{{ asset('img/fondo1.jpg') }}" alt="header"
+               class="theme-color-default-img img-fluid w-100 h-100 animated-scaleX">
+       </div>
    </div>
 </div>
 

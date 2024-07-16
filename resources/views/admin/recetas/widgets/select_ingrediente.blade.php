@@ -1,3 +1,4 @@
+<!-- MODAL PARA BUSCAR LOS INGREDIENTES Y SELECCIONAR PARA EL REGISTRO DE LAS RECETAS -->
 <div class="modal fade" id="selectIngrediente" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
        <div class="modal-content">
@@ -39,13 +40,16 @@
             resultados.forEach(ingrediente => {
                 resultadosDiv.innerHTML += `
                 <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action"  data-bs-dismiss="modal" wire:click="seleccionarIngrediente(${ingrediente.id})"> <img src='{{ asset('img/ingred.png') }}'width='15px' heigth='15px'> ${ingrediente.nombre}</a>
+                    <a href="#" class="list-group-item list-group-item-action"  data-bs-dismiss="modal" onclick="limpiarBuscador()" wire:click="seleccionarIngrediente(${ingrediente.id})"> <img src='{{ asset('img/ingred.png') }}'width='15px' heigth='15px'> ${ingrediente.nombre}</a>
                 </div>`;
             });
         } else {
             resultadosDiv.innerHTML = "<div class='text-center'><p>No se encontraron resultados</p></div>";
         }
     }
-</script>
 
- @endsection
+    function limpiarBuscador() {
+        nombreInput.value = '';
+    }
+</script>
+@endsection

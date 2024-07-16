@@ -51,38 +51,38 @@
                                     <div class="form-group col-md-4">
                                         <label class="form-label" for="fname">Nombres: *</label>
                                         <input type="text" class="form-control" id="fname" name="nombre" value="{{ old('nombre') }}" required>
-                                    </div>
                                     @error('nombre')
-                                        <div class="alert alert-danger">{{ $message }}</div>
+                                        <p class="text-danger">{{ $message }}</p>
                                     @enderror
+                                    </div>
                                     <div class="form-group col-md-4">
                                         <label class="form-label" for="lname">Primer Apellido:</label>
                                         <input type="text" class="form-control" id="lname" name="ap_pat" value="{{ old('ap_pat') }}">
+                                        @error('ap_pat')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('ap_pat')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                     <div class="form-group col-md-4">
                                         <label class="form-label" for="lname">Segundo Apellido:</label>
                                         <input type="text" class="form-control" id="lname" name="ap_mat" value="{{ old('ap_mat') }}">
+                                        @error('ap_mat')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('ap_mat')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                     <div class="form-group col-md-4">
                                         <label class="form-label" for="cname">Cedula: *</label>
                                         <input type="text" class="form-control" id="cname" name="ci" value="{{ old('ci') }}" required>
+                                        @error('ci')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('ci')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                     <div class="form-group col-md-4">
                                         <label class="form-label" for="cname">Fecha Nacimiento: *</label>
                                         <input type="date" class="form-control" id="cname" name="fNac" value="{{ old('fNac') }}" required>
+                                        @error('fNac')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('fNac')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                     <div class="form-group col-sm-4">
                                         <label class="form-label">Genero: *</label>
                                         <select name="genero" class="selectpicker form-select" data-style="py-0" value="{{ old('genero') }}" required>
@@ -91,17 +91,17 @@
                                             <option value="Mujer">Mujer</option>
                                             <option value="Otro">Otro</option>
                                         </select>
+                                        @error('genero')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('genero')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                     <div class="form-group col-md-3">
                                         <label class="form-label" for="add1">Dirección: *</label>
                                         <input type="text" class="form-control" id="add1" name="direccion" value="{{ old('direccion') }}" required>
+                                        @error('direccion')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('direccion')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                     <div class="form-group col-md-3">
                                         <label class="form-label">Horario: *</label>
                                         <select class="selectpicker form-select" data-style="py-0" name="horario" required>
@@ -114,24 +114,24 @@
                                                 <option value="">No Hay Horarios</option>
                                             @endif
                                         </select>
+                                        @error('horario')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('horario')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                     <div class="form-group col-md-3">
                                         <label class="form-label" for="mobno">Numero Celular: *</label>
                                         <input type="text" class="form-control" id="mobno" name="telefono" value="{{ old('telefono') }}" required>
+                                        @error('telefono')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('telefono')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                     <div class="form-group col-md-3">
                                         <label class="form-label" for="email">E mail: *</label>
                                         <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
+                                        @error('email')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('email')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                 </div>
                             </div>
                             <div class="text-center">
@@ -144,38 +144,38 @@
                                     <div class="form-group col-md-4">
                                         <label class="form-label" for="nomb">Nombre: *</label>
                                         <input type="text" class="form-control" id="nomb" name="nombreC" value="{{ old('nombreC') }}">
+                                        @error('nombreC')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('nombreC')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                     <div class="form-group col-md-4">
                                         <label class="form-label" for="apePC">Primer Apellido:</label>
                                         <input type="text" class="form-control" id="apPC" name="ap_patC" value="{{ old('ap_patC') }}">
+                                        @error('ap_patC')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('ap_patC')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                     <div class="form-group col-md-4">
                                         <label class="form-label" for="apeMC">Segundo Apellido:</label>
                                         <input type="text" class="form-control" id="apMC" name="ap_matC" value="{{ old('ap_matC') }}">
+                                        @error('ap_matC')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('ap_matC')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                     <div class="form-group col-md-3">
                                         <label class="form-label" for="ciC">Cedula: *</label>
                                         <input type="text" class="form-control" id="ciC" name="ciC" value="{{ old('ciC') }}">
+                                        @error('ciC')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('ciC')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                     <div class="form-group col-md-3">
                                         <label class="form-label" for="numcelC">Numero de Celular: *</label>
                                         <input type="text" class="form-control" id="numcelC" name="telefonoC" value="{{ old('telefonoC') }}">
+                                        @error('telefonoC')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('telefonoC')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                     <div class="form-group col-sm-3">
                                         <label class="form-label">Genero: *</label>
                                         <select name="generoC" class="selectpicker form-select" value="{{ old('generoC') }}" data-style="py-0">
@@ -183,17 +183,17 @@
                                             <option value="Mujer">Mujer</option>
                                             <option value="Otro">Otro</option>
                                         </select>
+                                        @error('generoC')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('generoC')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                     <div class="form-group col-md-3">
                                         <label class="form-label" for="emailC">Correo Electronico:</label>
                                         <input type="text" class="form-control" id="emailC" name="emailC" value="{{ old('emailC') }}">
+                                        @error('emailC')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('emailC')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
                                 </div>
                             </div>
                         </div>

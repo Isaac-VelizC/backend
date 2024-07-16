@@ -101,10 +101,12 @@
                             @csrf
                             <div class="row">
                                 <div class="form-group col-lg-6">
-                                    <input type="text" class="form-control" wire:model='metodoPagoEdit' placeholder="Ingrese un metodo de pago">
+                                    <input type="text" class="form-control" wire:model='metodoPagoEdit' placeholder="Nombre de metodo de pago">
+                                    @error('metodoPagoEdit') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
                                 <div class="form-group col-lg-6">
-                                    <input type="text" class="form-control" wire:model='metodoMontoEdit' placeholder="Ingrese el monto">
+                                    <input type="number" class="form-control" wire:model='metodoMontoEdit' placeholder="Monto">
+                                    @error('metodoMontoEdit') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
                             </div>
                             <div class="text-center">
@@ -116,13 +118,16 @@
                         <ol class="list-group list-group-numbered">
                             @if (count($metodoPagos) > 0)
                                 @foreach ($metodoPagos as $metodo)
-                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <li class="list-group-item d-flex justify-content-between align-items-start" @if (!$metodo->estado) style="opacity: 0.5;" @endif >
                                         <div class="ms-2 me-auto" wire:click='seleccionarMetodo({{$metodo->id}})'>
                                             <div class="fw-bold">{{ $metodo->nombre }} - {{ $metodo->monto }}bs.</div>
                                         </div>
+                                        <div>
                                         @if ( $metodo->id != 1 )
                                             <span class="badge bg-ligth btn" wire:click='eliminarMetodo({{$metodo->id}})'><i class="bi bi-trash text-danger"></i></span>
                                         @endif
+                                            <span class="badge bg-ligth btn" wire:click='inhabilitarMetodo({{$metodo->id}})'><i class="bi bi-x-circle text-danger"></i></span>        
+                                        </div>
                                     </li>
                                 @endforeach
                             @else
@@ -142,23 +147,17 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form wire:submit.prevent='formAula'>
+                        <form class="needs-validation" wire:submit.prevent='formAula' novalidate>
                             @csrf
                             <div class="row">
                                 <div class="form-group col-lg-12">
-                                    <input type="text" class="form-control" wire:model='aulasEdit.nombre' placeholder="Nombre">
+                                    <input type="text" class="form-control" wire:model='aulasEdit.nombre' placeholder="Nombre" required>
                                 </div>
                                 <div class="form-group col-lg-6">
-                                    <select type="text" class="form-select" wire:model='aulasEdit.tipo' placeholder="Tipo de Aula">
-                                        <option value="1">Teorico</option>
-                                        <option value="2" selected>Practico</option>
-                                    </select>
+                                    <input type="text" class="form-control" wire:model='aulasEdit.codigo' placeholder="Codigo" required>
                                 </div>
-                                <div class="form-group col-lg-3">
-                                    <input type="text" class="form-control" wire:model='aulasEdit.codigo' placeholder="Codigo">
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    <input type="numeric" class="form-control" wire:model='aulasEdit.capacidad' placeholder="Capacidad">
+                                <div class="form-group col-lg-6">
+                                    <input type="number" class="form-control" wire:model='aulasEdit.capacidad' placeholder="Capacidad" required>
                                 </div>
                             </div>
                             <div class="text-center">
@@ -170,7 +169,7 @@
                         <ol class="list-group list-group-numbered">
                             @if (count($aulas) > 0)
                                 @foreach ($aulas as $aula)
-                                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                                    <li class="list-group-item d-flex justify-content-between align-items-start" @if (!$aula->estado) style="opacity: 0.5;" @endif >
                                         <div class="ms-2 me-auto" wire:click='seleccionarAula({{ $aula->id }})'>
                                             <div class="fw-bold">{{ $aula->nombre }}</div>
                                             <p> <span class="text-darck">Codigo:</span> {{ $aula->codigo }}</p>
@@ -178,6 +177,7 @@
                                         <div class="align-items-center">
                                             <span class="badge bg-primary rounded-pill">{{ $aula->capacidad }}</span>
                                             <span class="badge bg-ligth btn" wire:click='borrarAula({{$aula->id}})'><i class="bi bi-trash text-danger"></i></span>
+                                            <span class="badge bg-ligth btn" wire:click='inhabilitarAula({{$aula->id}})'><i class="bi bi-x-circle text-danger"></i></span>
                                         </div>
                                     </li>
                                 @endforeach

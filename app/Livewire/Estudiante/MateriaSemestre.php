@@ -73,13 +73,12 @@ class MateriaSemestre extends Component
     public function notificarProgramacion($estudianteId, $cursoId) {
         $curso = CursoHabilitado::find($cursoId);
         $message = "Se le programó a la materia " . $curso->curso->nombre;
-        
         $numeroTelefono = $this->obtenerNumeroTelefonoEstudiante($estudianteId);
         InfoController::notificacionNotaTarea($numeroTelefono, $message);
     }
     protected function obtenerNumeroTelefonoEstudiante($estudianteId) {
         $estudiante = Estudiante::find($estudianteId);
-        return optional($estudiante->persona->numTelefono)->numero;
+        return optional($estudiante->persona->numero);
     }
     
 }
